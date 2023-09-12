@@ -65,22 +65,7 @@
 매주 작업 내역을 issue에서 한눈에 볼 수 있도록 정리해주세요.
 
 각자 발행하는 issue명은 해당 주차에 해당하는 이슈명에 - [본인 이름]을 붙여주세요.
-
-<br>
-
-## Commit 전략 
-
-[Week] + gitflow
-Feat : 새로운 기능에 대한 커밋
-Fix : 버그 수정에 대한 커밋
-Chore : 그 외 자잘한 수정에 대한 커밋
-Refac : 코드 리팩토링에 대한 커밋 
-
-ex) [Week3] [Chap1] Feat: 프로젝트 환경설정
-
-해당 주차가 완료되면, Pull Request합니다.
-
- <details><summary>예시</summary>
+<details><summary>예시</summary>
 <br>
 
 ## 1. 매주 월요일, 해당 주차에 맞게 메인 이슈가 올라옵니다.
@@ -112,6 +97,19 @@ ex) [Week3] [Chap1] Feat: 프로젝트 환경설정
 
 </details>
 
+<br>
+
+### 🌱 Commit 전략 
+
+[Week] [Chap] + gitflow
+Feat : 새로운 기능에 대한 커밋
+Fix : 버그 수정에 대한 커밋
+Chore : 그 외 자잘한 수정에 대한 커밋
+Refac : 코드 리팩토링에 대한 커밋 
+
+ex) [Week3] [Chap1] Feat: 프로젝트 환경설정
+
+해당 주차가 완료되면, Pull Request합니다.
 
 
 <br/>
