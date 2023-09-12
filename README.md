@@ -68,33 +68,39 @@
 <details><summary>예시</summary>
 <br>
 
-## 1. 매주 월요일, 해당 주차에 맞게 메인 이슈가 올라옵니다.
+### 1. 매주 월요일, 해당 주차에 맞게 메인 이슈가 올라옵니다.
 
 ![설정법 image1](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/c6ee2f8d-e00e-43c7-b2bd-6da74192055e)
 <br>
 
-## 2. [메인이슈]에다가 - [본인 이름]을 추가하여 이슈를 새로 생성합니다.
+### 2. [메인이슈]에다가 - [본인 이름]을 추가하여 이슈를 새로 생성합니다.
 
 ![설정법 image2](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/df227883-6b05-4f9d-a453-bc3e5fd6740d)
 
-팀장이 발행한 매 주차 이슈에 ' - [본인 이름] ' 형식을 추가해서 발행한 모습입니다. 이곳에 공부한 기록 및 블로그 uri를 작성해주시면 됩니다. 
+팀장이 발행한 매 주차 이슈에 ' - [본인 이름] ' 형식을 추가해서 생성한 모습입니다. 
 <br>
 
-## [메인이슈] - [본인이름] 생성 방법
+### [메인이슈] - [본인이름] 생성 방법
 - 새로 생성 후 참조 버튼을 클릭 후, 아래와 같이 본인의 이슈에서 해당 주차 메인 이슈를 선택합니다. 
-
 ![설정법 image](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/3bc36a45-66cb-470c-8c74-36a67c6f7b41)
 ![설정법 image](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/e6edd751-8f84-4a3b-bd30-400d357e27c8)
+
+<br>
+
 - 본인의 이슈가 해당 주차 메인 이슈에 보여야합니다. 
 ![설정법 image2-1](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/d986fe91-7b40-482e-918c-fdec792bb069)
-<br>
 
+<br>
 
 본인 이름으로 된 브랜치에서 해당 이슈명을 포함한 커밋으로 공부 내역을 기록합니다.
+
+<br>
+
 ![설정법 image4](https://github.com/Tave12st-Backend-Study/jpa-study/assets/109949924/a35e7604-8655-404d-91d6-e619ff7d8947)
 <br>
-본인 영문이름으로 된 브랜치를 사용하셔야 합니다.
 
+본인 영문이름으로 된 브랜치를 사용하셔야 합니다.
+이곳에 공부한 기록 및 블로그 uri를 작성해주시면 됩니다.
 </details>
 
 <br>
@@ -102,10 +108,10 @@
 ### 🌱 Commit 전략 
 
 [Week] [Chap] + gitflow
-Feat : 새로운 기능에 대한 커밋
-Fix : 버그 수정에 대한 커밋
-Chore : 그 외 자잘한 수정에 대한 커밋
-Refac : 코드 리팩토링에 대한 커밋 
+- Feat : 새로운 기능에 대한 커밋
+- Fix : 버그 수정에 대한 커밋
+- Chore : 그 외 자잘한 수정에 대한 커밋
+- Refac : 코드 리팩토링에 대한 커밋 
 
 ex) [Week3] [Chap1] Feat: 프로젝트 환경설정
 
