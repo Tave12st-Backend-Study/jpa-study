@@ -5,19 +5,23 @@
 > Tave12기 ‘김영한 화이팀’ 의 JPA 스터디 기록용 레포지토리입니다.
 > 
 
+<br>
+
 강의 소개
 
 - **[자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic)**
 - **[실전! 스프링 부트와 JPA 활용1 - 웹 애플리케이션 개발](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1)**
 
+<br>
+
 팀원 소개
 
 | 임준형 | 김지윤 | 송민영 | 이진우 | 최송희 | 이재표 |
 | --- | --- | --- | --- | --- | --- |
-| https://github.com/toychip | https://github.com/jyjyjy25 | https://github.com/ankisile | https://github.com/dionisos198 | https://github.com/songhee1 | https://github.com/jaepyo-Lee |
+| [임준형 github](https://github.com/toychip) | [김지윤 github](https://github.com/jyjyjy25) | [송민영 github](https://github.com/ankisile) | [이진우 github](https://github.com/dionisos198) | [최송희 github](https://github.com/songhee1) | [이재표 github](https://github.com/jaepyo-Lee) |
+
 
 <br>
-
 
 ### 🌱 스터디 커리큘럼
 
@@ -32,7 +36,7 @@
 | - | - | 실전! 스프링 부트와 JPA 활용1 - 웹 애플리케이션 개발 SECTION 1, 2, 3, 4 |
 | 6주차 | 23.10.28 | 실전! 스프링 부트와 JPA 활용1 - 웹 애플리케이션 개발 SECTION 5, 6, 7 |
 
-
+<br>
 
 ### 🙌🏻 스터디 규칙
 
@@ -40,8 +44,7 @@
 - 스터디가 진행된 **그 다음 주 수요일까지는** 스터디한 내용을 바탕으로 자신의 개인 블로그에 관련된 내용을 옮깁니다.
 - 지정된 기한 까지 해당 작업을 진행하지 못하였을 경우 **지정된 벌칙(ex:커피 사가기 등)을 수행**합니다.
 - 원활한 장소 예약을 위해 **스터디가 진행되기 최소 3일전**까지는 스터디 진행이 불가능한 시간을 공유한다. 
-
-
+<br>
 
 ### 🌱 스터디 방식
 
@@ -51,14 +54,13 @@
 - 실습, 기록한 것 git에 올리기 (본인 깃헙에 레포 fork main -> Spring-Study main 으로 pr 날리기)
 - git 기록 마감 기한 : 수요일 오후 8시
 - 각자 commit 한 강의 내용에 맞게 블로그 게시물 추가 후 리드미 수정
+<br>
 
+### 🌱 개인 스터디 방법 가이드
 
-## 😎 개인 스터디 방법 가이드
-
-<br/> 
 매주 issue가 올라올 예정입니다.
 
-해당 주차별 이슈를 각자 발행하고, 본인의 branch(영문이름)에서 본인의 이름으로 디렉토리 생성 후 그 안에서 작업합니다.
+해당 주차별 이슈를 각자 발행하고, 본인의 branch(영문이름)에서 본인의 이름으로 된 디렉토리 안에서 작업합니다.
 <br/>  
 매주 작업 내역을 issue에서 한눈에 볼 수 있도록 정리해주세요.
 
@@ -100,13 +102,16 @@
 
 <br>
 
-# TAVE 스터디 규칙
+## TAVE 스터디 규칙
+
+<details><summary>Tave 규칙</summary>
+
+<br>
 📌스터디 진행 일정📌  
 - 10/31(화)까지 1회 2시간 이상, 총 “6회” 이상 진행 
 - 11/1(수) 18:00까지 결과물을 t-ave@naver.com으로 제출
 - 결과물 : 서기, 진행표, 후기, 그 외 첨부 자료, 후기
 - 시간은 팀원분들과 조율하여 미리 운영진을 태그하여 공지
-
 
 📌팀장 정하기📌
 - 팀장은 1명이며 진행표 작성을 담당 (임준형)
@@ -118,3 +123,4 @@
 - 정규 세션이 있는 토요일은 스터디가 없음
 - 정규 세션이 있거나 공휴일이 있는 주에는 온오프라인 스터디를 허용하며 원하는 날에 스터디 일정을 잡고 스터디를 진행
 - 추석 연휴에도 온라인 스터디가 허용
+</details>
