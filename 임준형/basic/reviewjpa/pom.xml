@@ -27,5 +27,23 @@
             <artifactId>h2</artifactId>
             <version>1.4.199</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
+<!--        java 11은 아래의 의존성 필수 -->
+
+        <!-- JAXB Dependency -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+
     </dependencies>
 </project>
