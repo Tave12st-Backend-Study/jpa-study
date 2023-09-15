@@ -2,6 +2,7 @@ package hellojpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class JpaMain {
@@ -16,10 +17,13 @@ public class JpaMain {
 
         //엔티티 매니저 생성
         EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityTransaction tx = em.getTransaction();
 
         //객체를 저장한 상태 -> 영속상태
         em.persist(member);
+
+        //트랜잭션 커밋
+        tx.commit();
 
         em.close();
         emf.close();
