@@ -21,6 +21,13 @@ public class JpaMain {
 
         //객체를 저장한 상태 -> 영속상태
         em.persist(member);
+        // em.find(원하는 객체,pk값) : 조회
+
+        // em.remove(조회한 객체) : 삭제
+
+        /*조회한 객체의 데이터만을 수정하면 트랜잭션을 커밋하는 시점에 수정한다.
+        Member findMember = em.find(Member.class, 1L);
+        findMember.setName("helloB");*/
 
         //트랜잭션 커밋
         tx.commit();
