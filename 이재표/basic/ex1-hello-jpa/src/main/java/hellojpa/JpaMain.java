@@ -12,15 +12,14 @@ public class JpaMain {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
         EntityManager em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
-        Member member = em.find(Member.class, 1L);
-        member.setName("update");
+        Member member = new Member(200L, "member200");
+        em.persist(member);
+        em.flush();
         System.out.println("==================");
-
-        //커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
-        transaction.commit(); // [트랜잭션] 커밋
+        tx.commit();
 
         em.close();
         emf.close();
