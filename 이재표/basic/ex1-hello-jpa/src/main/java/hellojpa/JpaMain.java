@@ -11,15 +11,19 @@ public class JpaMain {
         //엔티티 매니저 팩토리 생성
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
-        //엔티티 매니저 생성
         EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
 
-        //JPQL을 통한 쿼리 작성
-        List<Member> resultList = em.createQuery("select m from Member as m", Member.class).getResultList();
-        System.out.println("결과크기 : "+resultList.size());
+        //엔티티 매니저는 데이터 변경시 트랜잭션을 시작해야 한다.
+        transaction.begin(); // [트랜잭션] 시작
+        Member memberA = new Member(1L, "memberA");
+        Member memberB = new Member(2L, "memberB");
+        em.persist(memberA);
+        em.persist(memberB);
+        //여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.
 
-        tx.commit();
+        //커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+        transaction.commit(); // [트랜잭션] 커밋
 
         em.close();
         emf.close();
