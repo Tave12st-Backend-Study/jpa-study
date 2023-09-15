@@ -14,11 +14,17 @@ public class JpaMain {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
+        Member memberA = new Member(3L, "memberA");
+        Member memberB = new Member(4L, "memberB");
+        Member memberC = new Member(5L, "memberC");
 
-        Member member = new Member(200L, "member200");
-        em.persist(member);
-        em.flush();
-        System.out.println("==================");
+        em.persist(memberA);
+        em.persist(memberB);
+        em.persist(memberC);
+        //중간에 JPQL 실행
+        List<Member> result = em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+
         tx.commit();
 
         em.close();
