@@ -18,14 +18,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                            .setFirstResult(3)
-                            .setMaxResults(5)
-                            .getResultList();
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
 
-            for (Member member : result) {
-                System.out.println("member.getName = " + member.getName());
-            }
+            System.out.println("=== BEFORE ===");
+            em.persist(member);
+            System.out.println("=== AFTER ===");
+
 
             tx.commit();
         }
