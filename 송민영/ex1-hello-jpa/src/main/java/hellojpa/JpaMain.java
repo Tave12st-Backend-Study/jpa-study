@@ -18,18 +18,10 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("HelloJPA");
+            Member member1 = em.find(Member.class, 101L);
+            Member member2 = em.find(Member.class, 101L);
 
-            System.out.println("=== BEFORE ===");
-            em.persist(member);
-            System.out.println("=== AFTER ===");
-
-            Member findMember = em.find(Member.class, 101L);
-
-            System.out.println("findMember.id = "+findMember.getId());
-            System.out.println("findMember.name = "+findMember.getName());
+            System.out.println("result = "+ (member1 == member2));
 
             tx.commit();
         }
