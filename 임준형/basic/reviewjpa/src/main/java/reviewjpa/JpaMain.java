@@ -1,9 +1,6 @@
 package reviewjpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 public class JpaMain {
@@ -18,12 +15,18 @@ public class JpaMain {
 
         try {
 
-            Member member = em.find(Member.class, 1L);
-            em.persist(member);
+            Member memberA = em.find(Member.class, 1L);
+            Member memberB = em.find(Member.class, 1L);
+            Member memberC = em.find(Member.class, 1L);
 
-            // commit 시점에 자동으로 flush가 되지만,
-            // 미리 DB에 넘어가는 쿼리를 보고 싶거나 미리 DB에 저장하고 싶을 때 사용함
-            em.flush();
+            em.persist(memberA);
+            em.persist(memberB);
+            em.persist(memberC);
+
+
+            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+            List<Member> members = query.getResultList();
+
 
             System.out.println("--------------------");
 
