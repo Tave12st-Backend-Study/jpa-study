@@ -1,6 +1,9 @@
 package reviewjpa;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
@@ -15,21 +18,13 @@ public class JpaMain {
 
         try {
 
-            Member memberA = em.find(Member.class, 1L);
-            Member memberB = em.find(Member.class, 1L);
-            Member memberC = em.find(Member.class, 1L);
+            Member member = em.find(Member.class, 1L);
+            member.setName("ㅁㅁㅁㅁ");
 
-            em.persist(memberA);
-            em.persist(memberB);
-            em.persist(memberC);
-
-
-            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
-            List<Member> members = query.getResultList();
-
+            // JPA에서 관리 안함
+            em.detach(member);
 
             System.out.println("--------------------");
-
             tx.commit(); // 성공하면 커밋
 
         } catch (Exception e) {
