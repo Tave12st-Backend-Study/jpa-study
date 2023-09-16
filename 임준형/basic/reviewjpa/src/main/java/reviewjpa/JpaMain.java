@@ -21,7 +21,11 @@ public class JpaMain {
             Member member = em.find(Member.class, 1L);
             member.setName("ZZZ");
 
-            System.out.println("---------------------------");
+            // commit 시점에 자동으로 flush가 되지만,
+            // 미리 DB에 넘어가는 쿼리를 보고 싶거나 미리 DB에 저장하고 싶을 때 사용함
+            em.flush();
+
+            System.out.println("--------------------");
 
             tx.commit(); // 성공하면 커밋
 
