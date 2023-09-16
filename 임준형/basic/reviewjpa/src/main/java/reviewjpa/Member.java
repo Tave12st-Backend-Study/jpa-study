@@ -10,6 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id

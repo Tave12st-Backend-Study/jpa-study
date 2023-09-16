@@ -18,9 +18,10 @@ public class JpaMain {
 
         try {
 
+            Member member = em.find(Member.class, 1L);
+            member.setName("ZZZ");
 
-            Member findMember1 = em.find(Member.class, 101L);
-            Member findMember2 = em.find(Member.class, 101L);
+            System.out.println("---------------------------");
 
             tx.commit(); // 성공하면 커밋
 
