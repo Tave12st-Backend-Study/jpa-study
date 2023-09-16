@@ -18,20 +18,9 @@ public class JpaMain {
 
         try {
 
-            // 비영속
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("Review Jpa");
 
-            // 영속
-            System.out.println(" --- BEFORE --- ");
-            em.persist(member);
-            System.out.println(" --- AFTER --- ");
-
-            Member findMember = em.find(Member.class, 101L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getName() = " + findMember.getName());
-            // select 쿼리가 나가지 않음. 1차 캐시에서 조회함
+            Member findMember1 = em.find(Member.class, 101L);
+            Member findMember2 = em.find(Member.class, 101L);
 
             tx.commit(); // 성공하면 커밋
 
