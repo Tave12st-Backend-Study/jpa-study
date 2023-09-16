@@ -13,10 +13,10 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = em.find(Member.class, 150L);
-            member.setName("ZZZZZ");
+            Member member = em.find(Member.class, 200L);
+            em.persist(member);
 
-            // em.persist(member);
+            em.flush();
 
             System.out.println("=================");
 
