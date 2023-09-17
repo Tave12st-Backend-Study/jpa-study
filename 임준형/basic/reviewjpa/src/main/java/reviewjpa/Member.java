@@ -17,6 +17,6 @@ public class Member {
 
     @Id
     private Long id;
-
+    private int age;
     private String name;
 }
