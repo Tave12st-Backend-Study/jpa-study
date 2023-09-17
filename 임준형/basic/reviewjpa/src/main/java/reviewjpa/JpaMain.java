@@ -21,9 +21,6 @@ public class JpaMain {
             Member member = em.find(Member.class, 1L);
             member.setName("ㅁㅁㅁㅁ");
 
-            // JPA에서 관리 안함
-            em.detach(member);
-
             System.out.println("--------------------");
             tx.commit(); // 성공하면 커밋
 
