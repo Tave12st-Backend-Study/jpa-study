@@ -1,6 +1,8 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,6 +23,9 @@ public class Member {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    private LocalDate testLocalDate; // DB의 data 타입으로 매핑된다.
+    private LocalDateTime testLocalDateTime; // DB의 timestamp 타입으로 매핑된다.
 
     @Lob
     private String description;
