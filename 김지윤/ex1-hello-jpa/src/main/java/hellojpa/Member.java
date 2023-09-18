@@ -28,7 +28,7 @@ public class Member {
     private LocalDateTime testLocalDateTime; // DB의 timestamp 타입으로 매핑된다.
 
     @Lob
-    private String description;
+    private String description; // 회원을 설명하는 필드는 길이 제한이 없다. 따라서 데이타베이스 VARCHAR 타입 대신에 CLOB 타입으로 저장한다.
 
     @Transient
     private String temp;
