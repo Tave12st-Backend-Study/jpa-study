@@ -16,7 +16,7 @@ import java.util.Date;
 public class Member {
     @Id
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     private String username;
     private Integer age;
     @Enumerated(EnumType.STRING)
