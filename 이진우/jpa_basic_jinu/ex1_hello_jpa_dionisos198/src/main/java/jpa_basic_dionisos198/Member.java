@@ -1,39 +1,53 @@
 package jpa_basic_dionisos198;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "MBR")
 public class Member {
     @Id
     private Long id;
-    @Column(nullable = false,length = 10)
-    private String name;
+    @Column(name = "name")
+    private String username;
+
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Lob
+    private String description;
+
     public Member(){
 
-    }
-    public Member(Long id,String name){
-        this.id=id;
-        this.name=name;
-    }
-    public Member(Long id){
-        this.id=id;
-    }
-
-    public Long getId(){
-        return id;
-    }
-    public void setId(Long id){
-        this.id=id;
-    }
-    public String getName(){
-        return name;
-    }
-    public void setName(String name){
-        this.name=name;
     }
 
 
