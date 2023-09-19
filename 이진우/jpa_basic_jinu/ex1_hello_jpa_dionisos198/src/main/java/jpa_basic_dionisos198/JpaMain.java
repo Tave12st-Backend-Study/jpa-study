@@ -13,16 +13,9 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-           Member member=new Member(373737L,"jinujinu");
+           Member member=new Member(37L,"hello");
            em.persist(member);
-           System.out.println("-----------------------------1---------------------------");
-            List<Member> selectMFromMemberM = em.createQuery("select m from Member m").getResultList();
-           System.out.println("-----------------------------2----------------------------");
-            em.detach(member);
-            member.setName("kkkk");
-            System.out.println("----------------------------3----------------------------");
-            tx.commit();
-            System.out.println("----------------------------4-----------------------------");
+           tx.commit();
 
         }catch (Exception e){
             tx.rollback();
