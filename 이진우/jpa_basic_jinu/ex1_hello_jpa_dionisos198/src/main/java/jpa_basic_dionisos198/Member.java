@@ -2,8 +2,10 @@ package jpa_basic_dionisos198;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "MBR")
 public class Member {
     @Id
     private Long id;
