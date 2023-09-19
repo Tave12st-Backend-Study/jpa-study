@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -15,6 +14,7 @@ import java.util.Date;
 @Entity
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column(name = "name",nullable = false)
     private String username;
