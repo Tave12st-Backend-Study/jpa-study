@@ -13,9 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
-    @Column(name = "name",nullable = false)
-    private String username;
+    private String name;
+    private String city;
+    private String street;
+    private String zipcode;
 }
