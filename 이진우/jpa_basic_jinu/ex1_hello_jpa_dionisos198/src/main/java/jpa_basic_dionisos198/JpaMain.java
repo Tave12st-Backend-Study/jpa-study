@@ -14,9 +14,10 @@ public class JpaMain {
         tx.begin();
         try{
            Member member=new Member();
-           member.setId(1L);
-           member.setRoleType(RoleType.ADMIN);
+           member.setUsername("jinu");
+            System.out.println("-----------");
            em.persist(member);
+            System.out.println("-----------");
            tx.commit();
 
         }catch (Exception e){
