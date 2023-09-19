@@ -9,8 +9,9 @@ public class Member {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "TEAM_ID")
-    private Long teamId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public void setId(Long id) {
         this.id = id;
@@ -34,11 +35,11 @@ public class Member {
         this.name = name;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

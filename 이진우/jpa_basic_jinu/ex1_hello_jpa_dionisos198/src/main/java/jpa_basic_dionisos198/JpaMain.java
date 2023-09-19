@@ -13,15 +13,20 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-         Team team=new Team();
-         team.setName("TeamA");
-         em.persist(team);
+          Team team=new Team();
+          team.setName("TeamA");
+          em.persist(team);
 
-         Member member=new Member();
-         member.setName("member1");
-         member.setTeamId(team.getId());
-         em.persist(member);
-           tx.commit();
+          Member member=new Member();
+          member.setName("member1");
+          member.setTeam(team);
+          em.persist(member);
+          em.flush();
+          em.clear();
+
+          Member findMember=em.find(Member.class,member.getId());
+          Team findTeam=findMember.getTeam();
+            System.out.println("findTeam= "+findTeam.getName());
 
         }catch (Exception e){
             tx.rollback();
