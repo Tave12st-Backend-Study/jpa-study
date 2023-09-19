@@ -17,12 +17,9 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 주문을 조회한 다음 주문과 연관된 회원을 외래 키를 가지고 조회하기
+            // 주문을 조회한 다음 주문과 연관된 회원을 객체에서 참조를 사용해서 조회하기
             Order order = em.find(Order.class, 1L);
-            Long memberId = order.getMemberId();
-
-            // 외래 키로 다시 조회
-            Member member = em.find(Member.class, memberId);
+            Member findMember = order.getMember();
 
             tx.commit();
         } catch (Exception e) {
