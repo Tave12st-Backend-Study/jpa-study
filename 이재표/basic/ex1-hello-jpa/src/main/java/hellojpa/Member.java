@@ -14,8 +14,8 @@ import javax.persistence.*;
 @Entity
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     @Column(name = "name",nullable = false)
     private String username;
 }
