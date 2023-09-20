@@ -7,8 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,6 +17,10 @@ public class Member {
     private Long id;
     @Column(name = "USERNAME")
     private String name;
-    @Column(name = "TEAM_ID")
-    private Long teamId;
+    /*@Column(name = "TEAM_ID")
+    private Long teamId;*/
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 }
