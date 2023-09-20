@@ -1,19 +1,30 @@
 package jpa_book_dionisos198.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Member {
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders=new ArrayList<>();
     private String name;
 
     public Long getId() {
         return id;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getName() {
