@@ -2,6 +2,8 @@ package jpa_basic_dionisos198;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Member {
@@ -23,6 +25,8 @@ public class Member {
 
     }
 
+
+
     public Long getId() {
         return id;
     }
@@ -39,7 +43,14 @@ public class Member {
         return team;
     }
 
+    public void changeTeam(Team team){
+        this.team=team;
+        team.getMembers().add(this);
+    }
+
     public void setTeam(Team team) {
         this.team = team;
     }
+
+
 }
