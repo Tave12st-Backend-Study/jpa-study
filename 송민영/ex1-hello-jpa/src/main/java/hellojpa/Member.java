@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(100) default 'EMPTY'")
