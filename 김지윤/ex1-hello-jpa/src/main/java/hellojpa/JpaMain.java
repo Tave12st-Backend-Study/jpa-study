@@ -24,16 +24,15 @@ public class JpaMain {
             member.setTeam(team);
             em.persist(member); // 영속 상태
 
-            // 회원이 속한 팀 조회
-            Member findMember = em.find(Member.class, member.getId()); // 1차 캐시에서 member를 가져온다.
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            em.flush();
+            em.clear();
 
-            // 회원이 속한 팀 수정
-            Team teamB = new Team(); // 새로운 팀
-            teamB.setName("TeamB");
-            em.persist(teamB);
-            findMember.setTeam(teamB);
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers(); // 객체 그래프 탐색, 회원 -> 팀 -> 회원
+
+            for (Member m : members) {
+                System.out.println("m = " + m.getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
