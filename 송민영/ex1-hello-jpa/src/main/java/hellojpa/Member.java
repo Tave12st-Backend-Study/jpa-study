@@ -10,7 +10,7 @@ public class Member {
     @Column(name = "name", nullable = false, columnDefinition = "varchar(100) default 'EMPTY'")
     private String username;
     private Integer age;
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private RoleType roleType;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
