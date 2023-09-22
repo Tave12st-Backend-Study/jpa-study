@@ -1,6 +1,8 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,6 +16,16 @@ public class Member {
     private RoleType roleType;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Lob
+    private String description;
+
+    private LocalDate testLocalDate;
+
+    private LocalDateTime testLocalDateTime;
 
     public Long getId() {
         return id;
@@ -70,11 +82,6 @@ public class Member {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-    @Lob
-    private String description;
 
     public Member (){
 
