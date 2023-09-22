@@ -19,11 +19,7 @@ public class JpaMain {
 
             Member member = new Member();
             member.setName("member1");
-
-            /* 순수한 객체까지 고려한 양방향 연관관계 */
             member.setTeam(team); // 연관관계의 주인에 값 설정
-            team.getMembers().add(member); // 연관관계의 주인이 아닌 곳에 값 설정
-
             em.persist(member);
 
             em.flush();
