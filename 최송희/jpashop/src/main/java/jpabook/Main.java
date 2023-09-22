@@ -14,9 +14,19 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Order order = em.find(Order.class, 1L);
-            Long userId = order.getId();
-            em.find(Member.class, userId);
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member= new Member();
+            member.setTeam(team);
+            member.setUsername("song");
+            em.persist(member);
+            
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = "+findTeam.getName());
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
