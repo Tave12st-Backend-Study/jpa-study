@@ -13,22 +13,24 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 팀 저장
             Team team = new Team();
             team.setName("TeamA");
-            em.persist(team); // 영속 상태
+            em.persist(team);
 
-            // 회원 저장
             Member member = new Member();
             member.setName("member1");
-            member.setTeam(team);
-            em.persist(member); // 영속 상태
+
+            /* 순수한 객체까지 고려한 양방향 연관관계 */
+            member.setTeam(team); // 연관관계의 주인에 값 설정
+            team.getMembers().add(member); // 연관관계의 주인이 아닌 곳에 값 설정
+
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers(); // 객체 그래프 탐색, 회원 -> 팀 -> 회원
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
 
             for (Member m : members) {
                 System.out.println("m = " + m.getName());
