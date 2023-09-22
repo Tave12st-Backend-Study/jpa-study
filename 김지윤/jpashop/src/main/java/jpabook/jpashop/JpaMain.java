@@ -2,6 +2,7 @@ package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderItem;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,9 +18,8 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 주문을 조회한 다음 주문과 연관된 회원을 객체에서 참조를 사용해서 조회하기
-            Order order = em.find(Order.class, 1L);
-            Member findMember = order.getMember();
+            Order order = new Order();
+            order.addOrderItem(new OrderItem());
 
             tx.commit();
         } catch (Exception e) {
