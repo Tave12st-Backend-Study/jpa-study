@@ -16,21 +16,26 @@ public class Main {
         tx.begin();
         try{
             Team team = new Team();
-            team.setName("TeamA");
+            team.setName("teamB");
             em.persist(team);
 
             Member member= new Member();
+            member.setUsername("sonGg");
             member.setTeam(team);
-            member.setUsername("song");
+            //연관관계 주인에서 관리하게 되면 TEAM, MEMBER DB에도 값이 세팅된다.
+            /*
+            !주의!
+            * team.getMember().add(member) : MEMBER DB에 TEAM_ID가 null이 된다.
+            * */
             em.persist(member);
 
             em.flush();
             em.clear();
-            //양방향 연관관계
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-            for(Member mem : members){
-                System.out.println("m= "+ mem.getUsername());
+
+            Team team1 = em.find(Team.class, team.getId());
+            List<Member> members = team1.getMembers();
+            for(Member m : members){
+                System.out.println("find");
             }
 
             tx.commit();

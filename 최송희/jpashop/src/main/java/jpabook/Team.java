@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Team {
     @Id
-    @GeneratedValue
+    @GeneratedValue //생략하면 AUTO
     @Column(name = "TEAM_ID")
     private Long id;
     private String name;
