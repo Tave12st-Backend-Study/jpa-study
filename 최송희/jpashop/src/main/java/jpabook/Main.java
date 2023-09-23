@@ -35,7 +35,7 @@ public class Main {
             Team team1 = em.find(Team.class, team.getId());
             List<Member> members = team1.getMembers();
             for(Member m : members){
-                System.out.println("find");
+                System.out.println(m.getUsername());
             }
 
             tx.commit();
