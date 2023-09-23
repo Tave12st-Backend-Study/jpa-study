@@ -22,6 +22,7 @@ public class JpaMain {
             member.setUsername("C");
             System.out.println("-------------");
             em.persist(member);
+            // call next value for MEMBER_SEQ : DB에서 값을 갖고 옴
             System.out.println("member.getId() = " + member.getId());
             System.out.println("-------------");
 
