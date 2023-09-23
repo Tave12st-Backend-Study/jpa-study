@@ -17,6 +17,16 @@ public class JpaMain {
         tx.begin(); // transaction 시작
 
         try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+
+            // 위에서 em.persist하면서 insert가 됐으므로 id를 꺼낼 수 있음
+            member.setTeamId(team.getId());
+            em.persist(member);
 
             tx.commit(); // 성공하면 커밋
 
