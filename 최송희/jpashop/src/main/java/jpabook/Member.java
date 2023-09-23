@@ -10,9 +10,6 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teanId;
-
     @ManyToOne //멤버 입장에서는 Many, 팀 입장에서는 one이므로
     @JoinColumn(name = "TEAM_ID") //조인하는 컬럼명
     private Team team;
