@@ -10,10 +10,12 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@TableGenerator(
+@SequenceGenerator(
         name = "MEMBER_SEQ_GENERATOR",
-        table = "MY_SEQUENCES",
-        pkColumnValue = "MEMBER_SEQ", allocationSize = 1)
+        sequenceName = "MEMBER_SEQ", // 매핑할 데이터베이스 시퀀스 이름
+        initialValue = 1, allocationSize = 50
+        // 50개씩 미리 땅겨서 갖고 옴
+)
 public class Member {
 
     @Id
@@ -22,5 +24,4 @@ public class Member {
 
     @Column(name = "name")
     private String username;
-
 }
