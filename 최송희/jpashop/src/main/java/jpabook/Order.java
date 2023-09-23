@@ -2,6 +2,7 @@ package jpabook;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ORDERS") //DB 중에 order가 안되는 이름이 있다.
@@ -10,11 +11,15 @@ public class Order {
     @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long id;
-    @Column(name = "MEMBER_ID")
-    private Long memberId; // 관계형 DB에 맞춰서 설계
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
     private LocalDateTime orderDate;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 
     public Long getId() {
         return id;
@@ -24,12 +29,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public LocalDateTime getOrderDate() {
@@ -46,5 +51,15 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(OrderItem orderItem) {
+        //양방향 연관관계가 걸리도록 한다.
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }

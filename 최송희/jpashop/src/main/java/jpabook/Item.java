@@ -1,9 +1,7 @@
 package jpabook;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -13,6 +11,8 @@ public class Item {
     private String name;
     private int price;
     private int stockQuantity;
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItems;
 
     public Long getId() {
         return id;
