@@ -23,10 +23,16 @@ public class JpaMain {
 
             Member member = new Member();
             member.setUsername("member1");
+            member.setTeam(team);
 
-            // 위에서 em.persist하면서 insert가 됐으므로 id를 꺼낼 수 있음
-            member.setTeamId(team.getId());
             em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam);
 
             tx.commit(); // 성공하면 커밋
 
