@@ -1,10 +1,12 @@
-package reviewjpa;
+package jpabook.jpashop;
+
+import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderItem;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -17,26 +19,13 @@ public class JpaMain {
         tx.begin(); // transaction 시작
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("member1");
+            Order order = new Order();
+            em.persist(order);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
 
-            em.persist(member);
-
-            team.addMember(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
+            em.persist(orderItem);
 
             tx.commit(); // 성공하면 커밋
 
