@@ -13,14 +13,24 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 영속
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAAAA");
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team); // 연관관계의 주인에 값 설정
+            em.persist(member);
+
+            em.flush();
             em.clear();
 
-            Member member2 = em.find(Member.class, 150L);
-            System.out.println("=================");
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            for (Member m : members) {
+                System.out.println("m = " + m.getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
