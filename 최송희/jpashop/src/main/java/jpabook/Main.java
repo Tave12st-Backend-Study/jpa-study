@@ -32,15 +32,17 @@ public class Main {
             member.setZipcode("zipcode1");
 
             order.setMember(member);
+            member.getOrders().add(order);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-//            List<Order> orders = member.getOrders();
-//            orders.forEach(order1 -> {
-//                order1.setStatus(OrderStatus.CANCEL);
-//            });
+            Member member1 = em.find(Member.class, member.getId());
+            List<Order> orders = member1.getOrders();
+            orders.forEach(order1 -> {
+                order1.setStatus(OrderStatus.CANCEL);
+            });
 
             tx.commit();
         }catch(Exception e){
