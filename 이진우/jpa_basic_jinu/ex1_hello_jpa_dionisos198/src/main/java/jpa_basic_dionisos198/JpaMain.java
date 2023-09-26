@@ -13,32 +13,27 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-
-
+            System.out.println("===========0============");
              Member member=new Member();
               member.setName("member1");
               //member.setTeam(team);
              em.persist(member);
-            System.out.println("======================");
+            System.out.println("===========1===========");
 
             Team team=new Team();
             team.setName("teamA");
             team.addMember(member);
             em.persist(team);
-            System.out.println("=====================");
+            System.out.println("===========2==========");
 
              em.flush();
              em.clear();
 
-
+            System.out.println("=============3========");
              Team findTeam=em.find(Team.class,team.getId());
-             List<Member> members=findTeam.getMembers();
-
-            for (Member member1 : members) {
-                System.out.println(member1.getName());
-            }
-
+            System.out.println("===========4============");
           tx.commit();
+            System.out.println("===========5============");
 
         }catch (Exception e){
             tx.rollback();
