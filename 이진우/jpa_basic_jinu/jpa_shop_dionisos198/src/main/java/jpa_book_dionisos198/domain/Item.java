@@ -1,6 +1,8 @@
 package jpa_book_dionisos198.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -19,7 +21,8 @@ public class Item {
     public String getName() {
         return name;
     }
-
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories=new ArrayList<>();
     public int getPrice() {
         return price;
     }
