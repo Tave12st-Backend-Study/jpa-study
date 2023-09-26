@@ -16,6 +16,10 @@ public class Member {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "team_id",insertable = false,updatable = false)
+    private Team team;
+
 
 
     public Member(){
