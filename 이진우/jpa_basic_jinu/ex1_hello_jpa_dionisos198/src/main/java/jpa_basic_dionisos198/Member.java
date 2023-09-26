@@ -20,6 +20,10 @@ public class Member {
     @JoinColumn(name = "team_id",insertable = false,updatable = false)
     private Team team;
 
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
 
 
     public Member(){
