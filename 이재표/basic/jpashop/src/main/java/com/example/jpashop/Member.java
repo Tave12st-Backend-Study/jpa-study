@@ -1,4 +1,4 @@
-package hellojpa;
+package com.example.jpashop;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,10 +19,12 @@ public class Member {
     @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
+
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    private String city;
+    private String street;
+    private String zipcode;
 
-
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 }
