@@ -35,7 +35,6 @@ public class Order {
 
     public void setMember(Member member) {
         this.member = member;
-        member.getOrders().add(this);
     }
 
     public LocalDateTime getOrderDate() {

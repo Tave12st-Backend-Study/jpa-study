@@ -18,31 +18,17 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Order order = new Order();
-            LocalDateTime nowDateTime = LocalDateTime.now();
-            order.setOrderDate(nowDateTime);
-            order.setOrderItems(new OrderItem());
-            order.setStatus(OrderStatus.ORDER);
-            em.persist(order);
 
             Member member = new Member();
-            member.setName("song1");
-            member.setCity("suwon");
-            member.setStreet("bongyoungroo");
-            member.setZipcode("zipcode1");
+            member.setName("member1");
 
-            order.setMember(member);
-            member.getOrders().add(order);
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member);
 
-            Member member1 = em.find(Member.class, member.getId());
-            List<Order> orders = member1.getOrders();
-            orders.forEach(order1 -> {
-                order1.setStatus(OrderStatus.CANCEL);
-            });
+            em.persist(team);
 
             tx.commit();
         }catch(Exception e){
