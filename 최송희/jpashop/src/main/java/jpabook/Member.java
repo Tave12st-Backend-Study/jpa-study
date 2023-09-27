@@ -2,6 +2,7 @@ package jpabook;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 @Entity
 public class Member {
@@ -14,6 +15,10 @@ public class Member {
     @ManyToOne
     @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) //읽기전용
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;
@@ -31,4 +36,11 @@ public class Member {
         this.username = name;
     }
 
+    public Locker getLocker() {
+        return locker;
+    }
+
+    public void setLocker(Locker locker) {
+        this.locker = locker;
+    }
 }
