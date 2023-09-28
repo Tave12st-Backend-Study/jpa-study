@@ -13,14 +13,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setName("member1");
-            member.setTeam(team); // 연관관계의 주인에 값 설정
+
             em.persist(member);
+
+            Team team = new Team();
+            team.setName("TeamA");
+            team.getMembers().add(member); // 추가로 Member 테이블에 대한 UPDATE SQL을 실행한다.
+
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {
