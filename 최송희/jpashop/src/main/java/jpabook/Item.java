@@ -1,6 +1,7 @@
 package jpabook;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,8 @@ public class Item {
     private int stockQuantity;
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems;
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
 
     public Long getId() {
         return id;
