@@ -20,9 +20,12 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
     private String name;
+
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
+    @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
     private Team team;
 
-
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 }
