@@ -22,16 +22,6 @@ public class JpaMain {
             member.setTeam(team); // 연관관계의 주인에 값 설정
             em.persist(member);
 
-            em.flush();
-            em.clear();
-
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            for (Member m : members) {
-                System.out.println("m = " + m.getName());
-            }
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
