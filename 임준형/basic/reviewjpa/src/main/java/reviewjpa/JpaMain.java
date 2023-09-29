@@ -1,5 +1,7 @@
 package reviewjpa;
 
+import reviewjpa.superclass.Movie;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,26 +19,20 @@ public class JpaMain {
         tx.begin(); // transaction 시작
 
         try {
-            Team team = new Team();
-            team.setName("Teamadadad");
-            em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("member1231");
+            Movie movie = new Movie();
+            movie.setActor("A배우");
+            movie.setDirector("A감독");
+            movie.setName("바람과 함께 사라질까?");
+            movie.setPrice(10000);
 
-            em.persist(member);
-
-//            team.addMember(member);
+            em.persist(movie);
 
             em.flush();
             em.clear();
 
-//            Member findMember = em.find(Member.class, member.getId());
-//            List<Member> members = findMember.getTeam().getMembers();
-//
-//            for (Member m : members) {
-//                System.out.println("m.getUsername() = " + m.getUsername());
-//            }
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
             tx.commit(); // 성공하면 커밋
 
