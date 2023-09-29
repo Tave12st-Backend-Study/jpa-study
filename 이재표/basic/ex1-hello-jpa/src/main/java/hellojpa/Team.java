@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter @Setter
 @Entity
-public class Team {
+public class Team extends BaseEntity{
     @Id @GeneratedValue
     @Column(name = "TEAM_ID")
     private Long id;

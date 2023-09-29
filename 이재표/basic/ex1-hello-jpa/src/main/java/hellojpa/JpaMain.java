@@ -6,28 +6,27 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
+
 public class JpaMain {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        try{
-            Movie movie = new Movie();
-            movie.setDirector("aaaa");
-            movie.setActor("bbbb");
-            movie.setName("바함사");
-            movie.setPrice(10000);
-            em.persist(movie);
+        try {
 
+            Member member = new Member();
+            member.setCreatedBy("jp");
+            member.setName("kim");
+            member.setCreatedDate(now());
+            em.persist(member);
             em.flush();
             em.clear();
-
-            em.find(Movie.class, movie.getId());
             tx.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             tx.rollback();
-        }finally {
+        } finally {
             em.close();
         }
         emf.close();
