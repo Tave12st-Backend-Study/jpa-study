@@ -1,5 +1,7 @@
 package com.example.jpashop;
 
+import net.bytebuddy.jar.asm.ModuleVisitor;
+import org.dom4j.rule.Mode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,7 +19,6 @@ public class JpashopApplication {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-
             tx.commit();
         }catch (Exception e){
             tx.rollback();
