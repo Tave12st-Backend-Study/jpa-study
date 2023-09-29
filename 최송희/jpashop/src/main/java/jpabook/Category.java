@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "CATEGORY") //DB 중에 order가 안되는 이름이 있다.
-public class Category {
+public class Category extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "CATEGORY_ID")
