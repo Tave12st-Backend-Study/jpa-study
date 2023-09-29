@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "ITEM_TABLE")
 public class Item {
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
     private Long id;
     private String name;
     private int price;
-    private int stockQuantity;
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems;
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+
 
     public Long getId() {
         return id;
@@ -41,11 +43,4 @@ public class Item {
         this.price = price;
     }
 
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
 }
