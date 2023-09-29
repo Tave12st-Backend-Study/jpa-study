@@ -1,6 +1,7 @@
 package reviewjpa;
 
 import lombok.*;
+import reviewjpa.superclass.BaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-public class Member {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
