@@ -18,11 +18,11 @@ public class JpaMain {
 
         try {
             Team team = new Team();
-            team.setName("TeamA");
+            team.setName("Teamadadad");
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("member1231");
 
             em.persist(member);
 
@@ -31,12 +31,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
+//            Member findMember = em.find(Member.class, member.getId());
+//            List<Member> members = findMember.getTeam().getMembers();
+//
+//            for (Member m : members) {
+//                System.out.println("m.getUsername() = " + m.getUsername());
+//            }
 
             tx.commit(); // 성공하면 커밋
 
