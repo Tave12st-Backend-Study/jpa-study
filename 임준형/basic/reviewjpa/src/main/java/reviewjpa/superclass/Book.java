@@ -7,7 +7,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity @Setter @Getter
-@DiscriminatorValue(value = "B")
+//@DiscriminatorValue(value = "B")
 public class Book extends Item{
 
     private String author;

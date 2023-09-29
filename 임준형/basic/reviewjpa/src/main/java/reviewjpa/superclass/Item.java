@@ -6,8 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity @Setter @Getter
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn
 public class Item {
 
     @Id @GeneratedValue
