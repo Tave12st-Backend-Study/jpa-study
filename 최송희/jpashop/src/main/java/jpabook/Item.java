@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ITEM_TABLE")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
 public class Item {
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -42,5 +43,7 @@ public class Item {
     public void setPrice(int price) {
         this.price = price;
     }
+
+
 
 }

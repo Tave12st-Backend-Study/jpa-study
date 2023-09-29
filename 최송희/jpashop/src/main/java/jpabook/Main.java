@@ -18,6 +18,19 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과 함께 사라지다");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+            em.flush();
+            em.clear();
+
+            Movie movie1 = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = "+movie1);
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
