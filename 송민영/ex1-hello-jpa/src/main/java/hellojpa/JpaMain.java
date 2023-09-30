@@ -24,15 +24,8 @@ public class JpaMain {
 
             Member refMember = em.getReference(Member.class, member1.getId());
             System.out.println("regMember = " + refMember.getClass()); //proxy
-
-            em.detach(refMember);
-//            em.close();
-//            em.clear();
-
             refMember.getUsername();
-
-            System.out.println("refMember = " + refMember.getUsername());
-
+            System.out.println("isLoaded = "+ emf.getPersistenceUnitUtil().isLoaded(refMember));
             tx.commit();
         }
         catch (Exception e){
