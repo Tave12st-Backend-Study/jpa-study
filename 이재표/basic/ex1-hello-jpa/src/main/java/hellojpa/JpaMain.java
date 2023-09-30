@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -15,14 +14,23 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-
             Member member = new Member();
-            member.setCreatedBy("jp");
-            member.setName("kim");
-            member.setCreatedDate(now());
+            member.setName("hello");
+
             em.persist(member);
+
             em.flush();
             em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId());
+            Member findMember = em.getReference(Member.class, member.getId());
+            System.out.println("findMember = "+findMember.getClass());
+            System.out.println("findMember.id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getName());
+            System.out.println("findMember = "+findMember.getClass());
+
+
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -32,3 +40,5 @@ public class JpaMain {
         emf.close();
     }
 }
+
+
