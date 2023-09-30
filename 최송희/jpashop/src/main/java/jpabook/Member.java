@@ -1,21 +1,28 @@
 package jpabook;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 @Entity
-public class Member {
-    @Id @GeneratedValue //생략하면 AUTO
+public class Member extends BaseEntity{
+    @Id
+    @GeneratedValue //생략하면 AUTO
     @Column(name = "MEMBER_ID")
     private Long id;
-    private String name;
+    private String username;
 
-    private String city;
-    private String street;
-    private String zipcode;
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) //읽기전용
+    private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     @OneToMany(mappedBy = "member")
-    private List<Order> orders;
+    private List<MemberProduct> memberProducts = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -26,42 +33,18 @@ public class Member {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
-    public String getCity() {
-        return city;
+    public Locker getLocker() {
+        return locker;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setLocker(Locker locker) {
+        this.locker = locker;
     }
 }

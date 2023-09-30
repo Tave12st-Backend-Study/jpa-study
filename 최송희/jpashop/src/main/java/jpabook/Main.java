@@ -18,29 +18,18 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Order order = new Order();
-            LocalDateTime nowDateTime = LocalDateTime.now();
-            order.setOrderDate(nowDateTime);
-            order.setOrderItems(new OrderItem());
-            order.setStatus(OrderStatus.ORDER);
-            em.persist(order);
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과 함께 사라지다");
+            movie.setPrice(10000);
 
-            Member member = new Member();
-            member.setName("song1");
-            member.setCity("suwon");
-            member.setStreet("bongyoungroo");
-            member.setZipcode("zipcode1");
-
-            order.setMember(member);
-            em.persist(member);
-
+            em.persist(movie);
             em.flush();
             em.clear();
 
-//            List<Order> orders = member.getOrders();
-//            orders.forEach(order1 -> {
-//                order1.setStatus(OrderStatus.CANCEL);
-//            });
+            Movie movie1 = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = "+movie1);
 
             tx.commit();
         }catch(Exception e){
