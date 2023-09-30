@@ -1,4 +1,4 @@
-package hellojpa;
+package com.example.jpashop;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,16 +19,12 @@ public class Member extends BaseEntity{
     @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
+
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID",insertable = false, updatable = false)
-    private Team team;
-
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    private String city;
+    private String street;
+    private String zipcode;
 
     @OneToMany(mappedBy = "member")
-    private List<MemberProduct> products = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package hellojpa;
+package com.example.jpashop;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Getter @Setter
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity{
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")
     private Long id;
