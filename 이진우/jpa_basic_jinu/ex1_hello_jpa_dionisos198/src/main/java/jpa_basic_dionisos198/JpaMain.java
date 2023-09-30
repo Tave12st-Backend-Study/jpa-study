@@ -14,13 +14,16 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-          Member member=new Member();
-          member.setCreatedBy("kim");
-          member.setCreatedDate(LocalDateTime.now());
-          em.persist(member);
-          em.flush();
-          em.clear();
-           tx.commit();
+            Member member=new Member();
+            member.setName("hello");
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+            Member findMember=em.find(Member.class,member.getId());
+            System.out.println("findMember.id = "+findMember.getId());
+            System.out.println("findMember.username = "+findMember.getName());
 
         }catch (Exception e){
             tx.rollback();
