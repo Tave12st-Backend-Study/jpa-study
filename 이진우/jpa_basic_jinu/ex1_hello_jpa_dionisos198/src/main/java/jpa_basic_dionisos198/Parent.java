@@ -1,9 +1,6 @@
 package jpa_basic_dionisos198;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +10,7 @@ public class Parent {
     private Long id;
 
     private String name;
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent",cascade = CascadeType.ALL)
     private List<Child> childList=new ArrayList<>();
 
     public void addChild(Child child){
