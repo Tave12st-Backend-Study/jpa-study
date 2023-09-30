@@ -26,7 +26,7 @@ public class JpaMain {
            em.flush();
            em.clear();
 
-            List<Member> members= em.createQuery("select m from Member m", Member.class).getResultList();
+            List<Member> members= em.createQuery("select m from Member m join fetch m.team", Member.class).getResultList();
 
 
             tx.commit();
