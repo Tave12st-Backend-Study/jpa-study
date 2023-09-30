@@ -22,9 +22,10 @@ public class JpaMain {
             em.flush();
             em.clear();
             Member refMember=em.getReference(Member.class,member.getId());
-            Member findMember=em.find(Member.class,member.getId());
+            em.detach(refMember);
+
+            refMember.getName();
             System.out.println("refMember :"+refMember);
-            System.out.println("findMember: "+findMember);
 
         }catch (Exception e){
             tx.rollback();
