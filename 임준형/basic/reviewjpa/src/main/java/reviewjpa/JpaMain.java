@@ -1,9 +1,13 @@
 package reviewjpa;
 
+import reviewjpa.superclass.Item;
+import reviewjpa.superclass.Movie;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -17,26 +21,17 @@ public class JpaMain {
         tx.begin(); // transaction 시작
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
+
+            member.setUsername("준형");
+            member.setCreateBy("kim");
+            member.setCreateDate(LocalDateTime.now());
 
             em.persist(member);
 
-            team.addMember(member);
-
             em.flush();
             em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
 
             tx.commit(); // 성공하면 커밋
 

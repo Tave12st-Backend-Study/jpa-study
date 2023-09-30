@@ -2,6 +2,7 @@ package reviewjpa;
 
 import lombok.Getter;
 import lombok.Setter;
+import reviewjpa.superclass.BaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Team {
+public class Team extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "TEAM_ID")
@@ -18,10 +19,7 @@ public class Team {
     private String name;
 
     @OneToMany(mappedBy = "team")
+    // 여기서 team은 Member객체에서 Team을 참조하는 변수 명
     private List<Member> members = new ArrayList<>();
 
-    public void addMember(Member member) {
-        member.setTeam(this);
-        members.add(member);
-    }
 }
