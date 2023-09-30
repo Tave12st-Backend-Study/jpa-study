@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDateTime;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -20,25 +19,25 @@ public class JpaMain {
             member1.setUsername("member1");
             em.persist(member1);
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            em.persist(member2);
-
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member1.getId());
-            System.out.println("m1 = " + m1.getClass());
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("regMember = " + refMember.getClass()); //proxy
 
-            Member reference = em.getReference(Member.class, member1.getId());
-            System.out.println("reference = " + reference.getClass());
+            em.detach(refMember);
+//            em.close();
+//            em.clear();
 
-            System.out.println("m1 == reference: "+(m1 == reference));
+            refMember.getUsername();
+
+            System.out.println("refMember = " + refMember.getUsername());
 
             tx.commit();
         }
         catch (Exception e){
             tx.rollback();
+            e.printStackTrace();
         }
         finally {
             em.close();
