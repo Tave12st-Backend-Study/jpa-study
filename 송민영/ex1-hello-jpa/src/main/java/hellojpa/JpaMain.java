@@ -26,10 +26,14 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-            
+
             Member m1 = em.find(Member.class, member1.getId());
-            Member m2 = em.getReference(Member.class, member2.getId());
-            logic(m1, m2);
+            System.out.println("m1 = " + m1.getClass());
+
+            Member reference = em.getReference(Member.class, member1.getId());
+            System.out.println("reference = " + reference.getClass());
+
+            System.out.println("m1 == reference: "+(m1 == reference));
 
             tx.commit();
         }
@@ -43,10 +47,6 @@ public class JpaMain {
 
     }
 
-    private static void logic(Member m1, Member m2) {
-        System.out.println("m1 == m2: " + (m1 instanceof Member));
-        System.out.println("m1 == m2: " + (m2 instanceof Member));
-    }
 
 
 }
