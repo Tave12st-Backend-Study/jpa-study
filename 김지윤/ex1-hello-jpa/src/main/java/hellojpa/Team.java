@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team {
+public class Team extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "TEAM_ID")
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team") // 일대다 관계 매핑, 양방향 매핑일 때 mappedBy를 사용한다.
-    private List<Member> members = new ArrayList<>(); // 회원 컬렉션
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
+    private List<Member> members = new ArrayList<>();
 
     public List<Member> getMembers() {
         return members;
