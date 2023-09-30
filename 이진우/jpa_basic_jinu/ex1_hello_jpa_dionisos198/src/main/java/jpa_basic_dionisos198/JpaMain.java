@@ -25,13 +25,10 @@ public class JpaMain {
 
            em.flush();
            em.clear();
-            System.out.println("---");
-           Member m=em.find(Member.class,member1.getId());
-           System.out.println("m = "+m.getTeam().getClass());
 
-            System.out.println("==============");
-            System.out.println("teamName= "+m.getTeam().getName());
-            System.out.println("==============");
+            List<Member> members= em.createQuery("select m from Member m", Member.class).getResultList();
+
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
