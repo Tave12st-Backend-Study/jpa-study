@@ -2,10 +2,7 @@ package jpabook;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,12 +24,8 @@ public class Main {
 
             Member m1Reference = em.getReference(Member.class, member1.getId());
             System.out.println("m1 = :"+m1Reference.getClass());//Proxy
-
-//            em.detach(m1Reference);//영속성 컨텍스트에서 관리 안해!
-            em.close();
-
-            m1Reference.getUserName();//SELECT 쿼리 발생(영속성 컨텍스트의 도움을 받아서)
-
+            m1Reference.getUserName();
+            System.out.println("isLoaded = "+ emf.getPersistenceUnitUtil().isLoaded(m1Reference));
 
             tx.commit();
         }catch(Exception e){
