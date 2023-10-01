@@ -14,18 +14,21 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("hello");
+            Member member1 = new Member();
+            member1.setName("member1");
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setName("member2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-//            Member findMember = em.find(Member.class, member.getId()); // 쿼리문이 실행된다.
-            Member findMember = em.getReference(Member.class, member.getId()); // 쿼리문이 실행되지 않는다.
-            System.out.println("findMember.id = " + findMember.getId()); // 시퀀스를 통해 값을 엔티티에 저장했으므로 쿼리문이 실행되지 않는다.
-            System.out.println("findMember.username = " + findMember.getName()); // 프록시 객체가 초기화되면서 쿼리문이 실행된다.
+            Member m1 = em.find(Member.class, member1.getId());
+            Member m2 = em.getReference(Member.class, member2.getId());
+
+            logic(m1, m2);
 
             tx.commit();
         } catch (Exception e) {
@@ -36,6 +39,10 @@ public class JpaMain {
 
         emf.close();
 
+    }
+
+    private static void logic(Member m1, Member m2) {
+        System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass()));
     }
 
     private static void printMember(Member member) {
