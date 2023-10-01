@@ -1,5 +1,6 @@
 package reviewjpa;
 
+import org.hibernate.Hibernate;
 import reviewjpa.superclass.Item;
 import reviewjpa.superclass.Movie;
 
@@ -32,11 +33,9 @@ public class JpaMain {
             Member referenceM = em.getReference(Member.class, member1.getId());
             System.out.println("referenceM.getClass() = " + referenceM.getClass()); // proxy
 
-            System.out.println("프록시 인스턴스 초기화 여부 확인 = " + emFactory.getPersistenceUnitUtil().isLoaded(referenceM));
-            System.out.println("----- referenceM.getUsername()으로 초기화 -----");
-            referenceM.getUsername();
-            System.out.println("프록시 인스턴스 초기화 여부 확인 = " + emFactory.getPersistenceUnitUtil().isLoaded(referenceM));
-
+            System.out.println("----- JPA 표준은 강제 초기화가 없고 Hibernate만 제공함 -----");
+            // referenceM.getUsername();    // 강제 초기화 - 매번 이렇게 사용하기 애매함
+            Hibernate.initialize(referenceM);   // 강제 초기화
 
             tx.commit(); // 성공하면 커밋
 
