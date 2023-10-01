@@ -14,10 +14,18 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = em.find(Member.class, 1L);
+            Member member = new Member();
+            member.setName("hello");
 
-            printMember(member);
-            printMemberAndTeam(member);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId()); // 쿼리문이 실행된다.
+            Member findMember = em.getReference(Member.class, member.getId()); // 쿼리문이 실행되지 않는다.
+            System.out.println("findMember.id = " + findMember.getId()); // 시퀀스를 통해 값을 엔티티에 저장했으므로 쿼리문이 실행되지 않는다.
+            System.out.println("findMember.username = " + findMember.getName()); // 프록시 객체가 초기화되면서 쿼리문이 실행된다.
 
             tx.commit();
         } catch (Exception e) {
