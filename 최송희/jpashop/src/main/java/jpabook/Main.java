@@ -18,18 +18,21 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Movie movie = new Movie();
-            movie.setDirector("aaaa");
-            movie.setActor("bbbb");
-            movie.setName("바람과 함께 사라지다");
-            movie.setPrice(10000);
+            Member member = new Member();
+            member.setUserName("hello");
 
-            em.persist(movie);
+            em.persist(member);
+
             em.flush();
             em.clear();
 
-            Movie movie1 = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = "+movie1);
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember.id = "+findMember.getId());
+
+            Member findMember2 = em.getReference(Member.class, member.getId());
+            System.out.println("findMember = "+ findMember2.getClass());
+            System.out.println("findMember.id = "+findMember2.getId());
+            System.out.println("findMember.id = "+findMember2.getUserName());
 
             tx.commit();
         }catch(Exception e){

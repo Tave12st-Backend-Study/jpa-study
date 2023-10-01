@@ -28,12 +28,13 @@ public class Member extends BaseEntity{
         this.id = id;
     }
 
-    public String getName() {
+    public String getUserName() {
         return username;
     }
 
-    public void setName(String name) {
+    public void setUserName(String name) {
         this.username = name;
     }
+
 
 }
