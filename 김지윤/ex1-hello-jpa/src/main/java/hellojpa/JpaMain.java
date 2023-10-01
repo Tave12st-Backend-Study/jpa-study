@@ -1,8 +1,8 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class JpaMain {
 
@@ -22,11 +22,10 @@ public class JpaMain {
             em.clear();
 
             Member refMember = em.getReference(Member.class, member1.getId()); // 프록시 객체
-            System.out.println("refMember = " + refMember.getClass());
-
-            em.detach(refMember); // or em.clear(); or em.close();
-
-            refMember.getName(); // LazyInitializationException 예외 발생
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember)); // 프록시 인스턴스의 초기화 여부 확인
+            System.out.println("refMember = " + refMember.getClass()); // 프록시 클래스 여부 확인
+            Hibernate.initialize(refMember); // 프록시 강제 초기화
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember)); // 프록시 인스턴스의 초기화 여부 확인
 
             tx.commit();
         } catch (Exception e) {
