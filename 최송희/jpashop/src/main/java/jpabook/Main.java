@@ -18,21 +18,24 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Member member = new Member();
-            member.setUserName("hello");
+            Member member1 = new Member();
+            member1.setUserName("hello");
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUserName("hello");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-//            Member findMember = em.find(Member.class, member.getId());
-//            System.out.println("findMember.id = "+findMember.getId());
+            Member m1 = em.find(Member.class, member1.getId());
 
-            Member findMember2 = em.getReference(Member.class, member.getId());
-            System.out.println("findMember = "+ findMember2.getClass());
-            System.out.println("findMember.id = "+findMember2.getId());
-            System.out.println("findMember.id = "+findMember2.getUserName());
+            Member m1Reference = em.getReference(Member.class, member1.getId());
+            System.out.println("reference = :"+m1Reference.getClass());
+            System.out.println("m1 == m1Reference: "+(m1 == m1Reference));
+
+//            logic(m1, m2);
 
             tx.commit();
         }catch(Exception e){
@@ -41,6 +44,11 @@ public class Main {
             em.close();
         }
         emf.close();
+
+    }
+    private static void logic(Member m1, Member m2){
+        System.out.println("m1 :"+(m1 instanceof Member));
+        System.out.println("m1 :"+(m2 instanceof Member));
 
     }
 }
