@@ -29,13 +29,15 @@ public class Main {
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member1.getId());
-
             Member m1Reference = em.getReference(Member.class, member1.getId());
-            System.out.println("reference = :"+m1Reference.getClass());
-            System.out.println("m1 == m1Reference: "+(m1 == m1Reference));
+            System.out.println("m1 = :"+m1Reference.getClass());//Proxy
 
-//            logic(m1, m2);
+
+            Member m2 = em.getReference(Member.class, member1.getId());
+            System.out.println("m2 = :"+m2.getClass());//Proxy
+
+            System.out.println("m1Referece == m2 : "+ (m1Reference == m2));
+
 
             tx.commit();
         }catch(Exception e){
