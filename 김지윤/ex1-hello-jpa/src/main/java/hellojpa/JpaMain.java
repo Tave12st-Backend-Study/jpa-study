@@ -21,43 +21,17 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member1.getId()); // 엔티티 객체
-            System.out.println("findMember = " + findMember.getClass());
-
-            Member refMember = em.getReference(Member.class, member1.getId()); // 엔티티 객체
+            Member refMember = em.getReference(Member.class, member1.getId()); // 프록시 객체
             System.out.println("refMember = " + refMember.getClass());
 
-            System.out.println("findMember == refMember: " + (findMember == refMember)); // True
+            em.detach(refMember); // or em.clear(); or em.close();
 
-            em.flush();
-            em.clear();
-
-            System.out.println("-------------------------");
-
-            Member refMember2 = em.getReference(Member.class, member1.getId()); // 프록시 객체
-            System.out.println("refMember2 = " + refMember2.getClass());
-
-            Member refMember3 = em.getReference(Member.class, member1.getId()); // 프록시 객체
-            System.out.println("refMember3 = " + refMember3.getClass());
-
-            System.out.println("refMember2 == refMember3: " + (refMember2 == refMember3)); // True
-
-            em.flush();
-            em.clear();
-
-            System.out.println("-------------------------");
-
-            Member refMember4 = em.getReference(Member.class, member1.getId()); // 프록시 객체
-            System.out.println("refMember4 = " + refMember4.getClass());
-
-            Member findMember2 = em.find(Member.class, member1.getId()); // 프록시 객체
-            System.out.println("findMember2 = " + findMember2.getClass());
-
-            System.out.println("refMember3 == findMember2: " + (refMember4 == findMember2)); // True
+            refMember.getName(); // LazyInitializationException 예외 발생
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
