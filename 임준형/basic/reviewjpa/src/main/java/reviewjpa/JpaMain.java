@@ -29,13 +29,15 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 영속성 컨텍스트에 존재
-            Member findM = em.find(Member.class, member1.getId());
             Member referenceM = em.getReference(Member.class, member1.getId());
+            Member findM = em.find(Member.class, member1.getId());
 
-            System.out.println("----- 영속성 컨텍스트에 이미 존재하면 프록시가 아닌 엔티티를 반환 -----");
+            System.out.println("----- 처음에 프록시로 반환하면, 그 후에도 프록시로 반환 -----");
             System.out.println("findM.getClass() = " + findM.getClass());
             System.out.println("referenceM.getClass() = " + referenceM.getClass());
+
+            System.out.println("----- JPA는 컬렉션처럼 비교 연산시 같아야하므로 reference와 find를 같게 연산 함 -----");
+            System.out.println("(findM == referenceM) = " + (findM == referenceM));
             
             tx.commit(); // 성공하면 커밋
 
