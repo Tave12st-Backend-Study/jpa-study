@@ -22,26 +22,33 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("proxy");
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
 
-            em.persist(member);
-
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            /* // em.find
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getUsername() = " + findMember.getUsername());
-             */
+            Member m1 = em.find(Member.class, member1.getId());
+            Member m2 = em.find(Member.class, member1.getId());
+            Member m3 = em.getReference(Member.class, member2.getId());
 
+            System.out.println("_____________________");
+            System.out.println("en.find, em.find, \n" +
+                    " m1.getClass() == m2.getClass() "  + (m1.getClass() == m2.getClass()));   // true
 
-            Member findMemberByReference = em.getReference(Member.class, member.getId());
-            System.out.println("findMemberByReference.getClass() = " + findMemberByReference.getClass());
-            System.out.println("findMemberByReference.getId() = " + findMemberByReference.getId());
-            System.out.println("findMemberByReference.getUsername() = " + findMemberByReference.getUsername());
+            System.out.println("_____________________");
+            System.out.println("en.find, em.Reference, \n" +
+                    " m2.getClass() == m3.getClass() " + (m2.getClass() == m3.getClass()));   // false
+
+            System.out.println("_____________________");
+            System.out.println("en.find, em.Reference, \n" +
+                    " m1 instanceOf Member " + (m1 instanceof Member));   // false
+            System.out.println("_____________________");
 
             tx.commit(); // 성공하면 커밋
 
