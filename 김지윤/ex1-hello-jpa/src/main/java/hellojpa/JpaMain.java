@@ -42,7 +42,8 @@ public class JpaMain {
     }
 
     private static void logic(Member m1, Member m2) {
-        System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass()));
+        System.out.println("m1 == m2: " + (m1 instanceof Member));
+        System.out.println("m1 == m2: " + (m2 instanceof Member));
     }
 
     private static void printMember(Member member) {
