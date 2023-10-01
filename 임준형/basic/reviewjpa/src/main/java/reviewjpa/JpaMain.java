@@ -23,19 +23,27 @@ public class JpaMain {
 
         try {
 
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
             Member member1 = new Member();
             member1.setUsername("member1");
+            member1.setTeam(team);
             em.persist(member1);
 
             em.flush();
             em.clear();
 
-            Member referenceM = em.getReference(Member.class, member1.getId());
-            System.out.println("referenceM.getClass() = " + referenceM.getClass()); // proxy
+            Member member = em.find(Member.class, member1.getId());
+            System.out.println(" flag1 ----- ----- ");
+            Team getTeam = member.getTeam();    // proxy를 가져오기 때문에 어떠한 쿼리도 나가지 않음
+            System.out.println(" flag2 ----- ----- ");
+            System.out.println("getTeam.getClass() = " + getTeam.getClass());   // proxy
 
-            System.out.println("----- JPA 표준은 강제 초기화가 없고 Hibernate만 제공함 -----");
-            // referenceM.getUsername();    // 강제 초기화 - 매번 이렇게 사용하기 애매함
-            Hibernate.initialize(referenceM);   // 강제 초기화
+            System.out.println(" flag3 ----- ----- ");
+            System.out.println("getTeam.getName() = " + getTeam.getName());
+
 
             tx.commit(); // 성공하면 커밋
 
