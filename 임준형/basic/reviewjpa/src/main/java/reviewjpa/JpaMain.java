@@ -22,12 +22,26 @@ public class JpaMain {
 
         try {
 
+            Member member = new Member();
+            member.setUsername("proxy");
 
-            // 쿼리를 가져올 때 한 번에 다 가져오는 것이 이상적
-            Member member = em.find(Member.class, 1L);
-            printMember(member);
-//            printMemberAndTeam(member);
+            em.persist(member);
 
+
+            em.flush();
+            em.clear();
+
+            /* // em.find
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember.getId() = " + findMember.getId());
+            System.out.println("findMember.getUsername() = " + findMember.getUsername());
+             */
+
+
+            Member findMemberByReference = em.getReference(Member.class, member.getId());
+            System.out.println("findMemberByReference.getClass() = " + findMemberByReference.getClass());
+            System.out.println("findMemberByReference.getId() = " + findMemberByReference.getId());
+            System.out.println("findMemberByReference.getUsername() = " + findMemberByReference.getUsername());
 
             tx.commit(); // 성공하면 커밋
 
@@ -41,17 +55,4 @@ public class JpaMain {
         // code 끝
     }
 
-    // member만 조회시 연관관계 매핑이 걸려있다고해서 Team까지 갖고오게 될 경우 손해
-    private static void printMember(Member member) {
-        System.out.println("member = " + member);
-    }
-
-    // member와 team 둘 다 조회하므로 한 번에 가져오는 것이 이득
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
-
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
-    }
 }
