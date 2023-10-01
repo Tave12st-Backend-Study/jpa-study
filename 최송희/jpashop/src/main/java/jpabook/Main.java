@@ -15,18 +15,25 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
+
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
             Member member1 = new Member();
             member1.setUserName("hello");
+            member1.setTeam(team);
             em.persist(member1);
 
             em.flush();
             em.clear();
 
-            Member m1Reference = em.getReference(Member.class, member1.getId());
-            System.out.println("m1 = :"+m1Reference.getClass());//Proxy
-            m1Reference.getUserName();
-            System.out.println("isLoaded = "+ emf.getPersistenceUnitUtil().isLoaded(m1Reference));
+            //프록시 = FetchType.LAZY
+            Member m = em.find(Member.class, member1.getId());//member만 SELECT
+            System.out.println(m.getTeam());
+            System.out.println("m = "+m.getTeam().getClass());//PROXY
 
+            m.getTeam().getName(); //TEAM에 대해서 select 쿼리가 이제야 나간다.
             tx.commit();
         }catch(Exception e){
             tx.rollback();

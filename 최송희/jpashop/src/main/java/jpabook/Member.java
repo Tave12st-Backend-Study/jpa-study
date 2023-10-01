@@ -13,8 +13,8 @@ public class Member extends BaseEntity{
     private Long id;
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) //읽기전용
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID") //읽기전용
     private Team team;
 
     @OneToMany(mappedBy = "member")
@@ -36,5 +36,11 @@ public class Member extends BaseEntity{
         this.username = name;
     }
 
+    public Team getTeam() {
+        return team;
+    }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }
