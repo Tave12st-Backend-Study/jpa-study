@@ -32,15 +32,11 @@ public class JpaMain {
             Member referenceM = em.getReference(Member.class, member1.getId());
             System.out.println("referenceM.getClass() = " + referenceM.getClass()); // proxy
 
-            // 준영속 상태로 변경
-            System.out.println("----- 영속성 컨텍스트에서 제외시 접근 할 수 없음 -----");
-            em.detach(referenceM);
+            System.out.println("프록시 인스턴스 초기화 여부 확인 = " + emFactory.getPersistenceUnitUtil().isLoaded(referenceM));
+            System.out.println("----- referenceM.getUsername()으로 초기화 -----");
+            referenceM.getUsername();
+            System.out.println("프록시 인스턴스 초기화 여부 확인 = " + emFactory.getPersistenceUnitUtil().isLoaded(referenceM));
 
-            System.out.println("-----\n " +
-                    "여기서 오류 발생 \n" +
-                    "could not initialize proxy [reviewjpa.Member#1] - no Session \n" +
-                    "-----");
-            System.out.println("referenceM.getUsername() = " + referenceM.getUsername());
 
             tx.commit(); // 성공하면 커밋
 
