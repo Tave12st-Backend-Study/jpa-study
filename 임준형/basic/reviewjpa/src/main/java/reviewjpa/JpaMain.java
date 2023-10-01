@@ -26,30 +26,17 @@ public class JpaMain {
             member1.setUsername("member1");
             em.persist(member1);
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            em.persist(member2);
-
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member1.getId());
-            Member m2 = em.find(Member.class, member1.getId());
-            Member m3 = em.getReference(Member.class, member2.getId());
+            // 영속성 컨텍스트에 존재
+            Member findM = em.find(Member.class, member1.getId());
+            Member referenceM = em.getReference(Member.class, member1.getId());
 
-            System.out.println("_____________________");
-            System.out.println("en.find, em.find, \n" +
-                    " m1.getClass() == m2.getClass() "  + (m1.getClass() == m2.getClass()));   // true
-
-            System.out.println("_____________________");
-            System.out.println("en.find, em.Reference, \n" +
-                    " m2.getClass() == m3.getClass() " + (m2.getClass() == m3.getClass()));   // false
-
-            System.out.println("_____________________");
-            System.out.println("en.find, em.Reference, \n" +
-                    " m1 instanceOf Member " + (m1 instanceof Member));   // false
-            System.out.println("_____________________");
-
+            System.out.println("----- 영속성 컨텍스트에 이미 존재하면 프록시가 아닌 엔티티를 반환 -----");
+            System.out.println("findM.getClass() = " + findM.getClass());
+            System.out.println("referenceM.getClass() = " + referenceM.getClass());
+            
             tx.commit(); // 성공하면 커밋
 
         } catch (Exception e) {
