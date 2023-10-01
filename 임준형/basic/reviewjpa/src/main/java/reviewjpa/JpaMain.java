@@ -35,6 +35,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
+            System.out.println("----- 만약 member와 team이 90프로 이상 같이 사용한다면 EAGER를 사용할것 -----");
+            System.out.println("----- 프록시 객체가 존재하지 않기 때문에 초기화 과정 필요 없음 -----");
+            System.out.println("----- 한번에 쿼리가 나감 -----");
+            System.out.println("----- 하지만 실무에서는 가급적 지연 로딩만 사용한다. -----");
+
+
             Member member = em.find(Member.class, member1.getId());
             System.out.println(" flag1 ----- ----- ");
             Team getTeam = member.getTeam();    // proxy를 가져오기 때문에 어떠한 쿼리도 나가지 않음
