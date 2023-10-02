@@ -23,9 +23,7 @@ public class JpaMain {
             parent.addChild(child1);
             parent.addChild(child2);
 
-            em.persist(parent);
-            em.persist(child1);
-            em.persist(child2);
+            em.persist(parent); // 부모와 연관된 자식들도 함께 저장
 
             tx.commit();
         } catch (Exception e) {
