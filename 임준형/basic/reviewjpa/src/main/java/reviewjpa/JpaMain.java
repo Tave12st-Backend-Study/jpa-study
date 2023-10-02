@@ -26,11 +26,21 @@ public class JpaMain {
             parent.addChild(child1);
             parent.addChild(child2);
 
-            System.out.println("----- 원래는 아래처럼 3개를 전부 persist를 해줘야하는데, 이 과정이 비효율적이므로 -----");
-            System.out.println("----- parent만 persist해도 전부 되도록 사용하는 것이 cascade 설정이다. -----");
             em.persist(parent);
-//            em.persist(child1);
-//            em.persist(child2);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            System.out.println("----------");
+            findParent.getChildList().remove(0);
+            System.out.println("----------");
+            System.out.println("-----orphanRemoval = true 설정으로 인해 List 컬렉션에서 빠진애는 delete 쿼리가 나감-----");
+            System.out.println("----- SQL: delete " +
+                                            "from Child" +
+                                           "where id=? ");
+
+
 
             tx.commit(); // 성공하면 커밋
 
