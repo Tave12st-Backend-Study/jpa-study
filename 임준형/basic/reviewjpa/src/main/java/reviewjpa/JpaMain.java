@@ -1,14 +1,9 @@
 package reviewjpa;
 
-import org.hibernate.Hibernate;
-import reviewjpa.superclass.Item;
-import reviewjpa.superclass.Movie;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -23,36 +18,19 @@ public class JpaMain {
 
         try {
 
-            Team teamA = new Team();
-            teamA.setName("TeamA");
-            em.persist(teamA);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Team teamB = new Team();
-            teamB.setName("TeamB");
-            em.persist(teamB);
+            Parent parent = new Parent();
 
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setTeam(teamA);
-            em.persist(member1);
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            member2.setTeam(teamB);
-            em.persist(member2);
-
-
-            em.flush();
-            em.clear();
-
-           // Member member = em.find(Member.class, member1.getId());
-
-            // fetch join
-            List<Member> selectMFromMemberM =
-                    em.createQuery("select m from Member m join fetch m.team", Member.class).getResultList();
-
-            System.out.println("----- fetch join을 했기 때문에 값이 다 채워져서 나온다. -----");
-            System.out.println("----- @EntityGraph or Batch size를 활용하여 해결할 수 있지만 대부분 fetch join으로 해결함 -----");
+            System.out.println("----- 원래는 아래처럼 3개를 전부 persist를 해줘야하는데, 이 과정이 비효율적이므로 -----");
+            System.out.println("----- parent만 persist해도 전부 되도록 사용하는 것이 cascade 설정이다. -----");
+            em.persist(parent);
+//            em.persist(child1);
+//            em.persist(child2);
 
             tx.commit(); // 성공하면 커밋
 
