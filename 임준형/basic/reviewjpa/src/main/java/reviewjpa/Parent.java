@@ -17,6 +17,7 @@ public class Parent {
     private String name;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+//    및에 있는 childList를 모두 persist를 해줄것이다 = CascadeType.ALL
     private List<Child> childList = new ArrayList<>();
 
     public void addChild(Child child) {
