@@ -25,6 +25,12 @@ public class JpaMain {
 
             em.persist(parent); // 부모와 연관된 자식들도 함께 저장
 
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0); // 자식 엔티티를 컬렉션에서 제거
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
