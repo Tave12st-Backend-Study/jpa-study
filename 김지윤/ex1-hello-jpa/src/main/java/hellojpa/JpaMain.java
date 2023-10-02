@@ -30,6 +30,7 @@ public class JpaMain {
 
             Parent findParent = em.find(Parent.class, parent.getId());
             findParent.getChildList().remove(0); // 자식 엔티티를 컬렉션에서 제거
+            em.remove(findParent); // 부모와 연관된 자식들도 함께 삭제
 
             tx.commit();
         } catch (Exception e) {
@@ -40,22 +41,5 @@ public class JpaMain {
         }
 
         emf.close();
-    }
-
-    private static void logic(Member m1, Member m2) {
-        System.out.println("m1 == m2: " + (m1 instanceof Member));
-        System.out.println("m1 == m2: " + (m2 instanceof Member));
-    }
-
-    private static void printMember(Member member) {
-        System.out.println("member = " + member.getName());
-    }
-
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getName();
-        System.out.println("username = " + username);
-
-        Team team = member.getTeam();
-        System.out.println("Team = " + team.getName());
     }
 }
