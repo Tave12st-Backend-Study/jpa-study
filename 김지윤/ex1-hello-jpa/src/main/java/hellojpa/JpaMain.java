@@ -26,13 +26,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member1.getId()); // 멤버만 조회하고 팀은 프록시 객체로 가져온다.
+            Member m = em.find(Member.class, member1.getId()); // 멤버와 연관관계인 팀까지 모두 조회한다.
 
             System.out.println("m = " + m.getClass()); // 멤버는 엔티티 객체
-            System.out.println("t = " + m.getTeam().getClass()); // 팀은 프록시 객체
+            System.out.println("t = " + m.getTeam().getClass()); // 팀은 엔티티 객체
 
             System.out.println("============");
-            m.getTeam().getName(); // DB로부터 실제 Team을 조회한다.
+            System.out.println("Team = " + m.getTeam().getName());
             System.out.println("============");
 
             tx.commit();
