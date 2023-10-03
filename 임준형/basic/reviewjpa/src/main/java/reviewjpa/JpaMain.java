@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -18,29 +19,27 @@ public class JpaMain {
 
         try {
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("Embedded type");
 
-            Parent parent = new Parent();
+            Address build = Address.builder()
+                    .city("city")
+                    .street("street")
+                    .zipcode("10000")
+                    .build();
+            member.setHomeAddress(build);
 
-            parent.addChild(child1);
-            parent.addChild(child2);
+            Period period = Period.builder()
+                    .startDate(LocalDateTime.now())
+                    .endDate(LocalDateTime.MAX)
+                    .build();
 
-            em.persist(parent);
+            member.setWorkPeriod(period);
+
+            em.persist(member);
 
             em.flush();
             em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            System.out.println("----------");
-            findParent.getChildList().remove(0);
-            System.out.println("----------");
-            System.out.println("-----orphanRemoval = true 설정으로 인해 List 컬렉션에서 빠진애는 delete 쿼리가 나감-----");
-            System.out.println("----- SQL: delete " +
-                                            "from Child" +
-                                           "where id=? ");
-
-
 
             tx.commit(); // 성공하면 커밋
 
