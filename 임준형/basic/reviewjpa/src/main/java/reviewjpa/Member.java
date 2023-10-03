@@ -1,13 +1,15 @@
 package reviewjpa;
 
+import lombok.*;
 import reviewjpa.superclass.BaseEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-//@Setter
-//@Getter
-public class Member extends BaseEntity {
+@Setter
+@Getter
+public class Member {
 
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
@@ -20,27 +22,12 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    public Long getId() {
-        return id;
-    }
+    // 기간 Period
+    @Embedded
+    private Period workPeriod;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // 주소
+    @Embedded
+    private Address homeAddress;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
 }
