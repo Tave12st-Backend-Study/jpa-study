@@ -15,22 +15,12 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Member member = new Member();
+            member.setName("hello");
+            member.setHomeAddress(new Address("city", "street", "100"));
+            member.setWorkPeriod(new Period());
 
-            Child child1 = new Child();
-            Child child2 = new Child();
-
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent); // 부모와 연관된 자식들도 함께 저장
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0); // 자식 엔티티를 컬렉션에서 제거
-            em.remove(findParent); // 부모와 연관된 자식들도 함께 삭제
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e) {
