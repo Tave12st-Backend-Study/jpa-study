@@ -30,4 +30,16 @@ public class Member {
     @Embedded
     private Address homeAddress;
 
+    // 주소
+    // 같은 클래스를 사용하면 오류가 남 이럴 때
+    @Embedded
+    @AttributeOverrides(value = {@AttributeOverride(name = "city",
+                                    column = @Column(name = "WORK_CITY")),
+                                @AttributeOverride(name = "street",
+                                    column = @Column(name = "WORK_STREET")),
+                                @AttributeOverride(name = "zipcode",
+                                    column = @Column(name = "WORK_ZIPCODE")
+                                )})
+    private Address workAddress;
+
 }
