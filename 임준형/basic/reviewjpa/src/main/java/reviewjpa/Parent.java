@@ -17,9 +17,10 @@ public class Parent {
     private String name;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-//    및에 있는 childList를 모두 persist를 해줄것이다 = CascadeType.ALL
-//    소유자가 하나일때만 사용가능, 다른 엔티티에서 몰라야함. 단일 엔티티에 종속적일때만 사용(orphanRemoval = true일때도 마찬가지)
-//    orphanRemoval = true는 CascadeType.REMOVE와 비슷하게 동작함
+
+//    CascadeType.ALL, orphanRemoval = true 를 같이 사용하게 될 경우 부모 엔티티를 통해서 자식의 생명주기를 관리할 수 있음
+//    == repository가 없어도 됨
+//    도메인 주도 설계(DDD)의 Aggregate Root개념을 구현할 때 유용
     private List<Child> childList = new ArrayList<>();
 
     public void addChild(Child child) {
