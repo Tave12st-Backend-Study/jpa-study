@@ -24,8 +24,12 @@ public class Main {
             parent.addChild(child2);
 
             em.persist(parent);//자동으로 child도 persist로 되었으면 좋겠다..how?
-//            em.persist(child1);
-//            em.persist(child2);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            em.remove(findParent);
 
             tx.commit();
         }catch(Exception e){

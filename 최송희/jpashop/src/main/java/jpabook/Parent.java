@@ -12,7 +12,7 @@ public class Parent {
 
     private String name;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Child> childList = new ArrayList<>();
 
     public void addChild(Child child){//양방향 연관관계
@@ -34,5 +34,13 @@ public class Parent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Child> getChildList() {
+        return childList;
+    }
+
+    public void setChildList(List<Child> childList) {
+        this.childList = childList;
     }
 }
