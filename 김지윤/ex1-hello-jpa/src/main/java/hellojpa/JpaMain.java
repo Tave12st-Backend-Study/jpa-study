@@ -1,8 +1,10 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -14,24 +16,28 @@ public class JpaMain {
         tx.begin();
 
         try {
+            //* 값 타입 컬렉션 저장
             Member member = new Member();
-            member.setName("user1");
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
+            member.setName("member1");
+            member.setHomeAddress(new Address("homecity", "street", "10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("족발");
+
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
 
             em.persist(member);
-
-            em.flush();
-            em.clear();
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
 
         emf.close();
-
     }
 }
