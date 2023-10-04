@@ -1,28 +1,38 @@
 package jpabook;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member{
     @Id
     @GeneratedValue //생략하면 AUTO
     @Column(name = "MEMBER_ID")
     private Long id;
     private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) //읽기전용
-    private Team team;
+    @Embedded
+    //기간
+    private Period workPeriod;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    //주소
+    @Embedded
+   private Address homeAddress;
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city",
+            column = @Column(name = "WORK_CITY")),
+            @AttributeOverride(name = "street",
+                    column = @Column(name = "WORK_STREET")),
+            @AttributeOverride(name = "zipcode",
+                    column = @Column(name = "WORK_ZIPCODE")),
+
+    })
+    private Address workAddress;
 
     public Long getId() {
         return id;
@@ -32,19 +42,27 @@ public class Member extends BaseEntity{
         this.id = id;
     }
 
-    public String getName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Locker getLocker() {
-        return locker;
+    public Period getWorkPeriod() {
+        return workPeriod;
     }
 
-    public void setLocker(Locker locker) {
-        this.locker = locker;
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
     }
 }

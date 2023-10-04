@@ -11,7 +11,7 @@ public class Delivery extends BaseEntity{
     @GeneratedValue
     @Column(name = "DELIVERY_ID")
     private Long id;
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Orders orders;
     private String city;
     private String street;

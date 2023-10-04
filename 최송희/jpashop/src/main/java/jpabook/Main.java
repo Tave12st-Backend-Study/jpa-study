@@ -2,10 +2,7 @@ package jpabook;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,26 +15,27 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Movie movie = new Movie();
-            movie.setDirector("aaaa");
-            movie.setActor("bbbb");
-            movie.setName("바람과 함께 사라지다");
-            movie.setPrice(10000);
 
-            em.persist(movie);
-            em.flush();
-            em.clear();
+            Member member = new Member();
+            member.setUsername("hello");
+            member.setHomeAddress(new Address("city", "street", "10000"));
+            member.setWorkPeriod(new Period());
 
-            Movie movie1 = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = "+movie1);
+            em.persist(member);
 
             tx.commit();
         }catch(Exception e){
             tx.rollback();
+            e.printStackTrace();
         }finally {
             em.close();
         }
         emf.close();
+
+    }
+    private static void logic(Member m1, Member m2){
+        System.out.println("m1 :"+(m1 instanceof Member));
+        System.out.println("m1 :"+(m2 instanceof Member));
 
     }
 }
