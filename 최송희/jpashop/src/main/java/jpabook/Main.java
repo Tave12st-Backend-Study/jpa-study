@@ -32,10 +32,8 @@ public class Main {
             Member m = em.find(Member.class, member1.getId());//member만 SELECT
             System.out.println("team = "+m.getTeam().getClass());//Team 정보는 프록시로 가져온 것
 
-
-            System.out.println("==================");
-            System.out.println("team.getName() = "+m.getTeam().getName());
-            System.out.println("==================");
+            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
+                    .getResultList();
 
             tx.commit();
         }catch(Exception e){
