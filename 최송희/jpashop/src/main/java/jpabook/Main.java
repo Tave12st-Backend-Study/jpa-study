@@ -16,20 +16,12 @@ public class Main {
         tx.begin();
         try{
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("hello");
+            member.setHomeAddress(new Address("city", "street", "10000"));
+            member.setWorkPeriod(new Period());
 
-           Parent parent = new Parent();
-           parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);//자동으로 child도 persist로 되었으면 좋겠다..how?
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            em.remove(findParent);
+            em.persist(member);
 
             tx.commit();
         }catch(Exception e){
