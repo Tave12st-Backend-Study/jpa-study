@@ -16,24 +16,16 @@ public class Main {
         tx.begin();
         try{
 
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Member member1 = new Member();
-            member1.setUserName("hello");
-            member1.setTeam(team);
-            em.persist(member1);
+           Parent parent = new Parent();
+           parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
-
-            //프록시 = FetchType.LAZY
-            Member m = em.find(Member.class, member1.getId());//member만 SELECT
-            System.out.println("team = "+m.getTeam().getClass());//Team 정보는 프록시로 가져온 것
-
-            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
-                    .getResultList();
+            em.persist(parent);//자동으로 child도 persist로 되었으면 좋겠다..how?
+//            em.persist(child1);
+//            em.persist(child2);
 
             tx.commit();
         }catch(Exception e){
