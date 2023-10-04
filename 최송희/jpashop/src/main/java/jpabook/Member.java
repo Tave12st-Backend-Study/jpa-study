@@ -13,7 +13,7 @@ public class Member extends BaseEntity{
     private Long id;
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)//지연로딩..멤버클래스만 디비에서 조회
     @JoinColumn(name = "TEAM_ID") //읽기전용
     private Team team;
 

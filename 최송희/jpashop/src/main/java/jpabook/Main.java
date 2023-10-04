@@ -30,10 +30,13 @@ public class Main {
 
             //프록시 = FetchType.LAZY
             Member m = em.find(Member.class, member1.getId());//member만 SELECT
-            System.out.println(m.getTeam());
-            System.out.println("m = "+m.getTeam().getClass());//PROXY
+            System.out.println("team = "+m.getTeam().getClass());//Team 정보는 프록시로 가져온 것
 
-            m.getTeam().getName(); //TEAM에 대해서 select 쿼리가 이제야 나간다.
+
+            System.out.println("==================");
+            System.out.println("team.getName() = "+m.getTeam().getName());
+            System.out.println("==================");
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
