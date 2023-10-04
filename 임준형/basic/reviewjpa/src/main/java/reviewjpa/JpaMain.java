@@ -1,8 +1,5 @@
 package reviewjpa;
 
-import reviewjpa.superclass.Item;
-import reviewjpa.superclass.Movie;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -23,10 +20,21 @@ public class JpaMain {
         try {
 
             Member member = new Member();
+            member.setUsername("Embedded type");
 
-            member.setUsername("준형");
-            member.setCreateBy("kim");
-            member.setCreateDate(LocalDateTime.now());
+            Address build = Address.builder()
+                    .city("city")
+                    .street("street")
+                    .zipcode("10000")
+                    .build();
+            member.setHomeAddress(build);
+
+            Period period = Period.builder()
+                    .startDate(LocalDateTime.now())
+                    .endDate(LocalDateTime.MAX)
+                    .build();
+
+            member.setWorkPeriod(period);
 
             em.persist(member);
 
@@ -37,6 +45,7 @@ public class JpaMain {
 
         } catch (Exception e) {
             tx.rollback(); // 실패하면 롤백
+            e.printStackTrace();
         } finally {
             em.close();
         }
@@ -44,4 +53,5 @@ public class JpaMain {
         emFactory.close();
         // code 끝
     }
+
 }
