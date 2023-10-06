@@ -19,27 +19,27 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("Embedded type");
+            List<Member> memberList = em.createQuery("select m From Member m where m.username like '%kim%'",
+                    Member.class).getResultList();
 
-            Address build = Address.builder()
-                    .city("city")
-                    .street("street")
-                    .zipcode("10000")
-                    .build();
-            member.setHomeAddress(build);
-
-            Period period = Period.builder()
-                    .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.MAX)
-                    .build();
-
-            member.setWorkPeriod(period);
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
+            System.out.println("================ 실제 쿼리 ================\n" +
+                    "    select\n" +
+                    "        m \n" +
+                    "    From\n" +
+                    "        Member m \n" +
+                    "    where\n" +
+                    "        m.username like '%kim%' */ select\n" +
+                    "            member0_.MEMBER_ID as MEMBER_I1_4_,\n" +
+                    "            member0_.city as city2_4_,\n" +
+                    "            member0_.street as street3_4_,\n" +
+                    "            member0_.zipcode as zipcode4_4_,\n" +
+                    "            member0_.TEAM_ID as TEAM_ID6_4_,\n" +
+                    "            member0_.USERNAME as USERNAME5_4_ \n" +
+                    "        from\n" +
+                    "            Member member0_ \n" +
+                    "        where\n" +
+                    "            member0_.USERNAME like '%kim%'\n" +
+                    "================ 실제 쿼리 ================");
 
             tx.commit(); // 성공하면 커밋
 
