@@ -19,37 +19,20 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin(); // transaction 시작
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
         try {
 
             Member member = new Member();
             member.setUsername("AA");
             em.persist(member);
 
-            System.out.println("================ 자동 flush 가 됨 왜? JPQL 이니까");
-            
-            System.out.println("================ 쿼리 나가는 시점 ================\n");
+            System.out.println("JPA와 아무 관련이 없는 SQL은 JPQL이 아니기 대문에, flsuh가 안되므로 flush를 직접 해줘야한다.");
+            // dbconnect.excuteQuery("select * from member')
 
-            List<Member> resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from Member", Member.class)
-                    .getResultList();
+            em.flush();
 
-            System.out.println("================ 쿼리 나가는 시점 ================\n");
-
-            System.out.println("================ 실제 쿼리 ================\n" +
-            "/* dynamic native SQL query */ \n" +
-                    "    select\n" +
-                    "        MEMBER_ID,\n" +
-                    "        city,\n" +
-                    "        street,\n" +
-                    "        zipcode,\n" +
-                    "        USERNAME \n" +
-                    "    from\n" +
-                    "        Member"
-            + "\n================ 실제 쿼리 ================");
-
-            for (Member m : resultList) {
-                System.out.println("m.getUsername() = " + m.getUsername()); // m.getUsername() = AA
-            }
+//            for (Member m : resultList) {
+//                System.out.println("m.getUsername() = " + m.getUsername()); // m.getUsername() = AA
+//            }
             
             tx.commit(); // 성공하면 커밋
 
