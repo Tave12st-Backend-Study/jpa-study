@@ -22,10 +22,19 @@ public class JpaMain {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         try {
 
+            Member member = new Member();
+            member.setUsername("AA");
+            em.persist(member);
+
+            System.out.println("================ 자동 flush 가 됨 왜? JPQL 이니까");
+            
             System.out.println("================ 쿼리 나가는 시점 ================\n");
-            List resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from Member")
+
+            List<Member> resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from Member", Member.class)
                     .getResultList();
+
             System.out.println("================ 쿼리 나가는 시점 ================\n");
+
             System.out.println("================ 실제 쿼리 ================\n" +
             "/* dynamic native SQL query */ \n" +
                     "    select\n" +
@@ -38,6 +47,10 @@ public class JpaMain {
                     "        Member"
             + "\n================ 실제 쿼리 ================");
 
+            for (Member m : resultList) {
+                System.out.println("m.getUsername() = " + m.getUsername()); // m.getUsername() = AA
+            }
+            
             tx.commit(); // 성공하면 커밋
 
         } catch (Exception e) {
