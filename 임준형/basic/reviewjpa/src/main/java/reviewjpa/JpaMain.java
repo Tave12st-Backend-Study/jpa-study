@@ -22,30 +22,20 @@ public class JpaMain {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         try {
 
-            CriteriaQuery<Member> query = cb.createQuery(Member.class);
-            Root<Member> from = query.from(Member.class);
-
-            CriteriaQuery<Member> where = query.select(from).where(cb.equal(from.get("username"), "kim"));
             System.out.println("================ 쿼리 나가는 시점 ================\n");
-            List<Member> memberList = em.createQuery(where).getResultList();
+            List resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME from Member")
+                    .getResultList();
             System.out.println("================ 쿼리 나가는 시점 ================\n");
             System.out.println("================ 실제 쿼리 ================\n" +
+            "/* dynamic native SQL query */ \n" +
                     "    select\n" +
-                    "        generatedAlias0 \n" +
+                    "        MEMBER_ID,\n" +
+                    "        city,\n" +
+                    "        street,\n" +
+                    "        zipcode,\n" +
+                    "        USERNAME \n" +
                     "    from\n" +
-                    "        Member as generatedAlias0 \n" +
-                    "    where\n" +
-                    "        generatedAlias0.username=:param0 */ select\n" +
-                    "            member0_.MEMBER_ID as MEMBER_I1_4_,\n" +
-                    "            member0_.city as city2_4_,\n" +
-                    "            member0_.street as street3_4_,\n" +
-                    "            member0_.zipcode as zipcode4_4_,\n" +
-                    "            member0_.TEAM_ID as TEAM_ID6_4_,\n" +
-                    "            member0_.USERNAME as USERNAME5_4_ \n" +
-                    "        from\n" +
-                    "            Member member0_ \n" +
-                    "        where\n" +
-                    "            member0_.USERNAME=?"
+                    "        Member"
             + "\n================ 실제 쿼리 ================");
 
             tx.commit(); // 성공하면 커밋
