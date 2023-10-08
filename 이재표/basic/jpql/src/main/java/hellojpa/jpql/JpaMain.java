@@ -18,7 +18,7 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("teamA");
             member.setAge(10);
-member.setMemberType(MemberType.ADMIN);
+            member.setMemberType(MemberType.ADMIN);
             member.setTeam(team);
             em.persist(member);
 
@@ -26,14 +26,18 @@ member.setMemberType(MemberType.ADMIN);
             em.flush();
             em.clear();
 
-            String query = "select m.username,'HELLO', TRUE FROM Member m where m.memberType=hellojpa.jpql.MemberType.USER";
-            List<Object[]> result = em.createQuery(query)
-                    .getResultList();
-            for (Object[] o : result) {
-                System.out.println("objects = "+o[0]);
-                System.out.println("objects = "+o[1]);
-                System.out.println("objects = "+o[2]);
+            String query = "select " +
+                    "case when m.age<=10 then '학생요금'" +
+                    "when m.age>=60 then '경로요금'" +
+                    "else '일반요금'" +
+                    "end " +
+                    "from Member m";
+            List<String> resultList = em.createQuery(query, String.class).getResultList();
+            for (String s : resultList) {
+                System.out.println("s = "+s);
             }
+
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
