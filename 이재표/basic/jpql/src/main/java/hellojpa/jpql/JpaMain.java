@@ -1,17 +1,7 @@
-package hellojpa;
+package hellojpa.jpql;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
+import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
-
-import static java.time.LocalDateTime.now;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -21,8 +11,18 @@ public class JpaMain {
         tx.begin();
         try {
             Member member = new Member();
-            em.createNativeQuery("select MEMBER_ID,city,street,zipcode,USERNAME from MEMBER");
+            member.setUsername("member1");
+            member.setAge(10);
+            em.persist(member);
 
+            em.flush();
+            em.clear();
+
+            List<Member> result = em.createQuery("select m from Member m", Member.class)
+                    .getResultList();
+
+            Member findMember = result.get(0);
+            findMember.setAge(20);
 
             tx.commit();
         } catch (Exception e) {
