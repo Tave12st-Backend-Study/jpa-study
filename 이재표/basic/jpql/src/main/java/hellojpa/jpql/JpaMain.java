@@ -26,9 +26,9 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select nullif(m.username,'관리자')as username " +
-                    "from Member m";
-            List<String> resultList = em.createQuery(query, String.class).getResultList();
+            String query = "select concat('a','b') from Member m";
+            List<String> resultList = em.createQuery(query, String.class)
+                    .getResultList();
             for (String s : resultList) {
                 System.out.println("s = "+s);
             }
