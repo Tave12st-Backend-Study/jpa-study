@@ -24,10 +24,14 @@ public class JpaMain {
 
             List<Member> resultList = query.getResultList();
 
+            System.out.println("----- 결과가 없으면 빈 리스트 반환 -----");
             for (Member m : resultList) {
                 System.out.println("m.getUsername() = " + m.getUsername());
             }
 
+            System.out.println("----- 결과가 없으면 예외가 발생하는 것이 못마땅, SpringDataJpa에선 이를 Null로 반환 -----");
+            System.out.println("----- 결과가 없으면 NoResultException 반환 -----");
+            System.out.println("----- 결과가 둘 이상이면 NonUniqueResultException 반환 -----");
             Member singleMember = query.getSingleResult();
             System.out.println("singleMember.getUsername() = " + singleMember.getUsername());
 
