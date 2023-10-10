@@ -2,6 +2,7 @@ package jpa_jpql_dionisos198;
 
 import javax.persistence.*;
 import java.lang.management.MemoryManagerMXBean;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args){
@@ -15,11 +16,11 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            TypedQuery<Member> query = em.createQuery("select m from Member m where m.username =: username", Member.class);
-            query.setParameter("username","member1");
-            Member singleResult=query.getSingleResult();
-            System.out.println("singleResult = "+singleResult.getUsername());
-
+            em.flush();
+            em.clear();
+            List<Member> result=em.createQuery("select m from Member m",Member.class).getResultList();
+            Member findMember=result.get(0);
+            findMember.setAge(20);
             tx.commit();
         }catch (Exception e){
             tx.rollback();
