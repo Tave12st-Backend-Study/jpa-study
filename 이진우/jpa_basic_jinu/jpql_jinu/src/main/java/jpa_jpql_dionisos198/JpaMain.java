@@ -32,6 +32,7 @@ public class JpaMain {
                 System.out.println("objects = "+objects[2]);
 
             }
+            em.createQuery("select m from Member m where m.username is NOT NULL",Member.class).getResultList();
             tx.commit();
         }catch (Exception e){
             tx.rollback();

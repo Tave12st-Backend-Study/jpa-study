@@ -18,7 +18,7 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-           em.createNativeQuery("select  MEMBER_ID, city,street,zipcode, name from MEMBER").getResultList();
+           // em.createQuery("select i from Item i where type(i)= Book ",Item.class);
             tx.commit();
         }catch (Exception e){
             tx.rollback();
