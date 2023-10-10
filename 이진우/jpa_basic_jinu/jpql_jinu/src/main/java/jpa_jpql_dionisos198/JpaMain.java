@@ -18,9 +18,17 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-            List<Member> result=em.createQuery("select m from Member m",Member.class).getResultList();
-            Member findMember=result.get(0);
-            findMember.setAge(20);
+
+            //List<Team> result=em.createQuery("select m.team from Member m",Team.class).getResultList();
+            List<Team> result=em.createQuery("select t from Member m join m.team t").getResultList();
+            em.createQuery("select o.address from Order o",Address.class).getResultList();
+            //em.createQuery("select distinct m.username, m.age from Member m").getResultList();
+            List resultList=em.createQuery("select m.username,m.age from Member m").getResultList();
+            Object o=resultList.get(0);
+            Object[] result3=(Object[])o;
+            System.out.println("username = "+result3[0]);
+            System.out.println("age = "+result3[1]);
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
