@@ -11,28 +11,20 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-           Team team=new Team();
-           team.setName("teamA");
-           em.persist(team);
+           Member member1=new Member();
+           member1.setUsername("관리자1");
+           em.persist(member1);
 
-           Member member=new Member();
-           member.setUsername("member");
-           member.setAge(10);
-           member.changeTeam(team);
-           member.setType(MemberType.ADMIN);
-            em.persist(member);
-            em.flush();
-            em.clear();
-
-            String query="select case m.username when 'member' then 'hi' else 'Bye' end from Member m";
-            List<String> list=em.createQuery(query,String.class).getResultList();
-            System.out.println(list);
-            String query2="select coalesce(m.username,'이름없는 회원') from Member m";
-            List<String> list2=em.createQuery(query2,String.class).getResultList();
-            System.out.println(list2);
-            String query3="select NULLIF(m.username,'관리자') from Member m";
-            List<String> list3=em.createQuery(query3,String.class).getResultList();
-            System.out.println(list3);
+           Member member2=new Member();
+           member2.setUsername("관리자2");
+           em.persist(member2);
+           em.flush();
+           em.clear();
+         String query="select function('group_concat',m.username) From Member m";
+         List<String> result=em.createQuery(query,String.class).getResultList();
+            for (String s : result) {
+                System.out.println("s = "+s);
+            }
             tx.commit();
         }catch (Exception e){
             tx.rollback();
