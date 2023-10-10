@@ -18,6 +18,9 @@ public class Member {
         team.getMembers().add(this);
     }
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
     public Long getId() {
         return id;
     }
@@ -49,5 +52,21 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
     }
 }
