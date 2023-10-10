@@ -18,11 +18,7 @@ public class JpaMain {
         EntityTransaction tx=em.getTransaction();
         tx.begin();
         try{
-            CriteriaBuilder cb=em.getCriteriaBuilder();
-            CriteriaQuery<Member> query=cb.createQuery(Member.class);
-            Root<Member> m=query.from(Member.class);
-            CriteriaQuery<Member> cq=query.select(m).where(cb.equal(m.get("name"),"kim"));
-            List<Member> resultList=em.createQuery(cq).getResultList();
+           em.createNativeQuery("select  MEMBER_ID, city,street,zipcode, name from MEMBER").getResultList();
             tx.commit();
         }catch (Exception e){
             tx.rollback();
