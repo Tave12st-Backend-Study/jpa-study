@@ -26,7 +26,9 @@ public class JpaMain {
            String query="select m from Member m join m.team t";
            String query2="select m from Member m LEFT JOIN m.team t";
            String query3="select m from Member m, Team t where m.username=t.name";
-           List<Member> result=em.createQuery(query3,Member.class).getResultList();
+           String query4="select m from Member m left join m.team t on t.name='teamA'";
+           String query5="select m from Member m left join Team t on m.username=t.name";
+           List<Member> result=em.createQuery(query5,Member.class).getResultList();
             System.out.println("result = "+result.size());
             tx.commit();
         }catch (Exception e){
