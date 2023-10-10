@@ -24,15 +24,15 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query="select m.username,'HELLO',TRUE From Member m where m.type=jpa_jpql_dionisos198.MemberType.ADMIN";
-            List<Object[]> result=em.createQuery(query).getResultList();
-            for (Object[] objects : result) {
-                System.out.println("objects = "+objects[0]);
-                System.out.println("objects = "+objects[1]);
-                System.out.println("objects = "+objects[2]);
-
-            }
-            em.createQuery("select m from Member m where m.username is NOT NULL",Member.class).getResultList();
+            String query="select case m.username when 'member' then 'hi' else 'Bye' end from Member m";
+            List<String> list=em.createQuery(query,String.class).getResultList();
+            System.out.println(list);
+            String query2="select coalesce(m.username,'이름없는 회원') from Member m";
+            List<String> list2=em.createQuery(query2,String.class).getResultList();
+            System.out.println(list2);
+            String query3="select NULLIF(m.username,'관리자') from Member m";
+            List<String> list3=em.createQuery(query3,String.class).getResultList();
+            System.out.println(list3);
             tx.commit();
         }catch (Exception e){
             tx.rollback();
