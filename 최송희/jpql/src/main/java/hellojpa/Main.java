@@ -14,28 +14,44 @@ public class Main {
                 tx.begin();
                 try{
 
-                    for(int i=0;i<100;i++) {
-                        Member member = new Member();
-                        member.setUsername("member"+(i+1));
-                        member.setAge(i);
-                        em.persist(member);
-                    }
+                    Team team = new Team();
+                    team.setName("teamA");
+                    em.persist(team);
+
+                    Member member = new Member();
+                    member.setUsername("member1");
+                    member.setAge(10);
+
+                    member.changeTeam(team);
+                    em.persist(member);
+
 
                     em.flush();
                     em.clear();
 
+                    //조인
+                    //(1) 내부 조인
+                    String query = "select m from Member m inner join m.team t";
 
-                    List<Member> resultList2 = em.createQuery(
-                            "select m from Member m order by m.age desc"
+                    //(2) 외부조인
+                    String query2 = "select m from Member m left outer join m.team t";
+
+                    //(3) 세타조인
+                    String query3 = "select m from Member m, Team t where m.username = t.name";
+
+                    //조인-ON절을 활용한 조인
+                    //(1) 조인대상 필터링
+                    String query4 = "select m from Member m left join m.team t on t.name = 'teamA'";
+
+                    //(2) 연관관계가 없는 엔티티 외부 조인
+                    String query5 = "select m from Member m left join Team t on m.username = t.name";
+
+                    List<Member> resultList = em.createQuery(
+                            query3
                             , Member.class
-                    ).setFirstResult(0)
-                    .setMaxResults(10)
+                    )
                     .getResultList();
 
-                    System.out.println("size : "+ resultList2.size());
-                    for(Member m : resultList2){
-                        System.out.println(m);
-                    }
 
                     tx.commit();
 
