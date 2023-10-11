@@ -19,36 +19,23 @@ public class Main {
                     em.persist(team);
 
                     Member member = new Member();
-                    member.setUsername("member1");
+                    member.setUsername("관리자");
                     member.setAge(10);
                     member.setMemberType(MemberType.ADMIN);
 
                     member.changeTeam(team);
                     em.persist(member);
 
-
                     em.flush();
                     em.clear();
-                    //파라미터 바인딩하지 않은 경우
-                    String query = "select m.username, 'HELLO', true from Member m "+
-                            "where m.type = hellojpa.MemberType.USER";
 
-                    //파라미터 바인딩을 한 경우
-                    String query2 = "select m.username, 'HELLO', true from Member m "+
-                            "where m.type = :usertype";
+                    String query = "select NULLIF(m.username, '관리자') from Member m";
+                    List<String> resultList = em.createQuery(query, String.class).getResultList();
 
-                    List<Object[]> result = em.createQuery(query)
-                            .getResultList();
-
-                    List<Object[]> result2 = em.createQuery(query2)
-                            .setParameter("usertype", MemberType.ADMIN)
-                            .getResultList();
-
-                    for(Object[] objects: result){
-                        System.out.println("objects = "+objects[0]);
-                        System.out.println("objects = "+objects[1]);
-                        System.out.println("objects = "+objects[2]);
+                    for(String s : resultList){
+                        System.out.println(s);
                     }
+
 
                 }catch(Exception e){
                     tx.rollback();
