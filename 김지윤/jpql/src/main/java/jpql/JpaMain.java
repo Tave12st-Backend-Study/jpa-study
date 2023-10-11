@@ -23,11 +23,20 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            Member result = em.createQuery("select m from Member m where m.username = :username", Member.class)
-                    .setParameter("username", "member1")
-                    .getSingleResult();
+            // 엔티티 프로젝션
+            List<Member> result1 = em.createQuery("select m from Member m", Member.class)
+                    .getResultList();
 
-            System.out.println("result = " + result.getUsername());
+            Member findMember = result1.get(0);
+            findMember.setAge(20);
+
+            // 임베디드 프로젝션
+            List<Address> result2 = em.createQuery("select o.address from Order o", Address.class)
+                    .getResultList();
+
+            // 스칼라 타입 프로젝션
+            List<Address> result3 = em.createQuery("select distinct m.username, m.age from Member m")
+                    .getResultList();
 
             tx.commit();
         } catch (Exception e) {
