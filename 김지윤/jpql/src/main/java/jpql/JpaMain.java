@@ -23,19 +23,11 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            // 조회 결과가 하나 이상일 경우
-            TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
-            List<Member> resultList = query1.getResultList();
+            Member result = em.createQuery("select m from Member m where m.username = :username", Member.class)
+                    .setParameter("username", "member1")
+                    .getSingleResult();
 
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1);
-            }
-
-            // 조회 결과가 하나일 경우
-            TypedQuery<Member> query2 = em.createQuery("select m from Member m where m.id = 1L", Member.class);
-            Member singleResult = query2.getSingleResult();
-
-            System.out.println("singleResult = " + singleResult);
+            System.out.println("result = " + result.getUsername());
 
             tx.commit();
         } catch (Exception e) {
