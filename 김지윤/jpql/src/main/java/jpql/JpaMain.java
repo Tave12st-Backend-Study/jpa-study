@@ -23,20 +23,31 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            // 엔티티 프로젝션
-            List<Member> result1 = em.createQuery("select m from Member m", Member.class)
+            // Query 타입으로 조회
+            List resultList1 = em.createQuery("select m.username, m.age from Member m")
                     .getResultList();
 
-            Member findMember = result1.get(0);
-            findMember.setAge(20);
+            Object o = resultList1.get(0);
+            Object[] result1 = (Object[]) o;
 
-            // 임베디드 프로젝션
-            List<Address> result2 = em.createQuery("select o.address from Order o", Address.class)
+            System.out.println("result[0] = " + result1[0]);
+            System.out.println("result[0] = " + result1[1]);
+
+            // Object[] 타입으로 조회
+            List<Object[]> resultList2 = em.createQuery("select m.username, m.age from Member m")
                     .getResultList();
 
-            // 스칼라 타입 프로젝션
-            List<Address> result3 = em.createQuery("select distinct m.username, m.age from Member m")
+            Object[] result2 = resultList2.get(0);
+            System.out.println("result[0] = " + result2[0]);
+            System.out.println("result[0] = " + result2[1]);
+
+            // new 명령어로 조회
+            List<MemberDTO> result = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
                     .getResultList();
+
+            MemberDTO memberDTO = result.get(0);
+            System.out.println("memberDTO = " + memberDTO.getUsername());
+            System.out.println("memberDTO = " + memberDTO.getAge());
 
             tx.commit();
         } catch (Exception e) {
