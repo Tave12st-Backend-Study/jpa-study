@@ -20,28 +20,13 @@ public class Main {
 
                     //반환 타입이 명확할때 사용 :: TypedQuery<제네릭>
                     TypedQuery<Member> query = em.createQuery("" +
-                            "SELECT m FROM Member m", Member.class);
-                    TypedQuery<String> query1 = em.createQuery(
-                            "SELECT m.username FROM Member m", String.class
-                    );
-
-                    //반환타입이 명확하지 않을 때 사용 :: Query
-                    Query query2 = em.createQuery(
-                            "SELECT m.username, m.age FROM Member m"
-                    );
-
-                    //getResultList() :: 결과가 둘 이상일 때(없으면 빈객체 반환) vs getSingleResult() :: 결과가 무조건 하나일때(없으면 에러)
-                    List<Member> resultList = query.getResultList();
-                    for(Member m : resultList){
-                        //하나씩 뽑아와서 출력할 수 있다.
-                    }
-
-
-
+                            "SELECT m FROM Member m WHERE m.username = :username", Member.class);
+                    //파라미터 바인딩- 이름기준일때
+                    query.setParameter("username", "member1");
                     Member singleResult = query.getSingleResult();
-                    //없으면  javax.persistence.NoResultException
-                    //둘 이상이면  javax.persistence.NonUniqueResultException
+                    System.out.println("singleResult = "+singleResult);
 
+                    //파라미터 바인딩-위치기준(추천 X)
 
                     tx.commit();
 
