@@ -52,8 +52,8 @@ public class JpaMain {
             System.out.println("================================");
             String query3="select t from Team t";
             String query4="select distinct t from Team t join fetch t.members m";
-            String query5="select t from Team t join t.members m";
-            List<Team> result2=em.createQuery(query5,Team.class).getResultList();
+            String query5="select t from Team t join fetch t.members m";
+            List<Team> result2=em.createQuery(query5,Team.class).setFirstResult(0).setMaxResults(1).getResultList();
             for (Team team : result2) {
                 System.out.println(team.getName()+" "+team.getMembers().size());
                 for(Member member9:team.getMembers()){
