@@ -41,11 +41,11 @@ public class JpaMain {
            em.flush();
            em.clear();
 
-            String query="select m from Member m where m=:member";
-            String query2="select m from Member m where m.id=:memberId";
-            String query3="select m from Member m where m.team=:team";
-            List<Member> members=em.createQuery(query3,Member.class).setParameter("team",teamA).getResultList();
-            System.out.println(members);
+            int resultCount=em.createQuery("update Member m set m.age=20").executeUpdate();
+            System.out.println(resultCount);
+            em.clear();
+            Member findMember=em.find(Member.class,member1.getId());
+            System.out.println("findMember = "+findMember.getAge());
             tx.commit();
         }catch (Exception e){
             tx.rollback();
