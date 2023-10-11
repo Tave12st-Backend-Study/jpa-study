@@ -34,9 +34,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m.username, 'HELLO', TRUE from Member m where m.type = :userType";
+            String query = "select m.username, 'HELLO', TRUE from Member m where m.username is not null";
             List<Object[]> result = em.createQuery(query)
-                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
 
             for (Object[] objects : result) {
