@@ -18,21 +18,6 @@ public class Member{
     //기간
     private Period workPeriod;
 
-    //주소
-    @Embedded
-   private Address homeAddress;
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "city",
-            column = @Column(name = "WORK_CITY")),
-            @AttributeOverride(name = "street",
-                    column = @Column(name = "WORK_STREET")),
-            @AttributeOverride(name = "zipcode",
-                    column = @Column(name = "WORK_ZIPCODE")),
-
-    })
-    private Address workAddress;
 
     public Long getId() {
         return id;
@@ -58,11 +43,5 @@ public class Member{
         this.workPeriod = workPeriod;
     }
 
-    public Address getHomeAddress() {
-        return homeAddress;
-    }
 
-    public void setHomeAddress(Address homeAddress) {
-        this.homeAddress = homeAddress;
-    }
 }
