@@ -16,19 +16,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //* 값 타입 컬렉션 저장
-            Member member = new Member();
-            member.setName("member1");
-            member.setHomeAddress(new Address("homecity", "street", "10000"));
+            List<Member> result = em.createQuery(
+                    "select m from Member m where m.name like '%kim%'",
+                    Member.class
+            ).getResultList();
 
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("피자");
-            member.getFavoriteFoods().add("족발");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
-
-            em.persist(member);
+            for (Member member : result) {
+                System.out.println("member = " + member);
+            }
 
             tx.commit();
         } catch (Exception e) {
