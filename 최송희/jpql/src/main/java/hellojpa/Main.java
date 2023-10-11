@@ -21,6 +21,7 @@ public class Main {
                     Member member = new Member();
                     member.setUsername("member1");
                     member.setAge(10);
+                    member.setMemberType(MemberType.ADMIN);
 
                     member.changeTeam(team);
                     em.persist(member);
@@ -28,32 +29,26 @@ public class Main {
 
                     em.flush();
                     em.clear();
+                    //파라미터 바인딩하지 않은 경우
+                    String query = "select m.username, 'HELLO', true from Member m "+
+                            "where m.type = hellojpa.MemberType.USER";
 
-                    //조인
-                    //(1) 내부 조인
-                    String query = "select m from Member m inner join m.team t";
+                    //파라미터 바인딩을 한 경우
+                    String query2 = "select m.username, 'HELLO', true from Member m "+
+                            "where m.type = :usertype";
 
-                    //(2) 외부조인
-                    String query2 = "select m from Member m left outer join m.team t";
+                    List<Object[]> result = em.createQuery(query)
+                            .getResultList();
 
-                    //(3) 세타조인
-                    String query3 = "select m from Member m, Team t where m.username = t.name";
+                    List<Object[]> result2 = em.createQuery(query2)
+                            .setParameter("usertype", MemberType.ADMIN)
+                            .getResultList();
 
-                    //조인-ON절을 활용한 조인
-                    //(1) 조인대상 필터링
-                    String query4 = "select m from Member m left join m.team t on t.name = 'teamA'";
-
-                    //(2) 연관관계가 없는 엔티티 외부 조인
-                    String query5 = "select m from Member m left join Team t on m.username = t.name";
-
-                    List<Member> resultList = em.createQuery(
-                            query3
-                            , Member.class
-                    )
-                    .getResultList();
-
-
-                    tx.commit();
+                    for(Object[] objects: result){
+                        System.out.println("objects = "+objects[0]);
+                        System.out.println("objects = "+objects[1]);
+                        System.out.println("objects = "+objects[2]);
+                    }
 
                 }catch(Exception e){
                     tx.rollback();
