@@ -29,26 +29,22 @@ public class Main {
 
                     em.flush();
                     em.clear();
-                    //파라미터 바인딩하지 않은 경우
-                    String query = "select m.username, 'HELLO', true from Member m "+
-                            "where m.type = hellojpa.MemberType.USER";
 
-                    //파라미터 바인딩을 한 경우
-                    String query2 = "select m.username, 'HELLO', true from Member m "+
-                            "where m.type = :usertype";
+                    String query =
+                            "select "+
+                                    "case when m.age<=10 then '학생요금' "+
+                                    "     when m.age>=60 then '경로요금' "+
+                                    "     else '일반요금' "+
+                                    "end "+
+                            "from Member m";
 
-                    List<Object[]> result = em.createQuery(query)
-                            .getResultList();
+                    TypedQuery<String> query1 = em.createQuery(query, String.class);
+                    List<String> resultList = query1.getResultList();
 
-                    List<Object[]> result2 = em.createQuery(query2)
-                            .setParameter("usertype", MemberType.ADMIN)
-                            .getResultList();
-
-                    for(Object[] objects: result){
-                        System.out.println("objects = "+objects[0]);
-                        System.out.println("objects = "+objects[1]);
-                        System.out.println("objects = "+objects[2]);
+                    for(String s : resultList){
+                        System.out.println(s);
                     }
+
 
                 }catch(Exception e){
                     tx.rollback();
