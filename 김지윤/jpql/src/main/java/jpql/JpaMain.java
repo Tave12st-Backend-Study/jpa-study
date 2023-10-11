@@ -18,36 +18,25 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-            em.persist(member);
+            for (int i=0; i<100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
-            // Query 타입으로 조회
-            List resultList1 = em.createQuery("select m.username, m.age from Member m")
+            em.flush();
+            em.clear();
+
+            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
                     .getResultList();
 
-            Object o = resultList1.get(0);
-            Object[] result1 = (Object[]) o;
-
-            System.out.println("result[0] = " + result1[0]);
-            System.out.println("result[0] = " + result1[1]);
-
-            // Object[] 타입으로 조회
-            List<Object[]> resultList2 = em.createQuery("select m.username, m.age from Member m")
-                    .getResultList();
-
-            Object[] result2 = resultList2.get(0);
-            System.out.println("result[0] = " + result2[0]);
-            System.out.println("result[0] = " + result2[1]);
-
-            // new 명령어로 조회
-            List<MemberDTO> result = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
-                    .getResultList();
-
-            MemberDTO memberDTO = result.get(0);
-            System.out.println("memberDTO = " + memberDTO.getUsername());
-            System.out.println("memberDTO = " + memberDTO.getAge());
+            System.out.println("result.size = " + result.size());
+            for (Member member1 : result) {
+                System.out.println("member1 = " + member1);
+            }
 
             tx.commit();
         } catch (Exception e) {
