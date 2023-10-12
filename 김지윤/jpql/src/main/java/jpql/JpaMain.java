@@ -23,7 +23,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member");
+            member.setUsername("관리자");
             member.setAge(10);
             member.setType(MemberType.ADMIN);
 
@@ -34,15 +34,40 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m.username, 'HELLO', TRUE from Member m where m.username is not null";
-            List<Object[]> result = em.createQuery(query)
+            // 기본 CASE
+            String query1 =
+                    "select " +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end " +
+                    "from Member m";
+            List<String> resultList1 = em.createQuery(query1, String.class)
                     .getResultList();
 
-            for (Object[] objects : result) {
-                System.out.println("objects = " + objects[0]);
-                System.out.println("objects = " + objects[1]);
-                System.out.println("objects = " + objects[2]);
+            for (String s : resultList1) {
+                System.out.println("s = " + s);
             }
+
+            // COALESCE
+            String query2 = "select coalesce(m.username, '이름 없는 회원') as username " +
+                    "from Member m";
+            List<String> resultList2 = em.createQuery(query2, String.class)
+                    .getResultList();
+
+            for (String s : resultList2) {
+                System.out.println("s = " + s);
+            }
+
+            // NULLIF
+            String query3 = "select nullif(m.username, '관리자') from Member m";
+            List<String> resultList3 = em.createQuery(query3, String.class)
+                    .getResultList();
+
+            for (String s : resultList3) {
+                System.out.println("s = " + s);
+            }
+
 
             tx.commit();
         } catch (Exception e) {
