@@ -14,23 +14,39 @@ public class JpaMain {
 
         try {
 
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
             Member member = new Member();
             member.setUsername("newnew");
             member.setAge(10);
+            member.setTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
             
             // 제너릭으로 같고 있음
-            List<Member> resultList = em.createQuery("select m from Member m", Member.class)
+            List<Team> resultList = em.createQuery("select m.team from Member m", Team.class)
                     .getResultList();
 
-            Member findMember = resultList.get(0);
-            findMember.setAge(20);
+            Team findTeam = resultList.get(0);
+            // join query가 나감
+            System.out.println("----- 쿼리 나가는 시점 -----");
+            System.out.println("findTeam.getName() = " + findTeam.getName());
+            System.out.println("----- 쿼리 끝나는 시점 -----");
 
-            System.out.println("findMember.getAge() == 20? " + (findMember.getAge() == 20)); // true
-            System.out.println("true라면, 엔티티 프로젝션시 영속성 컨텍스트에서 관리되는 것이다.");   // 영속성 컨텍스트에서 관리 중
+            System.out.println("----- 실제 쿼리 -----");
+            System.out.println("select\n" +
+                    "            team1_.id as id1_3_,\n" +
+                    "            team1_.name as name2_3_ \n" +
+                    "        from\n" +
+                    "            Member member0_ \n" +
+                    "        inner join\n" +
+                    "            Team team1_ \n" +
+                    "                on member0_.TEAM_ID=team1_.id");
+            System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
 
