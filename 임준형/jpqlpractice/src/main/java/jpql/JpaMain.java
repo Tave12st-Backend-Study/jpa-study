@@ -19,22 +19,18 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
+            em.flush();
+            em.clear();
+            
             // 제너릭으로 같고 있음
-            TypedQuery<Member> query = em.createQuery("select m from Member m where m.username = :username", Member.class);
-            Member singleResult = query.setParameter("username", "newnew")
-                    .getSingleResult();
-            System.out.println("----- 쿼리가 나가는 시점 딩-----");
-            System.out.println("singleResult.getUsername() = " + singleResult.getUsername());
-            System.out.println("----- 쿼리가 종료 -----");
-            System.out.println("----- 실제 나가는 쿼리\n" +
-                    "Hibernate: \n" +
-                    "    /* select\n" +
-                    "        m \n" +
-                    "    from\n" +
-                    "        Member m \n" +
-                    "    where\n" +
-                    "        m.username = :username" +
-            "\n -----");
+            List<Member> resultList = em.createQuery("select m from Member m", Member.class)
+                    .getResultList();
+
+            Member findMember = resultList.get(0);
+            findMember.setAge(20);
+
+            System.out.println("findMember.getAge() == 20? " + (findMember.getAge() == 20)); // true
+            System.out.println("true라면, 엔티티 프로젝션시 영속성 컨텍스트에서 관리되는 것이다.");   // 영속성 컨텍스트에서 관리 중
 
             tx.commit(); // 성공하면 커밋
 
