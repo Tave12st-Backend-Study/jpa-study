@@ -45,35 +45,34 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 페치 조인을 사용하지 않는 경우
-            String query1 = "select m from Member m ";
+            // 컬렉션 페치 조인
+            String query1 = "select t from Team t join fetch t.members";
 
-            List<Member> result1 = em.createQuery(query1, Member.class)
+            List<Team> result1 = em.createQuery(query1, Team.class)
                     .getResultList();
 
-            for (Member member : result1) {
-                System.out.println("userName = " + member.getUsername() + ", " +
-                        "teamName = " + member.getTeam().getName());
-                // fetch = FetchType.LAZY로 설정했으므로 team은 프록시 객체로 가져온다.
-                // 회원1, 팀A(SQL)
-                // 회원2, 팀A(1차 캐시)
-                // 회원3, 팀B(SQL)
-                // ...
-                // 회원 100명 -> N + 1
+            System.out.println("result1 = " + result1.size());
+
+            for (Team team : result1) {
+                System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("-> member = " + member);
+                }
             }
 
-            em.flush();
-            em.clear();
+            // DISTINCT를 사용하여 중복 제거
+            String query2 = "select distinct t from Team t join fetch t.members";
 
-            // 페치 조인을 사용하는 경우
-            String query2 = "select m from Member m join fetch m.team";
-
-            List<Member> result2 = em.createQuery(query2, Member.class)
+            List<Team> result2 = em.createQuery(query2, Team.class)
                     .getResultList();
 
-            for (Member member : result2) {
-                System.out.println("userName = " + member.getUsername() + ", " +
-                        "teamName = " + member.getTeam().getName());
+            System.out.println("result1 = " + result2.size());
+
+            for (Team team : result2) {
+                System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("-> member = " + member);
+                }
             }
 
             tx.commit();
