@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -18,34 +19,54 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            em.persist(team);
+
             Member member1 = new Member();
             member1.setUsername("관리자1");
+            member1.setTeam(team);
             em.persist(member1);
 
             Member member2 = new Member();
             member2.setUsername("관리자2");
+            member2.setTeam(team);
             em.persist(member2);
 
             em.flush();
             em.clear();
 
-            // JPQL 기본 함수 - concat
-            String query1 = "select concat('a', 'b') from Member m";
-            // JPQL 기본 함수 - substring
-            String query2 = "select substring(m.username, 2, 3) from Member m";
-            // JPQL 기본 함수 - locate
-            String query3 = "select locate('de', 'abcdefg') from Member m";
-            // JPQL 기본 함수 - size
-            String query4 = "select size(t.members) from Team t";
-            // 사용자 정의 함수 - group_concat
-            String query5 = "select function('group_concat', m.username) from Member m";
-            String query6 = "select group_concat(m.username) from Member m";
-
-            List<String> result = em.createQuery(query6, String.class)
+            // 상태 필드 경로 탐색
+            String query1 = "select m.username from Member m";
+            List<String> result1 = em.createQuery(query1, String.class)
                     .getResultList();
 
-            for (String s : result) {
+            for (String s : result1) {
                 System.out.println("s = " + s);
+            }
+
+            // 단일 값 연관 경로
+            String query2 = "select m.team from Member m";
+            List<Team> result2 = em.createQuery(query2, Team.class)
+                    .getResultList();
+
+            for (Team s : result2) {
+                System.out.println("s = " + s);
+            }
+
+            // 컬렉션 값 연관 경로 - 묵시적 조인
+            String query3 = "select t.members from Team t"; // 묵시적 조인
+            List<Collection> result3 = em.createQuery(query3, Collection.class)
+                            .getResultList();
+
+            System.out.println("result = " + result3);
+
+            // 컬렉션 값 연관 경로 - 묵시적 조인
+            String query4 = "select m from Team t join t.members m"; // 명시적 조인
+            List<Member> result4 = em.createQuery(query4, Member.class)
+                    .getResultList();
+
+            for (Member m : result4) {
+                System.out.println("m = " + m);
             }
 
 
