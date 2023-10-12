@@ -27,9 +27,15 @@ public class JpaMain {
             em.flush();
             em.clear();
             
-            // 제너릭으로 같고 있음
-            List<Team> resultList = em.createQuery("select m.team from Member m", Team.class)
+            // 사용 xx 후에 경로 표현식에서 자세히 다룸
+            List<Team> resultList3 = em.createQuery("select m.team from Member m", Team.class)
                     .getResultList();
+
+            // 위는 예측이 불가능한 쿼리, 아래로 사용할 것
+            List<Team> resultList = em.createQuery("select m.team from Member m join m.team", Team.class)
+                    .getResultList();
+
+
 
             Team findTeam = resultList.get(0);
             // join query가 나감
