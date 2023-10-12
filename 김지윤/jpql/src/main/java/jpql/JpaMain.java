@@ -45,8 +45,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 컬렉션 페치 조인
-            String query1 = "select t from Team t join fetch t.members";
+            // 일반 조인
+            String query1 = "select t from Team t join t.members";
 
             List<Team> result1 = em.createQuery(query1, Team.class)
                     .getResultList();
@@ -60,13 +60,13 @@ public class JpaMain {
                 }
             }
 
-            // DISTINCT를 사용하여 중복 제거
-            String query2 = "select distinct t from Team t join fetch t.members";
+            // 페치 조인
+            String query2 = "select t from Team t join fetch t.members";
 
             List<Team> result2 = em.createQuery(query2, Team.class)
                     .getResultList();
 
-            System.out.println("result1 = " + result2.size());
+            System.out.println("result2 = " + result2.size());
 
             for (Team team : result2) {
                 System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
