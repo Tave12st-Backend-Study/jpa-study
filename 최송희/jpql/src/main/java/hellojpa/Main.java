@@ -48,23 +48,19 @@ public class Main {
                     member3.changeTeam(teamB);
                     em.persist(member3);
 
-                    em.flush();
-                    em.clear();
+                    //이 사이에서 flush가 자동으로 일어난다,
+                    //(flush 자동으로 일어나는 조건 : commit되기 전 or 쿼리가 실행되기 전)
 
+                    //db에 직접 벌크연산(한번에 update or delete 연산이 나가는 것) 발생
+                    //벌크연산일때는 영속성 컨텍스트에 반영되지 않음
+                    int resultCount = em.createQuery("update Member m set m.age = 20")
+                            .executeUpdate();
+                    System.out.println("resultCount = "+resultCount); //3 출력
 
-                    String jpqlDv2 = "select m from Member m where m = :member";
-                    String jpqlDv3 = "select m from Member m where m.team = :team";
-                    List<Member> teamList = em.createQuery(jpqlDv2, Member.class)
-                            .setParameter("member", member2)
-                            .getResultList();
+                    //영속성 컨텍스트에는 반영이 안되어있음(clear을 해야 데이터가 날아가는데
+                    //flush한다고 해서 데이터가 없어지는 게 아님)
 
-                    List<Member> teamList2 = em.createQuery(jpqlDv3, Member.class)
-                            .setParameter("team", teamA)
-                            .getResultList();
-
-                    for(Member member : teamList) {
-                       System.out.println(member);
-                    }
+                    tx.commit();
 
 
                 }catch(Exception e){
