@@ -21,7 +21,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member");
+//            member.setUsername("member");
             member.setAge(10);
             member.setTeam(team);
             member.setMemberType(MemberType.ADMIN);
@@ -31,30 +31,25 @@ public class JpaMain {
             em.flush();
             em.clear();
 
+            System.out.println("----- COALESCE: 하나씩 조회해서 null이 아니면 반환 -----");
+
             System.out.println("----- 쿼리 나가는 시점 -----");
 
-            String query = "select " +
-                    "case when m.age <= 10 then '학생요금'" +
-                         "when m.age >= 60 then '경로요금'" +
-                         "else '일반 요금' " +
-                         "end " +
-                    "from Member m";
+            String query = "select coalesce(m.username, '이름 없는 회원') " +
+                    "from Member m ";
             List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
 
             System.out.println("----- 쿼리 끝나는 시점-----\n");
 
-            for (String m : resultList) {
-                System.out.println("member의 요금 = " + m);
+            for (String s : resultList) {
+                System.out.println("s = " + s);
             }
 
             System.out.println("\n----- 실제 쿼리 -----");
             System.out.println("        select\n" +
-                    "            case \n" +
-                    "                when member0_.age<=10 then '학생요금' \n" +
-                    "                when member0_.age>=60 then '경로요금' \n" +
-                    "                else '일반 요금' \n" +
-                    "            end as col_0_0_ \n" +
+                    "            coalesce(member0_.username,\n" +
+                    "            '이름 없는 회원') as col_0_0_ \n" +
                     "        from\n" +
                     "            Member member0_");
             System.out.println("----- 실제 쿼리 끝 -----");
