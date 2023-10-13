@@ -21,7 +21,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-//            member.setUsername("member");
+            member.setUsername("관리자");
             member.setAge(10);
             member.setTeam(team);
             member.setMemberType(MemberType.ADMIN);
@@ -31,11 +31,11 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            System.out.println("----- COALESCE: 하나씩 조회해서 null이 아니면 반환 -----");
-
+            System.out.println("----- NULLIF: 두 값이 같으면 null 반환, 다르면 첫번째 값 반 -----");
+            System.out.println("----- 예를 들어, 관리자 이름을 숨기는 예제 -----");
             System.out.println("----- 쿼리 나가는 시점 -----");
 
-            String query = "select coalesce(m.username, '이름 없는 회원') " +
+            String query = "select nullif(m.username, '관리자') " +
                     "from Member m ";
             List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
