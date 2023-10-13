@@ -15,49 +15,51 @@ public class Main {
                 tx.begin();
                 try{
 
-                    Team team = new Team();
-                    team.setName("teamA");
-                    em.persist(team);
+                    Team teamA = new Team();
+                    teamA.setName("팀A");
+                    em.persist(teamA);
 
-                    Member member = new Member();
-                    member.setUsername("관리자");
-                    member.setAge(10);
-                    member.setMemberType(MemberType.ADMIN);
+                    Team teamB = new Team();
+                    teamB.setName("팀B");
+                    em.persist(teamB);
 
-                    member.changeTeam(team);
-                    em.persist(member);
+                    Member member1 = new Member();
+                    member1.setUsername("회원1");
+                    member1.setAge(20);
+                    member1.setMemberType(MemberType.ADMIN);
+
+                    member1.changeTeam(teamA);
+                    em.persist(member1);
 
                     Member member2 = new Member();
-                    member.setUsername("관리자2");
-                    member.setAge(20);
-                    member.setMemberType(MemberType.ADMIN);
+                    member2.setUsername("회원2");
+                    member2.setAge(20);
+                    member2.setMemberType(MemberType.ADMIN);
 
-                    member.changeTeam(team);
+                    member2.changeTeam(teamA);
                     em.persist(member2);
+
+
+                    Member member3 = new Member();
+                    member3.setUsername("회원3");
+                    member3.setAge(20);
+                    member3.setMemberType(MemberType.ADMIN);
+
+                    member3.changeTeam(teamB);
+                    em.persist(member3);
 
                     em.flush();
                     em.clear();
 
-                    String qeuryAn = "select m.team from Member m";
-                    //묵시적 내부 조인(단일 값 연관경로)
+                    String jpql = "select distinct t from Team t join fetch t.members";
+                    List<Team> teamList = em.createQuery(jpql, Team.class).getResultList();
 
-                    String query = "select t.members from Team t";
-                    //묵시적 내부 조인(컬렉션 값 연관경로)
-
-                    //컬렉션 값 연관경로 .. 탐색불가..컬렉션 자체가 반환되기에
-                    //대안 : from절을 통한 명시적 조인을 통해 가능
-
-                    String queryDv = "select m.username from Team t join t.members m";
-                    //명시적 조인 (컬렉션 값 연관경로) -join키워드 직접 사용
-
-                    //별칭을 통해 탐색 가능
-
-                    //결론: 묵시적 조인 쓰지 않는다. 쿼리 튜닝하기도 어렵다. 명시적 조인 추천
-
-                    List resultList = em.createQuery(query, Collection.class).getResultList();
-
-                    for(Object s : resultList){
-                        System.out.println(s);
+                    for(Team team : teamList) {
+                        System.out.println("teamname = " + team.getName() + ", team = " + team);
+                        for (Member member : team.getMembers()) {
+                            //페치 조인으로 팀과 회원을 함께 조회해서 지연 로딩 발생 안함
+                            System.out.println("-> username = " + member.getUsername()+ ", member = " + member);
+                        }
                     }
 
 
