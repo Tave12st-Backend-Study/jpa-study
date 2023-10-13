@@ -32,28 +32,31 @@ public class JpaMain {
             em.clear();
 
             System.out.println("----- 쿼리 나가는 시점 -----");
-            String query = "select m from Member m " +
-                            "where m.memberType = jpql.MemberType.ADMIN";
 
-            List<Member> resultList = em.createQuery(query, Member.class)
+            String query = "select " +
+                    "case when m.age <= 10 then '학생요금'" +
+                         "when m.age >= 60 then '경로요금'" +
+                         "else '일반 요금' " +
+                         "end " +
+                    "from Member m";
+            List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
 
-            for (Member member1 : resultList) {
-                System.out.println(member1);
-            }
             System.out.println("----- 쿼리 끝나는 시점-----\n");
+
+            for (String m : resultList) {
+                System.out.println("member의 요금 = " + m);
+            }
 
             System.out.println("\n----- 실제 쿼리 -----");
             System.out.println("        select\n" +
-                    "            member0_.id as id1_0_,\n" +
-                    "            member0_.age as age2_0_,\n" +
-                    "            member0_.memberType as memberTy3_0_,\n" +
-                    "            member0_.TEAM_ID as TEAM_ID5_0_,\n" +
-                    "            member0_.username as username4_0_ \n" +
+                    "            case \n" +
+                    "                when member0_.age<=10 then '학생요금' \n" +
+                    "                when member0_.age>=60 then '경로요금' \n" +
+                    "                else '일반 요금' \n" +
+                    "            end as col_0_0_ \n" +
                     "        from\n" +
-                    "            Member member0_ \n" +
-                    "        where\n" +
-                    "            member0_.memberType='ADMIN'");
+                    "            Member member0_");
             System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
