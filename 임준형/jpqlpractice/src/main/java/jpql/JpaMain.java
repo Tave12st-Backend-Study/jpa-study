@@ -49,7 +49,7 @@ public class JpaMain {
             em.clear();
 
             System.out.println("---------- 컬렉션에서 fetch 조인 ----------");
-            String collectionFetchJoinQuery = "select t From Team t join fetch t.memberList";
+            String collectionFetchJoinQuery = "select distinct t From Team t join fetch t.memberList";
         
             List<Team> result3 = em.createQuery(collectionFetchJoinQuery, Team.class).getResultList();
             for (Team team : result3) {
@@ -63,15 +63,12 @@ public class JpaMain {
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("teamA는 회원이 2명이다.");
-            System.out.println("teamB는 회원이 1명이다.");
-            System.out.println("그런데 왜");
-            System.out.println("'team.getName() = teamA\n" +
-                    "team.getMemberList().size() = 2'");
-            System.out.println("이렇게 2번 출력될까? ");
-            System.out.println("DB입장에서 1:N 조회하면 데이터가 뻥튀기가 된다.");
-            System.out.println("TeamA 입장에서는 1개인데, TeamA에 속한 Member가 2명이므로 2줄이 되는 것이다.");
-            System.out.println("TeamA의 대한 정보를 DB에서 처음에 갖고오고, 같은 TeamA는 이제 1차 캐시에서 갖고온다.");
+            System.out.println("방금 문제를 해결하려면 DISTINCT를 활용하면된다.");
+            System.out.println("SQL의 DISTINCT는 중복된 결과를 제거하는 명령이다.");
+            System.out.println("JPQL의 DISTINCT는 2가지 기능을 제공한다.");
+            System.out.println("1. SQL에 DISTINCT를 추가한다.");
+            System.out.println("2. 애플리케이션에서 엔티티의 중복을 제거한다.");
+            System.out.println("JPQL에서 같은 식별자를 가진 Team 엔티티를 제거하게된다.");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
