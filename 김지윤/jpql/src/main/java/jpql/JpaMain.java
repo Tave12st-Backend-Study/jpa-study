@@ -45,13 +45,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 일반 조인
-            String query1 = "select t from Team t join t.members";
-
+            // 페치 조인
+            String query1 = "select t from Team t join fetch t.members m";
             List<Team> result1 = em.createQuery(query1, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
                     .getResultList();
-
-            System.out.println("result1 = " + result1.size());
 
             for (Team team : result1) {
                 System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
@@ -60,15 +59,21 @@ public class JpaMain {
                 }
             }
 
-            // 페치 조인
-            String query2 = "select t from Team t join fetch t.members";
-
-            List<Team> result2 = em.createQuery(query2, Team.class)
+            // 페치 조인의 한계 - 페이징 해결 방법 1) 일대다 -> 다대일로 변경
+            String query2 = "select m from Member m join fetch m.team t";
+            List<Member> result2 = em.createQuery(query2, Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
                     .getResultList();
 
-            System.out.println("result2 = " + result2.size());
+            // 페치 조인의 한계 - 페이징 해결 방법 2) BatchSize 지정
+            String query3 = "select t from Team t join fetch t .members m";
+            List<Team> result3 = em.createQuery(query3, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(2)
+                    .getResultList();
 
-            for (Team team : result2) {
+            for (Team team : result3) {
                 System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
                 for (Member member : team.getMembers()) {
                     System.out.println("-> member = " + member);
