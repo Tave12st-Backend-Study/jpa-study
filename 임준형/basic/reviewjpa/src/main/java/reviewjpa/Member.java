@@ -22,9 +22,9 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    // 기간 Period
-    @Embedded
-    private Period workPeriod;
+//    // 기간 Period
+//    @Embedded
+//    private Period workPeriod;
 
     // 주소
     @Embedded
@@ -32,14 +32,15 @@ public class Member {
 
     // 주소
     // 같은 클래스를 사용하면 오류가 남 이럴 때
-    @Embedded
-    @AttributeOverrides(value = {@AttributeOverride(name = "city",
-                                    column = @Column(name = "WORK_CITY")),
-                                @AttributeOverride(name = "street",
-                                    column = @Column(name = "WORK_STREET")),
-                                @AttributeOverride(name = "zipcode",
-                                    column = @Column(name = "WORK_ZIPCODE")
-                                )})
-    private Address workAddress;
+    // 실제로 많이 사용하지 않음
+//    @Embedded
+//    @AttributeOverrides(value = {@AttributeOverride(name = "city",
+//                                    column = @Column(name = "WORK_CITY")),
+//                                @AttributeOverride(name = "street",
+//                                    column = @Column(name = "WORK_STREET")),
+//                                @AttributeOverride(name = "zipcode",
+//                                    column = @Column(name = "WORK_ZIPCODE")
+//                                )})
+//    private Address workAddress;
 
 }
