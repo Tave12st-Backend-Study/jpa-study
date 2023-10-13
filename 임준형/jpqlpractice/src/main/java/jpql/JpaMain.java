@@ -14,30 +14,32 @@ public class JpaMain {
 
         try {
 
-            for (int i = 0; i < 100; i++) {
-                Member member = new Member();
-                member.setUsername("member" + i);
-                member.setAge(i);
-                em.persist(member);
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
-            }
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+            member.setTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
             System.out.println("----- 쿼리 나가는 시점 -----");
-
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(10)
-                    .setMaxResults(20)
+            // inner 생략 가능
+            String query = "select m from Member m inner join m.team t where t.name = :teamName";
+            List<Member> result = em.createQuery(query, Member.class)
+                    .setParameter("teamName", "teamA")
                     .getResultList();
 
             System.out.println("----- 쿼리 끝나는 시점-----\n");
 
-            System.out.println("resultList.size() = " + resultList.size());
-            for (Member mm : resultList) {
-                System.out.println("mm = " + mm);
+            for (Member member1 : result) {
+                System.out.println("member1 = " + member1);
             }
+
             System.out.println("\n----- 실제 쿼리 -----");
             System.out.println("        select\n" +
                     "            member0_.id as id1_0_,\n" +
@@ -46,8 +48,11 @@ public class JpaMain {
                     "            member0_.username as username3_0_ \n" +
                     "        from\n" +
                     "            Member member0_ \n" +
-                    "        order by\n" +
-                    "            member0_.age desc limit ? offset ?");
+                    "        inner join\n" +
+                    "            Team team1_ \n" +
+                    "                on member0_.TEAM_ID=team1_.id \n" +
+                    "        where\n" +
+                    "            team1_.name=?");
             System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
