@@ -31,27 +31,24 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            System.out.println("----- NULLIF: 두 값이 같으면 null 반환, 다르면 첫번째 값 반 -----");
-            System.out.println("----- 예를 들어, 관리자 이름을 숨기는 예제 -----");
-            System.out.println("----- 쿼리 나가는 시점 -----");
 
-            String query = "select nullif(m.username, '관리자') " +
-                    "from Member m ";
-            List<String> resultList = em.createQuery(query, String.class)
-                    .getResultList();
+            System.out.println("----- 쿼리 시작 시점-----\n");
+
+            String concatQuery = "select concat('a', 'b') " +
+                    "from Member m "; // ab 연결
+
+            String substringQuery = "select substring(m.username, 2, 3) " +
+                    "from Member m "; // 2번째글자 반환
+
+            String locateQuery = "select locate('de', 'abcdefg') " +
+                    "from Member m ";   // 4반환
+
+            String collectionSize = "select size(t.memberList) " +
+                    "From Team t";      // memberList 크기 반환
 
             System.out.println("----- 쿼리 끝나는 시점-----\n");
 
-            for (String s : resultList) {
-                System.out.println("s = " + s);
-            }
-
             System.out.println("\n----- 실제 쿼리 -----");
-            System.out.println("        select\n" +
-                    "            coalesce(member0_.username,\n" +
-                    "            '이름 없는 회원') as col_0_0_ \n" +
-                    "        from\n" +
-                    "            Member member0_");
             System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
