@@ -15,50 +15,61 @@ public class Main {
                 tx.begin();
                 try{
 
-                    Team teamA = new Team();
-                    teamA.setName("팀A");
-                    em.persist(teamA);
+                    Team team1 = new Team();
+                    team1.setName("Team1");
+                    em.persist(team1);
 
-                    Team teamB = new Team();
-                    teamB.setName("팀B");
-                    em.persist(teamB);
+                    Team team2 = new Team();
+                    team2.setName("Team2");
+                    em.persist(team2);
 
                     Member member1 = new Member();
-                    member1.setUsername("회원1");
+                    member1.setUsername("member1");
                     member1.setAge(20);
                     member1.setMemberType(MemberType.ADMIN);
 
-                    member1.changeTeam(teamA);
+                    member1.changeTeam(team1);
                     em.persist(member1);
 
                     Member member2 = new Member();
-                    member2.setUsername("회원2");
+                    member2.setUsername("member2");
                     member2.setAge(20);
                     member2.setMemberType(MemberType.ADMIN);
 
-                    member2.changeTeam(teamA);
+                    member2.changeTeam(team1);
                     em.persist(member2);
 
 
                     Member member3 = new Member();
-                    member3.setUsername("회원3");
+                    member3.setUsername("member3");
                     member3.setAge(20);
                     member3.setMemberType(MemberType.ADMIN);
 
-                    member3.changeTeam(teamB);
+                    member3.changeTeam(team1);
                     em.persist(member3);
 
-                    //이 사이에서 flush가 자동으로 일어난다,
-                    //(flush 자동으로 일어나는 조건 : commit되기 전 or 쿼리가 실행되기 전)
+                    Member member4 = new Member();
+                    member4.setUsername("회원4");
+                    member4.setAge(20);
+                    member4.setMemberType(MemberType.ADMIN);
 
-                    //db에 직접 벌크연산(한번에 update or delete 연산이 나가는 것) 발생
-                    //벌크연산일때는 영속성 컨텍스트에 반영되지 않음
-                    int resultCount = em.createQuery("update Member m set m.age = 20")
-                            .executeUpdate();
-                    System.out.println("resultCount = "+resultCount); //3 출력
+                    member4.changeTeam(team2);
+                    em.persist(member4);
 
-                    //영속성 컨텍스트에는 반영이 안되어있음(clear을 해야 데이터가 날아가는데
-                    //flush한다고 해서 데이터가 없어지는 게 아님)
+                    Member member5 = new Member();
+                    member5.setUsername("회원5");
+                    member5.setAge(20);
+                    member5.setMemberType(MemberType.ADMIN);
+
+                    member5.changeTeam(team2);
+                    em.persist(member5);
+
+                    String query = "select distinct t From Team t join fetch t.members";
+                    List<Team> resultList = em.createQuery(query, Team.class).getResultList();
+
+                    for(Object o : resultList){
+                        System.out.println(o);
+                    }
 
                     tx.commit();
 
