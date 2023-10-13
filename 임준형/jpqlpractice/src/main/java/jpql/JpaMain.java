@@ -14,18 +14,33 @@ public class JpaMain {
 
         try {
 
-//            em.flush();
-//            em.clear();
+            Member member = new Member();
+            member.setUsername("userNNAAMMEE");
+            member.setAge(10);
+            em.persist(member);
 
-            // Order 안에 있는 임베디드 Adress 꺼내기가능, order에 의존적, 이것이 임베디드 타입의 한계
-            List<Order> resultList = em.createQuery("select o.address from Order o", Order.class)
+            em.flush();
+            em.clear();
+
+            System.out.println("----- 쿼리 나가는 시점 -----");
+
+            // username과 age는 타입이 다르므로 Member.class로 타입을 정할 수 없음
+            List<MemberDto> resultList = em.createQuery("select new jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
                     .getResultList();
 
-//            System.out.println("----- 쿼리 나가는 시점 -----");
-//            System.out.println("----- 쿼리 끝나는 시점 -----");
+            MemberDto memberDto = resultList.get(0);
+            System.out.println("----- 쿼리 끝나는 시점-----\n");
 
-//            System.out.println("----- 실제 쿼리 -----");
-//            System.out.println("----- 실제 쿼리 끝 -----");
+            System.out.println("memberDto.getUsername() = " + memberDto.getUsername());
+            System.out.println("memberDto.getAge() = " + memberDto.getAge());
+
+            System.out.println("\n----- 실제 쿼리 -----");
+            System.out.println("    select\n" +
+                    "        new jpql.MemberDto(m.username,\n" +
+                    "        m.age) \n" +
+                    "    from\n" +
+                    "        Member m");
+            System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
 
