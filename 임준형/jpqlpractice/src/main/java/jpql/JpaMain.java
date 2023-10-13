@@ -14,32 +14,40 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("userNNAAMMEE");
-            member.setAge(10);
-            em.persist(member);
+            for (int i = 0; i < 100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+
+            }
 
             em.flush();
             em.clear();
 
             System.out.println("----- 쿼리 나가는 시점 -----");
 
-            // username과 age는 타입이 다르므로 Member.class로 타입을 정할 수 없음
-            List<MemberDto> resultList = em.createQuery("select new jpql.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(10)
+                    .setMaxResults(20)
                     .getResultList();
 
-            MemberDto memberDto = resultList.get(0);
             System.out.println("----- 쿼리 끝나는 시점-----\n");
 
-            System.out.println("memberDto.getUsername() = " + memberDto.getUsername());
-            System.out.println("memberDto.getAge() = " + memberDto.getAge());
-
+            System.out.println("resultList.size() = " + resultList.size());
+            for (Member mm : resultList) {
+                System.out.println("mm = " + mm);
+            }
             System.out.println("\n----- 실제 쿼리 -----");
-            System.out.println("    select\n" +
-                    "        new jpql.MemberDto(m.username,\n" +
-                    "        m.age) \n" +
-                    "    from\n" +
-                    "        Member m");
+            System.out.println("        select\n" +
+                    "            member0_.id as id1_0_,\n" +
+                    "            member0_.age as age2_0_,\n" +
+                    "            member0_.TEAM_ID as TEAM_ID4_0_,\n" +
+                    "            member0_.username as username3_0_ \n" +
+                    "        from\n" +
+                    "            Member member0_ \n" +
+                    "        order by\n" +
+                    "            member0_.age desc limit ? offset ?");
             System.out.println("----- 실제 쿼리 끝 -----");
 
             tx.commit(); // 성공하면 커밋
