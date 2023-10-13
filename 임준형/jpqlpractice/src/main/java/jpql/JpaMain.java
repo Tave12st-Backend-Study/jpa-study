@@ -48,38 +48,24 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 엔티티 직접 사용
-            String query = "select m From Member m where m = :member";
-            Member findMember = em.createQuery(query, Member.class)
-                    .setParameter("member", member1)
-                    .getSingleResult();
-            System.out.println("findMember = " + findMember);
-
-            String query2 = "select m From Member m where m.team = :team";
-
-            // 외래 키 값으로 사용
-            List<Member> resultList = em.createQuery(query2, Member.class)
-                    .setParameter("team", teamA)
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "회원1")
                     .getResultList();
+
             for (Member member : resultList) {
                 System.out.println("member = " + member);
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("엔티티를 파라미터로 전달하거나 식별자를 직접 전달하거나 똑같이, 실행된 쿼리는");
-            System.out.println("select m.* from Member m where m.id=?");
-            System.out.println("위와 같다. 실제 쿼리는 아래와 같다.");
-            System.out.println("        select\n" +
-                    "            member0_.id as id1_0_,\n" +
-                    "            member0_.age as age2_0_,\n" +
-                    "            member0_.memberType as memberTy3_0_,\n" +
-                    "            member0_.TEAM_ID as TEAM_ID5_0_,\n" +
-                    "            member0_.username as username4_0_ \n" +
-                    "        from\n" +
-                    "            Member member0_ \n" +
-                    "        where\n" +
-                    "            member0_.id=?");
-
+            System.out.println("Named Query 사용법");
+            System.out.println("엔티티에 미리 생성해 놓는다. 나는 아래와 같이 미리 생성해두었다.");
+            System.out.println("@NamedQuery(\n" +
+                    "        name = \"Member.findByUsername\",\n" +
+                    "        query = \"select m from Member m where m.username = :username\"\n" +
+                    ")");
+            System.out.println("애플리케이션이 로딩될 시점에 쿼리를 검증한다. 이것이 매우 유용하다 !! 하지만.. ");
+            System.out.println("compile 오류가 발생함");
+            System.out.println("Spring Data Jpa에서 사용하는 @Query는 NamedQuery로 구현한 것이다. 그것을 사용하고 엔티티에 직접사용은 별로다!");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
