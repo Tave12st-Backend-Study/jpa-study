@@ -27,27 +27,22 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            System.out.println("----- 회원과 팀을 조인하면서, 팀 이름이 A인 팀만 조인 -----");
             System.out.println("----- 쿼리 나가는 시점 -----");
-            // outer 생략 가능, 조인 대상 필터링
-            String query = "select m from Member m left join m.team t on t.name='teamA'";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
+            System.out.println("----- 서브쿼리를 JPA에서는 select 안에 불가능하지만, 하이버네이트는 가능함. -----");
+            System.out.println("----- 당연히 where 에도 가능하지만 From 절에는 불가능하다 !  -----");
+            String query = "select (select avg(m1.age) From Member m1) from Member m left join m.team t on t.name='teamA'";
+
+            Double singleResult = (Double) em.createQuery(query).getSingleResult();
+            System.out.println("singleResult = " + singleResult);
 
             System.out.println("----- 쿼리 끝나는 시점-----\n");
 
             System.out.println("\n----- 실제 쿼리 -----");
-            System.out.println("    select\n" +
-                    "        m \n" +
-                    "    from\n" +
-                    "        Member m \n" +
-                    "    left join\n" +
-                    "        m.team t \n" +
-                    "            on t.name='teamA' */ select\n" +
-                    "                member0_.id as id1_0_,\n" +
-                    "                member0_.age as age2_0_,\n" +
-                    "                member0_.TEAM_ID as TEAM_ID4_0_,\n" +
-                    "                member0_.username as username3_0_ \n" +
+            System.out.println("        select\n" +
+                    "                (select\n" +
+                    "                    avg(cast(member2_.age as double)) \n" +
+                    "            from\n" +
+                    "                Member member2_) as col_0_0_ \n" +
                     "        from\n" +
                     "            Member member0_ \n" +
                     "        left outer join\n" +
