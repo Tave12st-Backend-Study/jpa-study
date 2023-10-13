@@ -1,9 +1,10 @@
 package jpql;
 
-import javax.persistence.*;
-import java.util.Collection;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
-import java.util.Objects;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -16,56 +17,67 @@ public class JpaMain {
 
         try {
 
-            Team team = new Team();
-            team.setName("teamA");
+            Team teamA = new Team();
+            teamA.setName("teamA");
 
-            em.persist(team);
+            em.persist(teamA);
 
-            Member member = new Member();
-            member.setUsername("관리자");
-            member.setAge(10);
-            member.setTeam(team);
-            member.setMemberType(MemberType.ADMIN);
+            Team teamB = new Team();
+            teamB.setName("teamB");
 
-            em.persist(member);
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("회원2");
+            member2.setTeam(teamA);
+
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(teamB);
+
+            em.persist(member3);
 
             em.flush();
             em.clear();
 
+            String query = "select m From Member m";
 
-            System.out.println("----- 경토 표현식 중 상태필드 -----");
-            System.out.println("----- 경로 탐색의 끝, 탐색 X -----");
-            // 상태 필드
-            String statusFieldQuery = "select m.username From Member m ";
+            List<Member> result1 = em.createQuery(query, Member.class).getResultList();
 
+            for (Member findMember : result1) {
+                System.out.println("findMember.getUsername() + findMember.getTeam().getName() = "
+                        + findMember.getUsername() + " " + findMember.getTeam().getName());
+            }
 
-            System.out.println("----- 단일 값 연관 경로: 묵시적 내부 조인(inner join) 발생 !!! DB에서 자동 조인 - 매우 중요 -----");
-            System.out.println("----- xxxToOne, 추가 탐색 가능 -----");
-            // 단일 값 연관 경로
-            String singleValueRelationPath = "select m.team From Member m ";
+            em.flush();
+            em.clear();
 
+            System.out.println("---------- 위 N+1 문제를 해결 ----------");
 
-            System.out.println("----- 컬렉션 값 연관 경로: 묵시적 내부 조인(inner join) 발생 !!! DB에서 자동 조인 - 매우 중요 -----");
-            System.out.println("----- xxxToMany, 컬렉션에서는 추가 탐색 불가 -----");
-            // 컬렉션 값 연관 경로
-            String collectionValueRelationPath = "select t.memberList From Team t ";
-            // ex) team의 Member를 조인해서 username을 찍고 싶을 때 탐색이 불가능함 명시적인 조인을 써야함
-            String collectionValueRelationPath2 = "select m.username From Team t join t.memberList m "; // 명시적조인
+            String fetchJoinQuery = "select m From Member m join fetch m.team";
 
-            List<String> result1 = em.createQuery(statusFieldQuery, String.class).getResultList();
-            List<Team> result2 = em.createQuery(singleValueRelationPath, Team.class).getResultList();
-            Collection result3 = em.createQuery(collectionValueRelationPath, Collection.class).getResultList();
-            List<String> result4 = em.createQuery(collectionValueRelationPath2, String.class).getResultList();
-
-            for (String s : result4) {
-                System.out.println("username = " + s);
+            List<Member> result3 = em.createQuery(fetchJoinQuery, Member.class).getResultList();
+            for (Member findFetchJoinMember : result3) {
+                System.out.println("findFetchJoinMember.getUsername = " + findFetchJoinMember.getUsername() + " " + findFetchJoinMember.getTeam().getName()) ;
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("묵시적 내부 조인 절대 금지!! 명시적인 조인을 사용할 것");
-            System.out.println("묵시적 조인시 항상 내부 조인이다.");
-            System.out.println("컬렉션은 경로 탐색의 끝이며, 명시적 조인을 통해 별칭을 꼭 얻어야 사용 가능하다.");
-            System.out.println("경로 탐색은 주로 SELECT, WHERE 절에서 사용하지만 묵시적 조인으로 인해 SQL의 FROM (JOIN) 절에 영향을 준다");
+            System.out.println("지연로딩이므로 Team은 현재 Proxy객체, member.getUsername()했을 때는 조회되지 않음");
+            System.out.println("member.getTeam().getName() -> 이 때 Team에 대한 정보 조회 쿼리가 나감");
+            System.out.println("지금 영속성 컨텍스트가 깔끔한 상태이기 때문에 회원1일 때 팀 A를 DB에서 가져옴 SQL");
+            System.out.println("회원 2도 팀 A인데, 영속성 컨텍스트 속 1차캐시에 존재하기 때문에 1차캐시에서 가져옴");
+            System.out.println("회원 3은 팀 B이고, 영속성 컨텍스트에 없기 때문에 DB에서 가져옴 SQL");
+            System.out.println("회원 100명을 조회시 팀이 전부 다르다면, 조회하기 위해 101 번이 돈다. 그래서 N+1 문제라고 함");
+            System.out.println("즉시로딩을 사용하면 모든 엔티티를 조회하므로 안좋고, 지연로딩시 N+1 문제가 발생하므로 안 좋음");
+            System.out.println("이를 관련된 쿼리만을 조인하여 한 번에 조인하는 fetch join으로 해결한다. 이 때, Proxy가 아닌 엔티티객체이다.");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
