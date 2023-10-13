@@ -48,38 +48,38 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select t From Team t";
-            List<Team> resultList = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            // 엔티티 직접 사용
+            String query = "select m From Member m where m = :member";
+            Member findMember = em.createQuery(query, Member.class)
+                    .setParameter("member", member1)
+                    .getSingleResult();
+            System.out.println("findMember = " + findMember);
+
+            String query2 = "select m From Member m where m.team = :team";
+
+            // 외래 키 값으로 사용
+            List<Member> resultList = em.createQuery(query2, Member.class)
+                    .setParameter("team", teamA)
                     .getResultList();
-
-            System.out.println("resultList.size() = " + resultList.size());
-
-            for (Team team : resultList) {
-                System.out.println("team.getName() = " + team.getName());
-                System.out.println("team.getMemberList().size() = " + team.getMemberList().size());
-
-                for (Member member : team.getMemberList()) {
-                    System.out.println("member = " + member);
-                }
+            for (Member member : resultList) {
+                System.out.println("member = " + member);
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("-- fetch join에서는 별칭(앨리어스)를 사용하면 안된다.--");
-            System.out.println("fetch join은 본인과 연관된 모두를 갖고 온다.");
-            System.out.println("앨리어스와 where를 통해 데이터를 조작하면, 본인과 연관된 모두가 아닌 특정 일부일 수 있기 때문에 좋지 않다.");
+            System.out.println("엔티티를 파라미터로 전달하거나 식별자를 직접 전달하거나 똑같이, 실행된 쿼리는");
+            System.out.println("select m.* from Member m where m.id=?");
+            System.out.println("위와 같다. 실제 쿼리는 아래와 같다.");
+            System.out.println("        select\n" +
+                    "            member0_.id as id1_0_,\n" +
+                    "            member0_.age as age2_0_,\n" +
+                    "            member0_.memberType as memberTy3_0_,\n" +
+                    "            member0_.TEAM_ID as TEAM_ID5_0_,\n" +
+                    "            member0_.username as username4_0_ \n" +
+                    "        from\n" +
+                    "            Member member0_ \n" +
+                    "        where\n" +
+                    "            member0_.id=?");
 
-            System.out.println("\n-- 둘 이상의 컬렉션은 fetch join을 사용할 수 없다.");
-
-            System.out.println("\n-- 컬렉션은 fetch join하면 페이징 API(setFirstResult, setMaxResults)를 사용할 수 없다 --");
-            System.out.println("일대일, 다대다 같은 단일 값 연관 필드들은 fetch join해도 페이징이 가능하다.");
-            System.out.println("하지만 일대다는 데이터가 뻥튀기가 되기 떄문에, 갖고 오다가 짤려 데이터가 누락됐지만 데이터가 적게 표출되는 것이 정상처럼 보임");
-            System.out.println("\n컬렉션일 때의 이를 해결하기 위한 방법으로는, @BatchSize 를 사용하면 해결할 수 있다.");
-            System.out.println("지금 @BatchSize를 100으로 했기 때문에, Lazy이지만 100개씩 조회를 한다.");
-            System.out.println("직접 @BatchSize를 사용하거나, default 설정으로 세팅을 한다.");
-            System.out.println("여러 테이블을 조인해서 엔티티가 가진 모양이 아닌 전혀 다른 결과를 내야하면, ");
-            System.out.println("페치 조인보다는 일반 조인을 사용하고 필요한 데이터들만 조회해서 DTO로 반환하는 것이 효과적이다.");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
