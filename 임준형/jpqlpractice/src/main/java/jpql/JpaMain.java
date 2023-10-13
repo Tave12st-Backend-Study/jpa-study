@@ -48,36 +48,30 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m From Member m";
+            System.out.println("---------- 컬렉션에서 fetch 조인 ----------");
+            String collectionFetchJoinQuery = "select t From Team t join fetch t.memberList";
+        
+            List<Team> result3 = em.createQuery(collectionFetchJoinQuery, Team.class).getResultList();
+            for (Team team : result3) {
+                System.out.println("team.getName() = " + team.getName());
+                System.out.println("team.getMemberList().size() = " + team.getMemberList().size());
 
-            List<Member> result1 = em.createQuery(query, Member.class).getResultList();
-
-            for (Member findMember : result1) {
-                System.out.println("findMember.getUsername() + findMember.getTeam().getName() = "
-                        + findMember.getUsername() + " " + findMember.getTeam().getName());
-            }
-
-            em.flush();
-            em.clear();
-
-            System.out.println("---------- 위 N+1 문제를 해결 ----------");
-
-            String fetchJoinQuery = "select m From Member m join fetch m.team";
-
-            List<Member> result3 = em.createQuery(fetchJoinQuery, Member.class).getResultList();
-            for (Member findFetchJoinMember : result3) {
-                System.out.println("findFetchJoinMember.getUsername = " + findFetchJoinMember.getUsername() + " " + findFetchJoinMember.getTeam().getName()) ;
+                for (Member member : team.getMemberList()) {
+                    System.out.println("member = " + member);
+                }
+                System.out.println("------------------------------------");
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("지연로딩이므로 Team은 현재 Proxy객체, member.getUsername()했을 때는 조회되지 않음");
-            System.out.println("member.getTeam().getName() -> 이 때 Team에 대한 정보 조회 쿼리가 나감");
-            System.out.println("지금 영속성 컨텍스트가 깔끔한 상태이기 때문에 회원1일 때 팀 A를 DB에서 가져옴 SQL");
-            System.out.println("회원 2도 팀 A인데, 영속성 컨텍스트 속 1차캐시에 존재하기 때문에 1차캐시에서 가져옴");
-            System.out.println("회원 3은 팀 B이고, 영속성 컨텍스트에 없기 때문에 DB에서 가져옴 SQL");
-            System.out.println("회원 100명을 조회시 팀이 전부 다르다면, 조회하기 위해 101 번이 돈다. 그래서 N+1 문제라고 함");
-            System.out.println("즉시로딩을 사용하면 모든 엔티티를 조회하므로 안좋고, 지연로딩시 N+1 문제가 발생하므로 안 좋음");
-            System.out.println("이를 관련된 쿼리만을 조인하여 한 번에 조인하는 fetch join으로 해결한다. 이 때, Proxy가 아닌 엔티티객체이다.");
+            System.out.println("teamA는 회원이 2명이다.");
+            System.out.println("teamB는 회원이 1명이다.");
+            System.out.println("그런데 왜");
+            System.out.println("'team.getName() = teamA\n" +
+                    "team.getMemberList().size() = 2'");
+            System.out.println("이렇게 2번 출력될까? ");
+            System.out.println("DB입장에서 1:N 조회하면 데이터가 뻥튀기가 된다.");
+            System.out.println("TeamA 입장에서는 1개인데, TeamA에 속한 Member가 2명이므로 2줄이 되는 것이다.");
+            System.out.println("TeamA의 대한 정보를 DB에서 처음에 갖고오고, 같은 TeamA는 이제 1차 캐시에서 갖고온다.");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
