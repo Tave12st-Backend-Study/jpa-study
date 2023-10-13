@@ -48,27 +48,38 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            System.out.println("---------- 컬렉션에서 fetch 조인 ----------");
-            String collectionFetchJoinQuery = "select distinct t From Team t join fetch t.memberList";
-        
-            List<Team> result3 = em.createQuery(collectionFetchJoinQuery, Team.class).getResultList();
-            for (Team team : result3) {
+            String query = "select t From Team t";
+            List<Team> resultList = em.createQuery(query, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
+                    .getResultList();
+
+            System.out.println("resultList.size() = " + resultList.size());
+
+            for (Team team : resultList) {
                 System.out.println("team.getName() = " + team.getName());
                 System.out.println("team.getMemberList().size() = " + team.getMemberList().size());
 
                 for (Member member : team.getMemberList()) {
                     System.out.println("member = " + member);
                 }
-                System.out.println("------------------------------------");
             }
 
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("방금 문제를 해결하려면 DISTINCT를 활용하면된다.");
-            System.out.println("SQL의 DISTINCT는 중복된 결과를 제거하는 명령이다.");
-            System.out.println("JPQL의 DISTINCT는 2가지 기능을 제공한다.");
-            System.out.println("1. SQL에 DISTINCT를 추가한다.");
-            System.out.println("2. 애플리케이션에서 엔티티의 중복을 제거한다.");
-            System.out.println("JPQL에서 같은 식별자를 가진 Team 엔티티를 제거하게된다.");
+            System.out.println("-- fetch join에서는 별칭(앨리어스)를 사용하면 안된다.--");
+            System.out.println("fetch join은 본인과 연관된 모두를 갖고 온다.");
+            System.out.println("앨리어스와 where를 통해 데이터를 조작하면, 본인과 연관된 모두가 아닌 특정 일부일 수 있기 때문에 좋지 않다.");
+
+            System.out.println("\n-- 둘 이상의 컬렉션은 fetch join을 사용할 수 없다.");
+
+            System.out.println("\n-- 컬렉션은 fetch join하면 페이징 API(setFirstResult, setMaxResults)를 사용할 수 없다 --");
+            System.out.println("일대일, 다대다 같은 단일 값 연관 필드들은 fetch join해도 페이징이 가능하다.");
+            System.out.println("하지만 일대다는 데이터가 뻥튀기가 되기 떄문에, 갖고 오다가 짤려 데이터가 누락됐지만 데이터가 적게 표출되는 것이 정상처럼 보임");
+            System.out.println("\n컬렉션일 때의 이를 해결하기 위한 방법으로는, @BatchSize 를 사용하면 해결할 수 있다.");
+            System.out.println("지금 @BatchSize를 100으로 했기 때문에, Lazy이지만 100개씩 조회를 한다.");
+            System.out.println("직접 @BatchSize를 사용하거나, default 설정으로 세팅을 한다.");
+            System.out.println("여러 테이블을 조인해서 엔티티가 가진 모양이 아닌 전혀 다른 결과를 내야하면, ");
+            System.out.println("페치 조인보다는 일반 조인을 사용하고 필요한 데이터들만 조회해서 DTO로 반환하는 것이 효과적이다.");
             System.out.println("-------------------------------------------------------------------------------------");
 
             tx.commit(); // 성공하면 커밋
