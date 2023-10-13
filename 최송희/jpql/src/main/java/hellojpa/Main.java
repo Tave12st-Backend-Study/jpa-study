@@ -52,37 +52,18 @@ public class Main {
                     em.clear();
 
 
-                    //1
-                    String jpql = "select distinct t from Team t join fetch t.members";
-//                    List<Team> teamList = em.createQuery(jpql, Team.class)
-//                            .setFirstResult(0)
-//                            .setMaxResults(1)
-//                            .getResultList();
-
-                    //일대다 페치조인 주의할 점
-                    //- 둘 이상의 컬렉션은 페치조인할 수 없다.
-                    //- 컬렉션을 페치조인하면 데이터 뻥튀기.. 한번에 데이터 조회후,
-                    //  메모리에서 페이징 API가 적용되므로 경고로그가 나온다.(매우 위험)
-
-                    //+ 별칭 사용 불가
-                    String jpqls = "select t From Team t join fetch t.members m where m.age>10";
-
-                    //2
-                    String jpqlDv = "select m from Member m join fetch m.team t";
-                   // 위 일대다 페치조인 페이징 API의 대안 : 다대일 페치조인으로 뒤집어서 페이징 api 적용
-
-
-                    //3
-                    String jpqlDv2 = "select t from Team t"; //+ BatchSize(size = 100)정도
-                    List<Team> teamList = em.createQuery(jpqlDv2, Team.class)
+                    String jpqlDv2 = "select m from Member m where m = :member";
+                    String jpqlDv3 = "select m from Member m where m.team = :team";
+                    List<Member> teamList = em.createQuery(jpqlDv2, Member.class)
+                            .setParameter("member", member2)
                             .getResultList();
 
-                    for(Team team : teamList) {
-                        System.out.println("teamname = " + team.getName() + ", team = " + team);
-                        for (Member member : team.getMembers()) {
-                            //페치 조인으로 팀과 회원을 함께 조회해서 지연 로딩 발생 안함
-                            System.out.println("-> username = " + member.getUsername()+ ", member = " + member);
-                        }
+                    List<Member> teamList2 = em.createQuery(jpqlDv3, Member.class)
+                            .setParameter("team", teamA)
+                            .getResultList();
+
+                    for(Member member : teamList) {
+                       System.out.println(member);
                     }
 
 
