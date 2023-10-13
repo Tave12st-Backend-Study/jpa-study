@@ -45,40 +45,23 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 페치 조인
-            String query1 = "select t from Team t join fetch t.members m";
-            List<Team> result1 = em.createQuery(query1, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList();
+            // 엔티티를 파라미터로 전달
+            String query1 = "select m from Member m where m = :member";
+            Member findMember1 = em.createQuery(query1, Member.class)
+                    .setParameter("member", member1)
+                    .getSingleResult();
 
-            for (Team team : result1) {
-                System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println("-> member = " + member);
-                }
-            }
+            System.out.println("findMember1 = " + findMember1);
 
-            // 페치 조인의 한계 - 페이징 해결 방법 1) 일대다 -> 다대일로 변경
-            String query2 = "select m from Member m join fetch m.team t";
-            List<Member> result2 = em.createQuery(query2, Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList();
+            // 식별자를 직접 전달
+            String query2 = "select m from Member m where m.id = :memberId";
+            Member findMember2 = em.createQuery(query2, Member.class)
+                    .setParameter("memberId", member1.getId())
+                    .getSingleResult();
 
-            // 페치 조인의 한계 - 페이징 해결 방법 2) BatchSize 지정
-            String query3 = "select t from Team t join fetch t .members m";
-            List<Team> result3 = em.createQuery(query3, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList();
+            System.out.println("findMember2 = " + findMember2);
 
-            for (Team team : result3) {
-                System.out.println("team = " + team.getName() + ", members = " + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println("-> member = " + member);
-                }
-            }
+
 
             tx.commit();
         } catch (Exception e) {
