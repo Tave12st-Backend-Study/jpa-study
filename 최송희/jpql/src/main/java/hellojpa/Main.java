@@ -22,38 +22,7 @@ public class Main {
 
                     em.persist(member1);
 
-                    Member member2 = new Member();
-                    member2.setUsername("member2");
-                    member2.setAge(20);
-                    member2.setMemberType(MemberType.ADMIN);
-
-                    em.persist(member2);
-
-
-                    Member member3 = new Member();
-                    member3.setUsername("member3");
-                    member3.setAge(20);
-                    member3.setMemberType(MemberType.ADMIN);
-
-                    em.persist(member3);
-
-                    Member member4 = new Member();
-                    member4.setUsername("회원4");
-                    member4.setAge(20);
-                    member4.setMemberType(MemberType.ADMIN);
-
-                    em.persist(member4);
-
-                    int updateNUM = em.createQuery(
-                                    "UPDATE Member m SET m.username= 'songhee' where m.username = :name")
-                            .setParameter("name", "회원4")
-                            .executeUpdate();
-
-                    em.clear();
-
-
-                    Member findMember = em.find(Member.class, member4.getId());
-                    System.out.println("findMember name = " + findMember.getUsername());
+                    member1.setAge(10);
 
                     tx.commit();
 

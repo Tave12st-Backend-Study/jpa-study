@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @NamedQuery(
@@ -7,6 +9,7 @@ import javax.persistence.*;
         query = "select m from Member m where m.username = :username"
 )
 @Entity
+@DynamicUpdate
 public class Member {
     @Id @GeneratedValue
     private Long id;
