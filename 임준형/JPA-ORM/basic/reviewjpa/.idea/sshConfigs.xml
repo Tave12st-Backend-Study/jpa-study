@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="3.37.82.201" id="5e332bb9-2a13-48af-8cc5-40e8d5fbdb2d" keyPath="$USER_HOME$/.ssh/UMC-5th-key.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
+      <sshConfig host="15.164.26.215" id="9f7af273-027c-4009-90d6-20e7875d02bc" keyPath="$USER_HOME$/.ssh/UMC-5th-key.pem" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

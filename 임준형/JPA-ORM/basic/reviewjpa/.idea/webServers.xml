@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="feb5acbf-b2fc-41ec-af1e-acc44806d781" name="UMC-5th-week2">
+        <fileTransfer accessType="SFTP" host="3.37.82.201" port="22" sshConfigId="5e332bb9-2a13-48af-8cc5-40e8d5fbdb2d" sshConfig="ubuntu@3.37.82.201:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="44aeec95-ae36-47bd-b2f0-0c7f4efed6ca" name="UMC-Week3">
+        <fileTransfer accessType="SFTP" host="15.164.26.215" port="22" sshConfigId="9f7af273-027c-4009-90d6-20e7875d02bc" sshConfig="ubuntu@15.164.26.215:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
