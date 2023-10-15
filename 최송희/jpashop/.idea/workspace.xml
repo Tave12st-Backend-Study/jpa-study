@@ -4,49 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="566eb63e-1aae-41ab-9624-979b16ae2a0b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Address.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Album.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/BaseEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Child.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Delivery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/DeliveryStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Member.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/MemberProduct.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Movie.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/OrderItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/OrderStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Orders.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Parent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Period.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/Team.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/JpashopApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/jpabook/jpashop/JpashopApplicationTests.java" beforeDir="false" />
+    <list default="true" id="6fc6808c-f512-408d-a954-730280b67ff1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -54,11 +42,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 5
-}]]></component>
-  <component name="ProjectId" id="2Wnwb57zQSIPnpp5GHIHXPyyi7f" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2WnwxYhfAIKa8eCvyGqVLwDXaZs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -68,18 +55,46 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "choisonghee",
-    "last_opened_file_path": "C:/Users/user/Desktop/컴퓨터/jpashop/build.gradle"
+    "last_opened_file_path": "C:/Users/user/Desktop/컴퓨터/TAVE-jpa-study/최송희/jpashop",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="JpashopApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.JpashopApplication" />
+      <module name="jpashop.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jpabook.jpashop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.JpashopApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="566eb63e-1aae-41ab-9624-979b16ae2a0b" name="Changes" comment="" />
-      <created>1697381719916</created>
+      <changelist id="6fc6808c-f512-408d-a954-730280b67ff1" name="Changes" comment="" />
+      <created>1697381898415</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1697381719916</updated>
+      <updated>1697381898415</updated>
     </task>
     <servers />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
