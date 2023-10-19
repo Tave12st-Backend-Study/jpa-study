@@ -1,7 +1,6 @@
-package domain;
+package jpabook.jpashop.domain;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

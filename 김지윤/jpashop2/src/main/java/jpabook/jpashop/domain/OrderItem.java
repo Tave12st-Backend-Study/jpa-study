@@ -1,6 +1,6 @@
-package domain;
+package jpabook.jpashop.domain;
 
-import domain.item.Item;
+import jpabook.jpashop.domain.item.Item;
 import lombok.Getter;
 import lombok.Setter;
 
