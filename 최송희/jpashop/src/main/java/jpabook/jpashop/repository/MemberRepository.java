@@ -1,6 +1,7 @@
 package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,9 +11,11 @@ import java.util.List;
 
 @Repository
 //컴포넌트 스캔의 대상이 된다
+@RequiredArgsConstructor
 public class MemberRepository {
-    @PersistenceContext
-    private EntityManager em; //스프링에서 em을 자동으로 주입
+
+    //@PersistenceContext  // spring data jpa -> @Autowired로 바꿀 수 있다.
+    private final EntityManager em; //스프링에서 em을 자동으로 주입(생성자로)
 
     public void save(Member member){
         em.persist(member);
