@@ -35,7 +35,7 @@ public class Category {
     //같은 엔티티에 대해 양방향 매핑
 
     //연관관계 메서드
-    
+
     public void addChildCategory(Category child){
         this.child.add(child);
         child.setParent(this);
