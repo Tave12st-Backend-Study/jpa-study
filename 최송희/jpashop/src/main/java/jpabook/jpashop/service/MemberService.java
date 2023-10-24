@@ -15,8 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
+    //대안 1
     private final MemberRepository memberRepository;
+
     /*
+    대안 2
+
     생성자 주입
     private final MemberRepository memberRepository;
 
@@ -41,7 +45,7 @@ public class MemberService {
         List<Member> findMembers = memberRepository.findByName(member.getName());
 
         if(!findMembers.isEmpty()){
-            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
 
