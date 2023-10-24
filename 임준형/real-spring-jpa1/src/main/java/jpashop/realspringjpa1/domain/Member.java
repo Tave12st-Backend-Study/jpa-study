@@ -24,9 +24,4 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
-//    private void mappingMember(Order order) {
-//        order.
-//        this.orders.add(order);
-//    }
-
 }

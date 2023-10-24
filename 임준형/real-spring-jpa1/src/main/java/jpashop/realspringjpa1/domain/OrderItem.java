@@ -3,8 +3,12 @@ package jpashop.realspringjpa1.domain;
 import jpashop.realspringjpa1.domain.item.Item;
 
 import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Setter
+@Getter
 public class OrderItem {
 
     @Id
