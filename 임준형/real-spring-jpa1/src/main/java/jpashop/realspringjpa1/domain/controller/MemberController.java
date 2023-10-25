@@ -1,9 +1,11 @@
 package jpashop.realspringjpa1.domain.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 import jpashop.realspringjpa1.domain.Address;
 import jpashop.realspringjpa1.domain.Member;
 import jpashop.realspringjpa1.domain.service.MemberService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,6 @@ public class MemberController {
             return "members/createMemberForm";
         }
 
-
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
         Member member = new Member();
@@ -42,5 +43,12 @@ public class MemberController {
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
     }
 }
