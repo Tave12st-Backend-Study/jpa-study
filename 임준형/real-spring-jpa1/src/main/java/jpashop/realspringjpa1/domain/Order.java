@@ -9,12 +9,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.ToString;
 
 @Entity
 @Table(name = "orders")
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Order {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,7 +98,7 @@ public class Order {
     /*
     int totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
-            totalPrice =+ orderItem.getTotalPrice();
+            totalPrice += orderItem.getTotalPrice();
         }
         return totalPrice;
         아래와 같은 코드

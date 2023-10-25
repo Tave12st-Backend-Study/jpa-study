@@ -36,7 +36,7 @@ public class OrderItem {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setCount(count);
-
+        orderItem.setOrderPrice(orderPrice);
         // 재고 줄이기
         item.removeStock(count);
         return orderItem;

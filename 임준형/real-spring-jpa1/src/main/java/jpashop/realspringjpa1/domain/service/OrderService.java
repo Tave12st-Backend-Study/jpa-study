@@ -2,6 +2,7 @@ package jpashop.realspringjpa1.domain.service;
 
 import java.util.List;
 import jpashop.realspringjpa1.domain.Delivery;
+import jpashop.realspringjpa1.domain.DeliveryStatus;
 import jpashop.realspringjpa1.domain.Member;
 import jpashop.realspringjpa1.domain.Order;
 import jpashop.realspringjpa1.domain.OrderItem;
@@ -33,6 +34,7 @@ public class OrderService {
         // 배송 정보 생성
         Delivery delivery = new Delivery();
         delivery.setAddress(findMember.getAddress());
+        delivery.setStatus(DeliveryStatus.READY);
 
         // 주문 상품 생성
         OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
