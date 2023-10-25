@@ -4,13 +4,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import jpashop.realspringjpa1.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+    // spring에서 @PersistContext를 의존성 주입처럼 @Autowired도 지원을 해준다.
+    private final EntityManager em;
 
     public void save(Member member) {
         em.persist(member);
