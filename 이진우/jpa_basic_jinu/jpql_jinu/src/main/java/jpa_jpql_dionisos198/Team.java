@@ -14,7 +14,7 @@ public class Team {
     @Id @GeneratedValue
     private Long id;
     @OneToMany(mappedBy = "team")
-    @BatchSize(size = 100)
+    @BatchSize(size = 3)
     private List<Member> members=new ArrayList<>();
 
     public List<Member> getMembers() {
