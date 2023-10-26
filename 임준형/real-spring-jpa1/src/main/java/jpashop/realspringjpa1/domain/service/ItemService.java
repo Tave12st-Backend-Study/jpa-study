@@ -1,6 +1,7 @@
 package jpashop.realspringjpa1.domain.service;
 
 import java.util.List;
+import jpashop.realspringjpa1.domain.item.Book;
 import jpashop.realspringjpa1.domain.item.Item;
 import jpashop.realspringjpa1.domain.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,21 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
+    }
+
+    @Transactional
+    public Item updateItem(Long itemId, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findOne(itemId);
+
+        /**
+         * 아래와 같은 메서드를 만드는게 훨씬 남
+         * findItem.change(name, price, stockQuantity)
+         */
+
+        findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);
+        return findItem;
     }
 
     public List<Item> findItems() {
