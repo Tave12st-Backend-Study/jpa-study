@@ -4,18 +4,23 @@ import jpabook_jinu.jpashop_jinu.domain.Member;
 import jpabook_jinu.jpashop_jinu.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
+@ExtendWith(SpringExtension.class)
 public class MemberServiceTest {
     @Autowired MemberService memberService;
     @Autowired MemberRepository memberRepository;
@@ -45,15 +50,10 @@ public class MemberServiceTest {
 
         //when
         memberService.join(member1);
-        try{
-            memberService.join(member2);
-
-        }catch (IllegalStateException e){
-           return;
-        }
+        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
 
         //then
-        fail("예외가 발생햐아 한다");
+        assertEquals("이미 존재하는 회원입니다", thrown.getMessage());
 
     }
 
