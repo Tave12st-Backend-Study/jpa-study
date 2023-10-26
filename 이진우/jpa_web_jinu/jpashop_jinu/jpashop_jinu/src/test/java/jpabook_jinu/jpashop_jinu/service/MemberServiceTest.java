@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -16,10 +17,10 @@ import javax.persistence.PersistenceContext;
 public class MemberServiceTest {
     @Autowired MemberService memberService;
     @Autowired MemberRepository memberRepository;
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Test
+    @Rollback(value = false)
     public void 회원가입() throws Exception{
         //given
         Member member=new Member();
@@ -27,7 +28,6 @@ public class MemberServiceTest {
 
         //when
         Long saveId=memberService.join(member);
-        em.flush();
         //then
 
         Assertions.assertThat(member.getId()).isEqualTo(saveId);
