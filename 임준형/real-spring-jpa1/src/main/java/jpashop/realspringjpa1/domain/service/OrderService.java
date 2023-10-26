@@ -10,6 +10,7 @@ import jpashop.realspringjpa1.domain.item.Item;
 import jpashop.realspringjpa1.domain.repository.ItemRepository;
 import jpashop.realspringjpa1.domain.repository.MemberRepository;
 import jpashop.realspringjpa1.domain.repository.OrderRepository;
+import jpashop.realspringjpa1.domain.repository.dto.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +60,7 @@ public class OrderService {
     }
 
     // 검색
-//    public List<Order> findOrders(OrderSearch orderSearch) {
-//        return orderRepository.findAll(order());
-//    }
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAllByString(orderSearch);
+    }
 }
