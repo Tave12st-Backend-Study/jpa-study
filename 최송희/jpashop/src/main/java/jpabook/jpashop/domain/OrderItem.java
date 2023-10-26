@@ -39,7 +39,7 @@ public class OrderItem {
 
 
     //==비즈니스 로직==//
-    
+
     public void cancel() {
         getItem().addStockQuantity(count); //재고 원복
     }
