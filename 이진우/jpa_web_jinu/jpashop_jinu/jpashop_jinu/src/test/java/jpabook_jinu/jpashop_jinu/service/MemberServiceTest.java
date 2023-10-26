@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @SpringBootTest
 @Transactional
 public class MemberServiceTest {
     @Autowired MemberService memberService;
     @Autowired MemberRepository memberRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     @Test
     public void 회원가입() throws Exception{
@@ -22,7 +27,7 @@ public class MemberServiceTest {
 
         //when
         Long saveId=memberService.join(member);
-
+        em.flush();
         //then
 
         Assertions.assertThat(member.getId()).isEqualTo(saveId);
