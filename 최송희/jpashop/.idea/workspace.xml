@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fc6808c-f512-408d-a954-730280b67ff1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/service/OrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/jpabook/jpashop/service/OrderServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Item/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Item/Item.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,51 +82,7 @@
       <recent name="jpabook.jpashop" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MemberServiceTest">
-    <configuration name="JpashopApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.JpashopApplication" />
-      <module name="jpashop.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jpabook.jpashop.domain.Item.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MemberRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="jpashop.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jpabook.jpashop.domain.Item.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jpabook.jpashop" />
-      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.MemberRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MemberRepositoryTest.testMember" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="jpashop.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jpabook.jpashop.domain.Item.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="jpabook.jpashop" />
-      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.MemberRepositoryTest" />
-      <option name="METHOD_NAME" value="testMember" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.OrderServiceTest">
     <configuration name="MemberServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jpashop.test" />
       <extension name="coverage">
@@ -143,7 +98,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MemberServiceTest.중복_회원_예외" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jpashop.test" />
       <extension name="coverage">
         <pattern>
@@ -152,8 +107,55 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="jpabook.jpashop.service" />
-      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.service.MemberServiceTest" />
-      <option name="METHOD_NAME" value="중복_회원_예외" />
+      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.service.OrderServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceTest.상품주문" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jpashop.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jpabook.jpashop.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jpabook.jpashop.service" />
+      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.service.OrderServiceTest" />
+      <option name="METHOD_NAME" value="상품주문" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceTest.주문취소" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jpashop.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jpabook.jpashop.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jpabook.jpashop.service" />
+      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.service.OrderServiceTest" />
+      <option name="METHOD_NAME" value="주문취소" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceTest.상품주문_재고수량초과" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jpashop.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="jpabook.jpashop.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="jpabook.jpashop.service" />
+      <option name="MAIN_CLASS_NAME" value="jpabook.jpashop.service.OrderServiceTest" />
+      <option name="METHOD_NAME" value="상품주문_재고수량초과" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -161,11 +163,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.OrderServiceTest" />
+        <item itemvalue="JUnit.OrderServiceTest.주문취소" />
+        <item itemvalue="JUnit.OrderServiceTest.상품주문_재고수량초과" />
+        <item itemvalue="JUnit.OrderServiceTest.상품주문" />
         <item itemvalue="JUnit.MemberServiceTest" />
-        <item itemvalue="JUnit.MemberServiceTest.중복_회원_예외" />
-        <item itemvalue="Application.JpashopApplication" />
-        <item itemvalue="JUnit.MemberRepositoryTest" />
-        <item itemvalue="JUnit.MemberRepositoryTest.testMember" />
       </list>
     </recent_temporary>
   </component>

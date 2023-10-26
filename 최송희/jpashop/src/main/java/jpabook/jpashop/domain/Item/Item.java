@@ -34,10 +34,12 @@ public abstract class Item {
         this.stockQuantity += stockQuantity;
     }
 
+    //재고수량 감소
     public void removeStockQuantity(int stockQuantity){
-        this.stockQuantity -= stockQuantity;
-        if(stockQuantity < 0){
+
+        if(stockQuantity > this.stockQuantity){
             throw new NotEnoughStockException("need more stock");
         }
+        this.stockQuantity -= stockQuantity;
     }
 }
