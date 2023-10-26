@@ -1,5 +1,9 @@
 package jpabook.jpashop.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,8 +11,9 @@ import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
-@Entity
+@Entity @Getter
 @Table(name = "orders")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id
     @GeneratedValue
