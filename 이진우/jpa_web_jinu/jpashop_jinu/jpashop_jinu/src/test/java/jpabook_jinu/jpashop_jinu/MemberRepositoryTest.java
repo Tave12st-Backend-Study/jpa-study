@@ -1,5 +1,6 @@
 package jpabook_jinu.jpashop_jinu;
 
+import jpabook_jinu.jpashop_jinu.domain.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
