@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import static org.assertj.core.api.Fail.fail;
+
 @SpringBootTest
 @Transactional
 public class MemberServiceTest {
@@ -31,6 +33,28 @@ public class MemberServiceTest {
         //then
 
         Assertions.assertThat(member.getId()).isEqualTo(saveId);
+    }
+
+    @Test
+    public void 중복_회원_예외() throws Exception{
+        //given
+        Member member1=new Member();
+        member1.setName("kim");
+        Member member2=new Member();
+        member2.setName("kim");
+
+        //when
+        memberService.join(member1);
+        try{
+            memberService.join(member2);
+
+        }catch (IllegalStateException e){
+           return;
+        }
+
+        //then
+        fail("예외가 발생햐아 한다");
+
     }
 
 }
