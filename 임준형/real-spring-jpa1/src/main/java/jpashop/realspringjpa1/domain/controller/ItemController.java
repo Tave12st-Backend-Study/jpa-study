@@ -1,6 +1,8 @@
 package jpashop.realspringjpa1.domain.controller;
 
+import java.util.List;
 import jpashop.realspringjpa1.domain.item.Book;
+import jpashop.realspringjpa1.domain.item.Item;
 import jpashop.realspringjpa1.domain.service.ItemService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,12 @@ public class ItemController {
 
         itemService.saveItem(book);
         return "redirect:/items";
+    }
+
+    @GetMapping("/items")
+    public String list(Model model) {
+        List<Item> items = itemService.findItems();
+        model.addAttribute("items", items);
+        return "items/itemList";
     }
 }
