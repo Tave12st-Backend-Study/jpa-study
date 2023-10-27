@@ -24,10 +24,6 @@ public class ItemRepository {
         /*변경감지와 병합 ***/
     }
 
-    @Transactional
-    public Item updateItem(Long itemId, Book param){
-
-    }
 
     public Item findOne(Long id){
         return em.find(Item.class, id);
