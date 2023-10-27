@@ -29,6 +29,10 @@ public class ItemService {
         //==엔티티를 변경하는 방법 요약!==//
         //준영속상태 엔티티는 이렇게 id값과 데이터를 파라미터로 넘겨서
         //영속 상태에 있는 엔티티를 조회 -> 엔티티 값 변경 -> 트랜잭션 커밋 시점에 변경감지
+
+        /*또한, 이렇게 set을 이용하기 보다, 엔티티에서 역추적할 수 있는 메서드를 생성해서 사용하는걸 권장
+        * ex. findItem.change(name, price, stockQuantity);
+        * */
     }
 
     public List<Item> findItems(){
