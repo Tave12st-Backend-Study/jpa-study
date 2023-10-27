@@ -1,12 +1,16 @@
 package jpabook_jinu.jpashop_jinu.web;
 
 import jpabook_jinu.jpashop_jinu.domain.item.Book;
+import jpabook_jinu.jpashop_jinu.domain.item.Item;
 import jpabook_jinu.jpashop_jinu.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,5 +33,12 @@ public class ItemController {
 
         itemService.saveItem(book);
         return "redirect:/items";
+    }
+
+    @GetMapping(value = "/items")
+    public String list(Model model){
+        List<Item> items=itemService.findItems();
+        model.addAttribute("items",items);
+        return "items/itemList";
     }
 }
