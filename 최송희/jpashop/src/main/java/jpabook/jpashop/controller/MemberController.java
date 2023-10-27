@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,5 +36,14 @@ public class MemberController {
 
         memberService.join(member);
         return "redirect:/"; //첫 페이지로 이동
+    }
+
+    @GetMapping("/members")
+    public String list(Model model){
+        List<Member> members = memberService.findMembers();
+        //DTO로 변환해서 화면에 출력하는 것을 권장(화면과 핵심 엔티티가 함께 실행되는것은 권장X)
+        //API를 만들때는 절대 엔티티를 외부로 반환X, DTO 사용
+        model.addAttribute("members", members);
+        return "members/memberList";
     }
 }
