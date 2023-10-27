@@ -78,6 +78,8 @@ public class ItemController {
 
         //위의 book 객체는 준영속 상태의 엔티티 이므로 JPA에서 관리 X
         //변경감지를 하지 못하므로
+
+        //병합을 사용하지 말고 변경감지를 이용해 엔티티 수정하기
         itemService.updateItem(itemId, bookForm.getName(),bookForm.getPrice(), bookForm.getStockQuantity());
         return "redirect:/items";
     }
