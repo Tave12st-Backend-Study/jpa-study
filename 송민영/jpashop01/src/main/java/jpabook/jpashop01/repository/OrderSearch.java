@@ -1,7 +1,8 @@
 package jpabook.jpashop01.repository;
 
 import jpabook.jpashop01.domain.OrderStatus;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
