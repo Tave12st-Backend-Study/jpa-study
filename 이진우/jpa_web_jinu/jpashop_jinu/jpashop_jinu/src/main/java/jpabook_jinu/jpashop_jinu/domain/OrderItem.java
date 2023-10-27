@@ -1,7 +1,9 @@
 package jpabook_jinu.jpashop_jinu.domain;
 
 import jpabook_jinu.jpashop_jinu.domain.item.Item;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "order_item")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
     @Id @GeneratedValue
     @Column(name = "order_item_id")
