@@ -1,6 +1,7 @@
 package jpabook_jinu.jpashop_jinu.domain.item;
 
 import jpabook_jinu.jpashop_jinu.domain.Category;
+import jpabook_jinu.jpashop_jinu.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,4 +26,16 @@ public abstract class Item {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories=new ArrayList<>();
+
+    public void addStock(int quantity){
+        this.stockQuantity+=quantity;
+    }
+
+    public void removeStock(int quantity){
+        int restStock=stockQuantity-=quantity;
+        if(restStock<0){
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity=restStock;
+    }
 }
