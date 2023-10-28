@@ -12,7 +12,7 @@ public class Address {
     private String zipcode;
 
     protected Address(){
-        
+
     }
     public Address(String city, String strret, String zipcode) {
         this.city = city;
