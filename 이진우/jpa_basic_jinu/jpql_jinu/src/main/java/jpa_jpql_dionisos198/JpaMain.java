@@ -4,7 +4,9 @@ import javax.persistence.*;
 import java.lang.management.MemoryManagerMXBean;
 import java.util.Collection;
 import java.util.List;
-
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 public class JpaMain {
     public static void main(String[] args){
         EntityManagerFactory emf=Persistence.createEntityManagerFactory("hello");
@@ -19,33 +21,59 @@ public class JpaMain {
             Team teamB=new Team();
             teamB.setName("팀B");
             em.persist(teamB);
-
-
-            Member member1=new Member();
-           member1.setUsername("회원1");
-           member1.setTeam(teamA);
-           em.persist(member1);
-
-           Member member2=new Member();
-           member2.setUsername("회원2");
-           member2.setTeam(teamA);
-           em.persist(member2);
-
-            Member member3=new Member();
-            member3.setUsername("회원3");
-            member3.setTeam(teamB);
-            em.persist(member3);
-
-
-
-           em.flush();
-           em.clear();
-
-            int resultCount=em.createQuery("update Member m set m.age=20").executeUpdate();
-            System.out.println(resultCount);
+            
+            Team teamC=new Team();
+            teamC.setName("팀C");
+            em.persist(teamC);
+            
+            Team teamD=new Team();
+            teamD.setName("팀D");
+            em.persist(teamD);
+            
+            Team teamE=new Team();
+            teamE.setName("팀E");
+            em.persist(teamE);
+            
+            for(int i=0;i<4;i++){
+                Member member=new Member();
+                member.setUsername("멤버"+(i+1));
+                member.setTeam(teamA);
+                em.persist(member);
+            }
+            for(int i=0;i<3;i++){
+                Member member=new Member();
+                member.setUsername("멤버"+(i+5));
+                member.setTeam(teamB);
+                em.persist(member);
+            }
+            for(int i=0;i<2;i++){
+                Member member=new Member();
+                member.setUsername("멤버"+(i+8));
+                member.setTeam(teamC);
+                em.persist(member);
+            }
+            for(int i=0;i<1;i++){
+                Member member=new Member();
+                member.setUsername("멤버"+(i+10));
+                member.setTeam(teamD);
+                em.persist(member);
+            }
+            Member member=new Member();
+            member.setUsername("멤버11");
+            member.setTeam(teamE);
+            em.persist(member);
+            
+            em.flush();
             em.clear();
-            Member findMember=em.find(Member.class,member1.getId());
-            System.out.println("findMember = "+findMember.getAge());
+
+            List<Team> teams=em.createQuery("select t from Team t", Team.class).getResultList();
+            for (Team team : teams) {
+                System.out.println("team:"+team.getName());
+                for(Member mem:team.getMembers()){
+                    System.out.println(mem.getUsername());
+                }
+            }
+            
             tx.commit();
         }catch (Exception e){
             tx.rollback();
