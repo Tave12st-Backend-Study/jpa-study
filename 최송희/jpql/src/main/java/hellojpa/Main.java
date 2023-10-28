@@ -15,14 +15,37 @@ public class Main {
                 tx.begin();
                 try{
 
-                    Member member1 = new Member();
-                    member1.setUsername("member1");
-                    member1.setAge(20);
-                    member1.setMemberType(MemberType.ADMIN);
+                    Team teamA=new Team();
+                    teamA.setName("팀A");
+                    em.persist(teamA);
 
-                    em.persist(member1);
+                    Team teamB=new Team();
+                    teamB.setName("팀B");
+                    em.persist(teamB);
 
-                    member1.setAge(10);
+                    for(int i=0;i<50;i++){
+                        Member member=new Member();
+                        member.setUsername("회원"+(i+1));
+                        member.setTeam(teamA);
+                        em.persist(member);
+                    }
+                    for(int i=0;i<50;i++){
+                        Member member=new Member();
+                        member.setUsername("회원"+(i+51));
+                        member.setTeam(teamB);
+                        em.persist(member);
+                    }
+
+                    em.flush();
+                    em.clear();
+                    System.out.println("======================");
+                    List<Team> teams=em.createQuery("select t from Team t", Team.class).getResultList();
+                    for (Team team : teams) {
+                        team.getName();
+                        for(Member mem:team.getMembers()){
+                            mem.getUsername();
+                        }
+                    }
 
                     tx.commit();
 

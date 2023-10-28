@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+# create-drop : create - drop
+# create : drop - create
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+    database: h2  # ?? ?? ??
+    database-platform: org.hibernate.dialect.H2Dialect # ?? ?? ??
+
+# spring boot : any setting is zero -> memory mode running
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+# logger? ??? sql ??(??)
+# org.hibernate.type: trace #??? ?? 2.x, hibernate5
+# org.hibernate.orm.jdbc.bind: trace #??? ?? 3.x, hibernate6
+# system.out.println? ?? sql ??(????? logger? ?? ?? ??)

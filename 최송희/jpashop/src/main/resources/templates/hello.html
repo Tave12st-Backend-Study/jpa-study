@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="'안녕 ' + ${data}" >안녕 손님</p>
+<!--서버 사이드 렌더링이 되기 전 정적 리소스 : 안녕하세요 손님이 출력-->
+<!--DevTools 라이브러리 + Build-Recomepille : 서버 재가동 필요없이 리소스 업데이트되어 출력 -->
+</body>
+</html>
