@@ -7,7 +7,8 @@
     <list default="true" id="6fc6808c-f512-408d-a954-730280b67ff1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/api/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/api/MemberApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
