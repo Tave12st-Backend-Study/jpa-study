@@ -1,5 +1,7 @@
 package jpabook.jpashop.domain;
 
+import com.sun.istack.NotNull;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,7 @@ public class Member {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
+
     private String name;
 
     @Embedded
