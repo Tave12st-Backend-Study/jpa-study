@@ -33,7 +33,7 @@ public class MemberApiController {
         List<MemberDTO> collect = members.stream().map(
                 member -> new MemberDTO(member.getName()))
                 .collect(Collectors.toList());
-        return new Result(collect);
+        return new Result(collect.size(), collect);
     }
 
     @PostMapping("/api/v1/members")
@@ -63,6 +63,7 @@ public class MemberApiController {
     @Data
     @AllArgsConstructor
     static class Result<T>{
+        private int size;
         private T data;
     }
 
