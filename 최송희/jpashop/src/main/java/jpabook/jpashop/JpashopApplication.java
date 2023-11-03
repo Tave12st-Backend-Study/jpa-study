@@ -16,6 +16,7 @@ public class JpashopApplication {
 	@Bean
 	Hibernate5Module hibernate5Module(){
 		return new Hibernate5Module();
+		//프록시가 초기화되지 않은 것은 null, 초기화 된 것만 출력
 	}
 
 }
