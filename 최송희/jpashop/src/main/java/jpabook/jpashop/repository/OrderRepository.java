@@ -1,6 +1,7 @@
 package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository {
+
     private final EntityManager em;
     //저장
     public void save(Order order){
@@ -35,4 +37,5 @@ public class OrderRepository {
                 .getResultList();
         //이렇게 하면 order의 MEMBER, DELIVERY가 LAZY로 페치전략으로 되어있어도 한번에 실제 값으로 객체가 조회된다.
     }
+
 }
