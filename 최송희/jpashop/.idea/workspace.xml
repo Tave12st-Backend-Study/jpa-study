@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fc6808c-f512-408d-a954-730280b67ff1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/InitDb.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/api/OrderSimpleApiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/api/MemberApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/api/MemberApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/JpashopApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/JpashopApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jpabook/jpashop/domain/OrderItem.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
