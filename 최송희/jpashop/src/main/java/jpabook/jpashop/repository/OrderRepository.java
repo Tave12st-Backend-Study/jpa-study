@@ -38,4 +38,15 @@ public class OrderRepository {
         //이렇게 하면 order의 MEMBER, DELIVERY가 LAZY로 페치전략으로 되어있어도 한번에 실제 값으로 객체가 조회된다.
     }
 
+    public List<Order> findAllWithItem(){
+        return em.createQuery(
+                "select distinct o from Order o"+
+                " join fetch o.member m"+
+                " join fetch o.delivery d"+
+                " join fetch o.orderItems oi"+
+                " join fetch oi.item i", Order.class)
+                .getResultList();
+        //distinct는 스프링에서 엔티티의 id값이 같은 데이터가 있으면 중복을 제거해준다(DB는 완전히 데이터가 같아야 중복 제거해주지만)
+    }
+
 }
