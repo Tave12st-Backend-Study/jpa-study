@@ -29,11 +29,13 @@ public class OrderRepository {
                 .getResultList();
     }
 
-    public List<Order> findAllWithMemberDeliver(){
+    public List<Order> findAllWithMemberDeliver(int offset, int limit){
         return em.createQuery(
                         "select o from Order o" +
                                 " join fetch o.member m" +
                                 " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
         //이렇게 하면 order의 MEMBER, DELIVERY가 LAZY로 페치전략으로 되어있어도 한번에 실제 값으로 객체가 조회된다.
     }
@@ -47,6 +49,7 @@ public class OrderRepository {
                 " join fetch oi.item i", Order.class)
                 .getResultList();
         //distinct는 스프링에서 엔티티의 id값이 같은 데이터가 있으면 중복을 제거해준다(DB는 완전히 데이터가 같아야 중복 제거해주지만)
+        //SQL 1번 실행(장점) + 페이징 불가(단점)
     }
 
 }

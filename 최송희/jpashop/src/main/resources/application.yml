@@ -12,6 +12,7 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 1000
     database: h2  # ?? ?? ??
     database-platform: org.hibernate.dialect.H2Dialect # ?? ?? ??
 
