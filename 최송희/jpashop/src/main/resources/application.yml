@@ -15,6 +15,7 @@ spring:
         default_batch_fetch_size: 1000
     database: h2  # ?? ?? ??
     database-platform: org.hibernate.dialect.H2Dialect # ?? ?? ??
+    open-in-view: false
 
 logging.level:
   org.hibernate.SQL: debug
