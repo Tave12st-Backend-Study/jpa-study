@@ -1,5 +1,6 @@
 package jpabook_jinu.jpashop_jinu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jpabook_jinu.jpashop_jinu.domain.item.Item;
 import lombok.*;
 
@@ -13,6 +14,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "delivery")
     private Order order;
 
