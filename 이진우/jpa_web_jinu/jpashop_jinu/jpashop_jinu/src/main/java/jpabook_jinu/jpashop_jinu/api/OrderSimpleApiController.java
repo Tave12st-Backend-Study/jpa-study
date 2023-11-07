@@ -5,6 +5,8 @@ import jpabook_jinu.jpashop_jinu.domain.Order;
 import jpabook_jinu.jpashop_jinu.domain.OrderSearch;
 import jpabook_jinu.jpashop_jinu.domain.OrderStatus;
 import jpabook_jinu.jpashop_jinu.repository.OrderRepository;
+import jpabook_jinu.jpashop_jinu.repository.order.simplequery.OrderSimpleQueryDto;
+import jpabook_jinu.jpashop_jinu.repository.order.simplequery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractCachedDomainDataAccess;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     @GetMapping("/api/v1/simple-orders")
     public List<Order> ordersV1(){
@@ -45,6 +48,11 @@ public class OrderSimpleApiController {
         List<SimpleOrderDto> result=orders.stream().map(o->new SimpleOrderDto(o)).collect(Collectors.toList());
 
         return result;
+    }
+
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4(){
+        return orderSimpleQueryRepository.findOrderDtos();
     }
 
     @Data
