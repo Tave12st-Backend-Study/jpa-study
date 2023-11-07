@@ -1,12 +1,13 @@
 package jpabook_jinu.jpashop_jinu.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import jpabook_jinu.jpashop_jinu.domain.item.Item;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Delivery {
     @Id @GeneratedValue
     @Column(name = "delivery_id")
@@ -20,4 +21,9 @@ public class Delivery {
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
+
+
+
+
+
 }
