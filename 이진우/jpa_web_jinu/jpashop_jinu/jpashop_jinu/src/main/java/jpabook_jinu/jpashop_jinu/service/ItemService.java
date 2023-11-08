@@ -2,7 +2,6 @@ package jpabook_jinu.jpashop_jinu.service;
 
 import jpabook_jinu.jpashop_jinu.domain.item.Item;
 import jpabook_jinu.jpashop_jinu.repository.ItemRepository;
-import jpabook_jinu.jpashop_jinu.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
