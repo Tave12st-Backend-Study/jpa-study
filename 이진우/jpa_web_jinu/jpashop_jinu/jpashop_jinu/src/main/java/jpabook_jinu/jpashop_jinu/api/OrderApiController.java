@@ -2,6 +2,7 @@ package jpabook_jinu.jpashop_jinu.api;
 
 import jpabook_jinu.jpashop_jinu.domain.*;
 import jpabook_jinu.jpashop_jinu.repository.OrderRepository;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractCachedDomainDataAccess;
@@ -48,7 +49,7 @@ public class OrderApiController {
         private LocalDateTime orderDate;
         private OrderStatus orderStatus;
         private Address address;
-        private List<OrderItem> orderItems;
+        private List<OrderItemDto> orderItems;
         public OrderDto(Order order){
             orderId=order.getId();
             name=order.getMember().getName();
@@ -56,8 +57,22 @@ public class OrderApiController {
             orderStatus=order.getOrderStatus();
             address=order.getDelivery().getAddress();
             order.getOrderItems().stream().forEach(o->o.getItem().getName());
-            orderItems=order.getOrderItems();
+            orderItems=order.getOrderItems().stream()
+                    .map(orderItem-> new OrderItemDto(orderItem))
+                    .collect(Collectors.toList());
         }
 
+    }
+    @Data
+    static class OrderItemDto{
+        private String itemName;
+        private int orderPrice;
+        private int count;
+
+        public OrderItemDto(OrderItem orderItem){
+            itemName=orderItem.getItem().getName();
+            orderPrice=orderItem.getOrderPrice();
+            count=orderItem.getCount();
+        }
     }
 }
