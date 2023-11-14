@@ -51,6 +51,10 @@ public class OrderSimpleApiController {
         return orders.stream().map(o -> new SimpleOrderDto(o)).collect(toList());
     }
 
+    @GetMapping("/api/v4/simple-orders")
+    public List<SimpleOrderQueryDto>findOrderDtos(){
+        return orderRepository.findOrderDtos();
+    }
 
     @Data
     static class SimpleOrderDto{
