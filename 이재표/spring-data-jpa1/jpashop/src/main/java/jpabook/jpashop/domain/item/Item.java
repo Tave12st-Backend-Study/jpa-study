@@ -4,6 +4,7 @@ import jpabook.jpashop.domain.Category;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
+@BatchSize(size = 1000)
 public abstract class Item {
     @Id
     @GeneratedValue
