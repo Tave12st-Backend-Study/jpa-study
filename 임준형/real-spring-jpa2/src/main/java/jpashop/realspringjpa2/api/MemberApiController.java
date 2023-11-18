@@ -3,9 +3,13 @@ package jpashop.realspringjpa2.api;
 import javax.validation.Valid;
 import jpashop.realspringjpa2.api.dto.CreateMemberRequest;
 import jpashop.realspringjpa2.api.dto.CreateMemberResponse;
+import jpashop.realspringjpa2.api.dto.UpdateMemberRequest;
+import jpashop.realspringjpa2.api.dto.UpdateMemberResponse;
 import jpashop.realspringjpa2.domain.Member;
 import jpashop.realspringjpa2.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +35,15 @@ public class MemberApiController {
 
         Long joinId = memberService.join(member);
         return new CreateMemberResponse(joinId);
+    }
+
+    @PatchMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(@PathVariable Long id,
+                                               @RequestBody @Valid UpdateMemberRequest request) {
+
+        String name = request.getName();
+        Member updateMember = memberService.update(id, name);
+
+        return new UpdateMemberResponse(updateMember.getId(), updateMember.getName());
     }
 }
