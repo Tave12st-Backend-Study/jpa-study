@@ -32,9 +32,9 @@ public class OrderRepository {
     public List<Order> findAll(OrderSearch orderSearch) {
         return em.createQuery("select o From Order o join o.member m"
                         + " where o.status = :status"
-                        + " and m.username like :name", Order.class)
+                        + " and m.name like :name", Order.class)
                 .setParameter("status", orderSearch.getOrderStatus())
-                .setParameter("name", orderSearch.getUsername())
+                .setParameter("name", orderSearch.getName())
                 .setMaxResults(1000)
                 .getResultList();
     }
@@ -56,14 +56,14 @@ public class OrderRepository {
         }
 
         //회원 이름 검색
-        if (StringUtils.hasText(orderSearch.getUsername())) {
+        if (StringUtils.hasText(orderSearch.getName())) {
             if (isFirstCondition) {
                 jpql += " where";
                 isFirstCondition = false;
             } else {
                 jpql += " and";
             }
-            jpql += " m.username like :username";
+            jpql += " m.name like :name";
         }
 
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)
@@ -72,8 +72,8 @@ public class OrderRepository {
         if (orderSearch.getOrderStatus() != null) {
             query = query.setParameter("status", orderSearch.getOrderStatus());
         }
-        if (StringUtils.hasText(orderSearch.getUsername())) {
-            query = query.setParameter("username", orderSearch.getUsername());
+        if (StringUtils.hasText(orderSearch.getName())) {
+            query = query.setParameter("name", orderSearch.getName());
         }
 
         return query.getResultList();

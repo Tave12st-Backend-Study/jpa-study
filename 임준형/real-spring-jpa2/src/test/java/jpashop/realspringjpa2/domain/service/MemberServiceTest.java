@@ -29,7 +29,7 @@ class MemberServiceTest {
 
         //given
         Member member = new Member();
-        member.setUsername("kim");
+        member.setName("kim");
 
         //when
         Long join = memberService.join(member);
@@ -42,10 +42,10 @@ class MemberServiceTest {
     void 중복_회원_예외() throws Exception {
         //given
         Member member1 = new Member();
-        member1.setUsername("kim");
+        member1.setName("kim");
 
         Member member2 = new Member();
-        member2.setUsername("kim");
+        member2.setName("kim");
 
         //then
         assertThrows(IllegalStateException.class, () -> {

@@ -1,5 +1,6 @@
 package jpashop.realspringjpa2.domain;
 
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String username;
+    private String name;
 
     @Embedded
     private Address address;

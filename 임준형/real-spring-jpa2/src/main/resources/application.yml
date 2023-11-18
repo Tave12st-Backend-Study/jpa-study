@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -14,5 +14,5 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
-    org.hibernate.type: trace #??? ?? 2.x, hibernate5
+    org.hibernate.type: INFO #??? ?? 2.x, hibernate5
 # org.hibernate.orm.jdbc.bind: trace #??? ?? 3.x, hibernate6

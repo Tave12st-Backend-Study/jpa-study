@@ -41,9 +41,9 @@ public class MemberService {
     }
 
     public void validateDuplicatedMember(Member member) {
-        boolean exists = memberRepository.findByName(member.getUsername())
+        boolean exists = memberRepository.findByName(member.getName())
                 .stream()
-                .anyMatch(m -> m.getUsername().equals(member.getUsername()));
+                .anyMatch(m -> m.getName().equals(member.getName()));
 
         if (exists) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
