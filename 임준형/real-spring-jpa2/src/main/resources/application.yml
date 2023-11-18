@@ -1,19 +1,18 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/jpashop
+    url: jdbc:h2:tcp://localhost/~/real1jpashop
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
-#        show_sql: true
+        show_sql: true
         format_sql: true
-        default_batch_fetch_size: 1000 #최적화 옵션
-
-logging.level:
-  org.hibernate.SQL: debug
-#  org.hibernate.type: trace
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace #??? ?? 2.x, hibernate5
+# org.hibernate.orm.jdbc.bind: trace #??? ?? 3.x, hibernate6
