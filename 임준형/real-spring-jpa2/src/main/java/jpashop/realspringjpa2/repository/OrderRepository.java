@@ -92,4 +92,18 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d" +
+                " join fetch o.orderItems oi" +
+                " join fetch oi.item i", Order.class
+                ).getResultList();
+    }
+    /**
+     * distinct 덕분에 같은 order 엔티티가 겹칠 경우 이를 제거해준다.
+     * 컬렉션 fetch join 하면 페이징이 불가능함.
+     * 어차피 다 갖고와서 메모리에서 페이징처리하는 것이니 페이징 처리가 불가능
+     */
 }
