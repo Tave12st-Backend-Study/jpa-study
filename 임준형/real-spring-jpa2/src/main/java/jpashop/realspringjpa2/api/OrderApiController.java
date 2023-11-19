@@ -1,14 +1,19 @@
 package jpashop.realspringjpa2.api;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import jpashop.realspringjpa2.domain.Address;
 import jpashop.realspringjpa2.domain.Order;
 import jpashop.realspringjpa2.domain.OrderItem;
 import jpashop.realspringjpa2.domain.OrderStatus;
 import jpashop.realspringjpa2.repository.OrderRepository;
 import jpashop.realspringjpa2.repository.dto.OrderSearch;
+import jpashop.realspringjpa2.repository.query.OrderFlatDto;
+import jpashop.realspringjpa2.repository.query.OrderItemQueryDto;
 import jpashop.realspringjpa2.repository.query.OrderQueryDto;
 import jpashop.realspringjpa2.repository.query.OrderQueryRepository;
 import lombok.Data;
@@ -43,7 +48,7 @@ public class OrderApiController {
         List<Order> orders = orderRepository.findAllByString(new OrderSearch());
         List<OrderDto> collect = orders.stream()
                 .map(OrderDto::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         return collect;
     }
 
@@ -52,7 +57,7 @@ public class OrderApiController {
         List<Order> orders = orderRepository.findAllWithItem();
         List<OrderDto> result = orders.stream()
                 .map(OrderDto::new)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return result;
     }
@@ -65,7 +70,7 @@ public class OrderApiController {
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
         List<OrderDto> result = orders.stream()
                 .map(OrderDto::new)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return result;
     }
@@ -78,6 +83,22 @@ public class OrderApiController {
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5() {
         return queryRepository.findAllByDto_optimization();
+    }
+
+    @GetMapping("/api/v6/orders")
+    // 페이징 불가
+    public List<OrderQueryDto> ordersV6() {
+        List<OrderFlatDto> flats = queryRepository.findAllByDto_flat();
+        return flats.stream()
+                .collect(groupingBy(o -> new OrderQueryDto(o.getOrderId(), o.getName(),
+                                o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+                        mapping(o -> new OrderItemQueryDto(o.getOrderId(), o.getItemName(),
+                                o.getOrderPrice(), o.getCount()), toList())
+                )).entrySet().stream()
+                .map(e -> new OrderQueryDto(e.getKey().getOrderId(),
+                        e.getKey().getName(), e.getKey().getOrderDate(),
+                        e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
+                .collect(toList());
     }
 
     @Data
@@ -99,13 +120,13 @@ public class OrderApiController {
             // order.getOrderItems().stream().forEach(o -> o.getItem().getName());   // proxy lazy 강제 초기화
             List<OrderItemDto> collectItems = order.getOrderItems().stream()
                     .map(OrderItemDto::new)
-                    .collect(Collectors.toList());
+                    .collect(toList());
             orderItems = collectItems;
         }
     }
 
     @Getter
-    static class OrderItemDto{
+    static class OrderItemDto {
         private String itemName; // 상품명
         private int orderPrice; // 주문 가격
         private int count;      // 주문 수량
