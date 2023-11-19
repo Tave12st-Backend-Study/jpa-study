@@ -79,7 +79,7 @@ public class OrderRepository {
         return query.getResultList();
     }
 
-
+    // 엔티티로 조회
     public List<Order> findAllWithMemberDelivery() {
 
         /**
@@ -91,4 +91,5 @@ public class OrderRepository {
                 " join fetch o.delivery d", Order.class
         ).getResultList();
     }
+
 }
