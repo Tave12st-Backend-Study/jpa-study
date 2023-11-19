@@ -25,9 +25,7 @@ public class OrderRepository {
 
 
     /**
-     *
      * 파라미터 값이 만약에 비어 있다면? -> queryDSL로 해결
-     *
      */
     public List<Order> findAll(OrderSearch orderSearch) {
         return em.createQuery("select o From Order o join o.member m"
@@ -92,14 +90,23 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery("select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public List<Order> findAllWithItem() {
         return em.createQuery(
                 "select distinct o from Order o" +
-                " join fetch o.member m" +
-                " join fetch o.delivery d" +
-                " join fetch o.orderItems oi" +
-                " join fetch oi.item i", Order.class
-                ).getResultList();
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class
+        ).getResultList();
     }
     /**
      * distinct 덕분에 같은 order 엔티티가 겹칠 경우 이를 제거해준다.
