@@ -37,7 +37,7 @@ public class MemberService {
     // 회원 단건 조회
 
     public Member findOne(Long id) {
-        return memberRepository.findOne(id);
+        return memberRepository.findById(id).get();
     }
 
     public void validateDuplicatedMember(Member member) {
@@ -52,7 +52,7 @@ public class MemberService {
 
     @Transactional
     public Member update(Long id, String name) {
-        Member findMember = memberRepository.findOne(id);
+        Member findMember = memberRepository.findById(id).get();
         findMember.setName(name);
         return findMember;
     }

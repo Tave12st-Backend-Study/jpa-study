@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import jpashop.realspringjpa2.domain.Member;
-import jpashop.realspringjpa2.repository.MemberRepository;
+import jpashop.realspringjpa2.repository.PreMemberRepository;
 import jpashop.realspringjpa2.service.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Autowired
-    MemberRepository memberRepository;
+    PreMemberRepository memberRepository;
 
 //    @Rollback(value = false)
     @Test
