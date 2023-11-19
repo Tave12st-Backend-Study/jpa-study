@@ -78,4 +78,17 @@ public class OrderRepository {
 
         return query.getResultList();
     }
+
+
+    public List<Order> findAllWithMemberDelivery() {
+
+        /**
+         *  Lazy 인 것들만 전부 한번에 조회
+         *  fetch join으로 order -> member, order -> delivery는 이미 조회 된 상태이므로 지연로딩이 아님
+         */
+        return em.createQuery("select o from Order o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
 }
