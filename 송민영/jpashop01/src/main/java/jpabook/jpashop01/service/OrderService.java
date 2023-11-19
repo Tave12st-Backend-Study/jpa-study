@@ -6,7 +6,7 @@ import jpabook.jpashop01.domain.Order;
 import jpabook.jpashop01.domain.OrderItem;
 import jpabook.jpashop01.domain.item.Item;
 import jpabook.jpashop01.repository.ItemRepository;
-import jpabook.jpashop01.repository.MemberRepository;
+import jpabook.jpashop01.repository.MemberRepositoryOld;
 import jpabook.jpashop01.repository.OrderRepository;
 import jpabook.jpashop01.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld memberRepositoryOld;
     private final ItemRepository itemRepository;
 
     /**
@@ -29,7 +29,7 @@ public class OrderService {
     @Transactional
     public Long order(Long memberId, Long itemId, int count){
         //엔티티 조회
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepositoryOld.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
 
         //배송정보 생성
