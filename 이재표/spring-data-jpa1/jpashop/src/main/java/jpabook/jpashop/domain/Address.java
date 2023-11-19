@@ -8,15 +8,15 @@ import javax.persistence.Embeddable;
 @Getter
 public class Address {
     private String city;
-    private String strret;
+    private String street;
     private String zipcode;
 
     protected Address(){
 
     }
-    public Address(String city, String strret, String zipcode) {
+    public Address(String city, String street, String zipcode) {
         this.city = city;
-        this.strret = strret;
+        this.street = street;
         this.zipcode = zipcode;
     }
 }
