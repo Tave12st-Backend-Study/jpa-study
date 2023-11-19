@@ -8,15 +8,10 @@ import jpabook_jinu.jpashop_jinu.domain.OrderStatus;
 import jpabook_jinu.jpashop_jinu.domain.item.Book;
 import jpabook_jinu.jpashop_jinu.domain.item.Item;
 import jpabook_jinu.jpashop_jinu.exception.NotEnoughStockException;
-import jpabook_jinu.jpashop_jinu.repository.MemberRepository;
 import jpabook_jinu.jpashop_jinu.repository.OrderRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -26,8 +21,6 @@ import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 public class OrderServiceTest {

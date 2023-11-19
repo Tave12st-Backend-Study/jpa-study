@@ -1,8 +1,9 @@
 package jpabook_jinu.jpashop_jinu.repository;
 
-import jpabook_jinu.jpashop_jinu.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook_jinu.jpashop_jinu.domain.*;
 import jpabook_jinu.jpashop_jinu.domain.Order;
-import jpabook_jinu.jpashop_jinu.domain.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -12,6 +13,9 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jpabook_jinu.jpashop_jinu.domain.QMember.member;
+import static jpabook_jinu.jpashop_jinu.domain.QOrder.order;
 
 @Repository
 @RequiredArgsConstructor
@@ -80,5 +84,58 @@ public class OrderRepository {
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
         return query.getResultList();
+    }
+    public List<Order> findAllWithMemberDelivery(){
+        return em.createQuery(
+                "select o from Order o"+
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d",Order.class)
+                .getResultList();
+
+    }
+    public List<Order> findAllWithItem(){
+        return em.createQuery(
+                "select distinct o from Order o"+
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d"+
+                        " join fetch o.orderItems oi"+
+                        " join fetch oi.item i",Order.class)
+                .getResultList();
+
+    }
+    public List<Order> findAllWithMemberDelivery(int offset,int limit){
+        return em.createQuery(
+                "select o from Order o"+
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d",Order.class).setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
+    }
+
+    public List<Order> findAll(OrderSearch orderSearch){
+        QOrder order= QOrder.order;
+        QMember member= QMember.member;
+
+        JPAQueryFactory query=new JPAQueryFactory(em);
+        return query.select(order)
+                .from(order)
+                .join(order.member,member)
+                .where(statusEq(orderSearch.getOrderStatus()),nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+    private BooleanExpression statusEq(OrderStatus statusCond){
+        if(statusCond==null){
+            return null;
+        }
+        return order.orderStatus.eq(statusCond);
+    }
+
+    private BooleanExpression nameLike(String nameCond){
+        if(!StringUtils.hasText(nameCond)){
+            return null;
+        }
+        return member.name.like(nameCond);
     }
 }

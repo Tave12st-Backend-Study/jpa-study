@@ -1,17 +1,17 @@
 package jpabook_jinu.jpashop_jinu.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jpabook_jinu.jpashop_jinu.service.OrderService;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Table(name = "ORDERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
@@ -54,16 +54,17 @@ public class Order {
     }
 
     public static Order createOrder(Member member,Delivery delivery,OrderItem ...orderItems){
-        Order order=new Order();
+        Order order = new Order();
         order.setMember(member);
         order.setDelivery(delivery);
-        for(OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
         order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
+
     public void cancel(){
         if(delivery.getDeliveryStatus()==DeliveryStatus.COMP){
             throw new IllegalStateException("이미 배송 완료된 상품은 취소가 불가능합니다");
@@ -82,4 +83,10 @@ public class Order {
         }
         return totalPrice;
     }
+
+
+
+
+
+
 }

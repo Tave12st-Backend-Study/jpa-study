@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @DiscriminatorColumn(name = "dtype")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Item {
@@ -38,4 +39,6 @@ public abstract class Item {
         }
         this.stockQuantity=restStock;
     }
+
+
 }

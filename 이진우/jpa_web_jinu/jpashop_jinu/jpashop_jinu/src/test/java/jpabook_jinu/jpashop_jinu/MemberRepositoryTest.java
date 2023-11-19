@@ -1,8 +1,6 @@
 package jpabook_jinu.jpashop_jinu;
 
-import jpabook_jinu.jpashop_jinu.domain.Member;
-import jpabook_jinu.jpashop_jinu.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
+import jpabook_jinu.jpashop_jinu.repository.MemberRepositoryOld;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class MemberRepositoryTest {
      @Autowired
-     MemberRepository memberRepository;
+     MemberRepositoryOld memberRepository;
 
      @Test
     @Transactional
