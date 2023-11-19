@@ -2,7 +2,6 @@ package jpashop.realspringjpa2.api;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.PrimitiveIterator;
 import java.util.stream.Collectors;
 import jpashop.realspringjpa2.domain.Address;
 import jpashop.realspringjpa2.domain.Order;
@@ -10,6 +9,8 @@ import jpashop.realspringjpa2.domain.OrderItem;
 import jpashop.realspringjpa2.domain.OrderStatus;
 import jpashop.realspringjpa2.repository.OrderRepository;
 import jpashop.realspringjpa2.repository.dto.OrderSearch;
+import jpashop.realspringjpa2.repository.query.OrderQueryDto;
+import jpashop.realspringjpa2.repository.query.OrderQueryRepository;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository queryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -61,7 +63,6 @@ public class OrderApiController {
             @RequestParam(value = "limit", defaultValue = "100") int limit
     ) {
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
-
         List<OrderDto> result = orders.stream()
                 .map(OrderDto::new)
                 .collect(Collectors.toList());
@@ -69,8 +70,13 @@ public class OrderApiController {
         return result;
     }
 
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4() {
+        return queryRepository.findOrderQueryDtos();
+    }
+
     @Data
-    static class OrderDto{
+    static class OrderDto {
         private Long orderId;
         private String name;
         private LocalDateTime orderDate;

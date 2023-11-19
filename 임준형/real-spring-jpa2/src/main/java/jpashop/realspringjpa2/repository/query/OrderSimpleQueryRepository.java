@@ -1,4 +1,4 @@
-package jpashop.realspringjpa2.repository;
+package jpashop.realspringjpa2.repository.query;
 
 import java.util.List;
 import javax.persistence.EntityManager;
