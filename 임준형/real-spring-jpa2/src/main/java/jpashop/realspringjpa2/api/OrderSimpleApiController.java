@@ -6,7 +6,7 @@ import jpashop.realspringjpa2.api.dto.OrderSimpleDto;
 import jpashop.realspringjpa2.api.dto.OrderSimpleQueryDto;
 import jpashop.realspringjpa2.domain.Order;
 import jpashop.realspringjpa2.repository.OrderRepository;
-import jpashop.realspringjpa2.repository.OrderSimpleQueryRepository;
+import jpashop.realspringjpa2.repository.query.OrderSimpleQueryRepository;
 import jpashop.realspringjpa2.repository.dto.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
