@@ -156,11 +156,10 @@ class MemberRepositoryTest {
         memberRepository.save(m5);
 
         //page1 offset = 0, limit = 15, page2 offset = 15 ....
-
+        int age = 10;
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
-
-       int age = 10;
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
+        Page<MemberDto> dtoPage = page.map(m -> new MemberDto(m.getId(), m.getUsername(), m.getTeam().getName()));
 
         List<Member> content = page.getContent();
 
