@@ -33,6 +33,11 @@ public class Member {
         }
     }
 
+    public Member(String username, int age) {
+        this.username = username;
+        this.age = age;
+    }
+
     public void changeTeam(Team team){ //연관관계 세팅(나와 team을 같이 세팅)
         this.team = team;
         team.getMembers().add(this);
