@@ -272,6 +272,17 @@ class MemberRepositoryTest {
         }
     }
 
+    @Test
+     public void queryHint() throws Exception{
+        memberRepository.save(new Member("member1",10));
+        em.flush();
+        em.clear();
+
+        Member member=memberRepository.findReadOnlyByUsername("member1");
+        member.setUsername("member2");
+
+        em.flush();
+    }
 
 
 
