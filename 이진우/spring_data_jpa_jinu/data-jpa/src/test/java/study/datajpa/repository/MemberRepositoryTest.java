@@ -284,6 +284,11 @@ class MemberRepositoryTest {
         em.flush();
     }
 
+    @Test
+    public void custom(){
+        List<Member> result=memberRepository.findMemberCustom();
+    }
+
 
 
 
