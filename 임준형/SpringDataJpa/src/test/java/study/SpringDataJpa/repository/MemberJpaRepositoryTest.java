@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.SpringDataJpa.entity.Member;
+import study.SpringDataJpa.entity.Team;
 
 @SpringBootTest
 @Transactional
@@ -19,9 +20,16 @@ class MemberJpaRepositoryTest {
 
     @Test
     public void testMember() {
+
+        Team team = Team.builder()
+                .name("teamA")
+                .build();
+
+
         String username = "memberA";
         Member member = Member.builder()
                 .username(username)
+                .team(team)
                 .build();
 
         Member savedMember = memberJpaRepository.save(member);
