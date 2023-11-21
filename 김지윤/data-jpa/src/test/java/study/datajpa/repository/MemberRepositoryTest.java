@@ -185,18 +185,13 @@ class MemberRepositoryTest {
 
         // when
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
+        Page<MemberDto> dtoPage = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
 
         // 페이지 계산 공식 적용
         // totalPage = totalCount / size
 
         // then
         List<Member> content = page.getContent();
-        long totelElements = page.getTotalElements(); // totalCount랑 동일한 메서드
-
-        for (Member member : content) {
-            System.out.println("member = " + member);
-        }
-        System.out.println("totelElements = " + totelElements);
 
         assertThat(content.size()).isEqualTo(3); // 조회된 데이터 수
         assertThat(page.getTotalElements()).isEqualTo(5); // 총 데이터 수
