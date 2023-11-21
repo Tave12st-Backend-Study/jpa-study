@@ -12,7 +12,7 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
-    open-in-view: false # Service 바깥으로 영속성 컨텍스트가 나가지 않음
+     open-in-view: false # Service 바깥으로 영속성 컨텍스트가 나가지 않음
 logging:
   level:
     org.hibernate.SQL: debug
