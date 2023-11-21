@@ -14,4 +14,9 @@ public class MemberDto {
         this.username=username;
         this.teamName=teamName;
     }
+
+    public MemberDto(Member m){
+        this.id=m.getId();
+        this.username=m.getUsername();
+    }
 }
