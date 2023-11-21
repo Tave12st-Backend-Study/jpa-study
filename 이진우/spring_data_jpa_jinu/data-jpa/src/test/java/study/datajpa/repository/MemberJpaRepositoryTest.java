@@ -8,6 +8,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
+import javax.persistence.EntityManager;
+import java.lang.management.MemoryManagerMXBean;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,9 @@ class MemberJpaRepositoryTest {
 
     @Autowired
     MemberJpaRepository memberJpaRepository;
+
+    @Autowired
+    EntityManager em;
 
     @Test
     public void testMember(){
@@ -110,6 +115,25 @@ class MemberJpaRepositoryTest {
         int resultCount = memberJpaRepository.bulkAgePlus(20);
 
         Assertions.assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    public void jpaEventBaseEntity() throws Exception{
+        Member member=new Member("member1");
+        memberJpaRepository.save(member);
+
+        Thread.sleep(100);
+        member.setUsername("member2");
+
+        em.flush();
+        em.clear();
+
+        Member findMember=memberJpaRepository.findById(member.getId()).get();
+
+        System.out.println("findMember.createdDate = "+findMember.getCreatedDate());
+       // System.out.println("findMember.updatedDate = "+findMember.getUpdatedDate());
+
+
     }
 
 
