@@ -13,6 +13,8 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberRepositoryTest {
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Test
     public void testMember(){
@@ -172,5 +176,19 @@ class MemberRepositoryTest {
 
 
 
+    }
+
+    @Test
+    public void bulkUpdate(){
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        int resultCount = memberRepository.bulkAgePlus(20);
+        entityManager.clear();
+
+        assertThat(resultCount).isEqualTo(3);
     }
 }
