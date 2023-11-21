@@ -218,4 +218,24 @@ class MemberRepositoryTest {
         }
 
     }
+
+    @Test
+    public void queryHint() throws Exception{
+        Member member = new Member("member1", 10);
+        entityManager.flush();
+        entityManager.clear();
+
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+
+    }
+
+    @Test
+    public void lock(){
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        entityManager.flush();
+        entityManager.clear();
+
+        List<Member> result = memberRepository.findLockByUsername("member1");
+    }
 }
