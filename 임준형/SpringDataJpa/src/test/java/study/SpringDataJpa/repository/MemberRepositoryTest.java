@@ -13,6 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.SpringDataJpa.entity.Member;
 import study.SpringDataJpa.entity.Team;
+import study.SpringDataJpa.repository.dto.MemberDto;
 
 @SpringBootTest
 @Transactional
@@ -121,5 +122,46 @@ class MemberRepositoryTest {
         int age = 23;
         List<Member> result = memberRepository.findUser(teamA1, age);
         assertThat(result.get(0)).isEqualTo(member2);
+    }
+
+    @Test
+    void testQueryValue() {
+        Member member1 = Member.builder()
+                .username("teamA")
+                .age(13)
+                .build();
+
+        Member member2 = Member.builder()
+                .username("teamA")
+                .age(23)
+                .build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        String teamA1 = "teamA";
+        int age = 23;
+        List<String> usernameList = memberRepository.findUsernameList();
+        usernameList.forEach(System.out::println);
+    }
+
+    @Test
+    void testQueryDto() {
+        Team team = Team.builder()
+                .name("teamA")
+                .build();
+        teamRepository.save(team);
+
+        Member member1 = Member.builder()
+                .username("userA")
+                .age(13)
+                .team(team)
+                .build();
+
+        memberRepository.save(member1);
+
+        String username = "userA";
+        int age = 23;
+        List<MemberDto> memberDto = memberRepository.findMemberDto();
+        memberDto.forEach(System.out::println);
     }
 }
