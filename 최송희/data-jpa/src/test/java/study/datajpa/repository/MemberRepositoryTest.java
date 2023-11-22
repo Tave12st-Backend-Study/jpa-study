@@ -244,4 +244,21 @@ class MemberRepositoryTest {
         List<Member> memberCustom = memberRepository.findMemberCustom();
 
     }
+
+    @Test
+    public void nativeQuery(){
+        Team teamA = new Team("teamA");
+        teamRepository.save(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 20, teamA);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        Member result = memberRepository.findByNativeQuery("member1");
+        Member byNativeQuery = memberRepository.findByNativeQuery(PageRequest.of(1, 10));
+    }
 }
