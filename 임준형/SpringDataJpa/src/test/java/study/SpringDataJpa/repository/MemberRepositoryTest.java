@@ -189,4 +189,28 @@ class MemberRepositoryTest {
         List<Member> byNames = memberRepository.findByNames(Arrays.asList("AAA", "userB", "CCC"));
         byNames.forEach(System.out::println);
     }
+
+    @Test
+    void returnType() {
+
+        Member member1 = Member.builder()
+                .username("userA")
+                .age(13)
+                .build();
+
+        Member member2 = Member.builder()
+                .username("userB")
+                .age(33)
+                .build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<Member> byNames = memberRepository.findListByUsername("userA");
+        List<Member> canEmptyList = memberRepository.findListByUsername("userAsadfasdfadsfzvcx");
+        // canEmptyList는 비어있는 empty List
+        byNames.forEach(System.out::println);
+        Member userA = memberRepository.findMemberByUsername("userA");
+        System.out.println("member = " + userA);
+        Optional<Member> user = memberRepository.findOptionalByUsername("userAsadfasdfadsfzvcx");
+    }
 }
