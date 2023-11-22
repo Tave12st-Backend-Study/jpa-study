@@ -3,6 +3,8 @@ package study.SpringDataJpa.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -159,9 +161,32 @@ class MemberRepositoryTest {
 
         memberRepository.save(member1);
 
-        String username = "userA";
-        int age = 23;
         List<MemberDto> memberDto = memberRepository.findMemberDto();
         memberDto.forEach(System.out::println);
+    }
+
+    @Test
+    void testQueryParameterCollection() {
+        Team team = Team.builder()
+                .name("teamA")
+                .build();
+        teamRepository.save(team);
+
+        Member member1 = Member.builder()
+                .username("userA")
+                .age(13)
+                .team(team)
+                .build();
+
+        Member member2 = Member.builder()
+                .username("userB")
+                .age(33)
+                .team(team)
+                .build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<Member> byNames = memberRepository.findByNames(Arrays.asList("AAA", "userB", "CCC"));
+        byNames.forEach(System.out::println);
     }
 }
