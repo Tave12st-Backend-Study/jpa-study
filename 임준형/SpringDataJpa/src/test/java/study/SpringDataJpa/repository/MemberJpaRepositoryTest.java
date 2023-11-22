@@ -99,4 +99,25 @@ class MemberJpaRepositoryTest {
         findMember.equals(member2);
     }
 
+    @Test
+    void paging() {
+        for (int i = 1; i < 10; i++) {
+            Member member = Member.builder()
+                    .username("user" + i)
+                    .age(10)
+                    .build();
+            memberJpaRepository.save(member);
+        }
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+
+        List<Member> byPage = memberJpaRepository.findByPage(age, offset, limit);
+        long totalCount = memberJpaRepository.totalCount(age, offset, limit);
+
+        byPage.forEach(System.out::println);
+        System.out.println("totalCount = " + totalCount);
+    }
+
 }
