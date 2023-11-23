@@ -11,6 +11,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.SpringDataJpa.entity.Member;
@@ -212,5 +218,51 @@ class MemberRepositoryTest {
         Member userA = memberRepository.findMemberByUsername("userA");
         System.out.println("member = " + userA);
         Optional<Member> user = memberRepository.findOptionalByUsername("userAsadfasdfadsfzvcx");
+    }
+
+    @Test
+    void paging() {
+        for (int i = 1; i < 10; i++) {
+            Member member = Member.builder()
+                    .username("user" + i)
+                    .age(10)
+                    .build();
+            memberRepository.save(member);
+        }
+
+        int age = 10;
+        PageRequest pageRequest = PageRequest.of(0, 6, Sort.by(Direction.DESC, "username"));
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+        // 실제 데이터.
+        List<Member> content = page.getContent();
+        content.forEach(System.out::println);
+
+        int totalPages = page.getTotalPages();
+        System.out.println("totalPages = " + totalPages);   // 3 - 총 페이지 개수
+
+        long totalElements = page.getTotalElements();
+        System.out.println("totalElements = " + totalElements); // 9 - 총 결과 개수
+
+        int number = page.getNumber();
+        System.out.println("number = " + number);   // 현재 페이지 수
+
+        boolean isFirst = page.isFirst();
+        System.out.println("isFirst = " + isFirst);
+
+        boolean hasNext = page.hasNext();
+        System.out.println("hasNext = " + hasNext);
+
+        Slice<Member> slice = memberRepository.findByAge(age, pageRequest);
+        int numberOfElements = slice.getNumberOfElements();
+        int size = slice.getSize();
+        int number1 = slice.getNumber();
+
+        System.out.println("numberOfElements = " + numberOfElements);
+        System.out.println("size = " + size);
+        System.out.println("number1 = " + number1);
+
+        Page<MemberDto> memberDtoPaging = page.map(member -> new MemberDto(member.getId(), member.getUsername(), "teamName"));
+
     }
 }
