@@ -226,13 +226,7 @@ class MemberRepositoryTest {
 
     @Test
     void paging() {
-        for (int i = 1; i < 10; i++) {
-            Member member = Member.builder()
-                    .username("user" + i)
-                    .age(10)
-                    .build();
-            memberRepository.save(member);
-        }
+        createMember(10);
 
         int age = 10;
         PageRequest pageRequest = PageRequest.of(0, 6, Sort.by(Direction.DESC, "username"));
@@ -272,13 +266,7 @@ class MemberRepositoryTest {
 
     @Test
     void bulkUpdate() {
-        for (int i = 1; i < 30; i++) {
-            Member member = Member.builder()
-                    .username("user" + i)
-                    .age(10 + i)
-                    .build();
-            memberRepository.save(member);
-        }
+        createMember(30);
 
         int resultCount = memberRepository.bulkAgePlus(20);
         assertThat(resultCount).isEqualTo(20);
@@ -286,17 +274,60 @@ class MemberRepositoryTest {
 
     @Test
     void findEntityGraph() {
-        for (int i = 1; i < 30; i++) {
+        createMember(30);
+
+        List<Member> result = memberRepository.findByUsername("user7");
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
+    }
+
+    @Test
+    void queryHint() {
+
+        // given
+        Member member1 = Member.builder()
+                .username("userA")
+                .age(13)
+                .build();
+        memberRepository.save(member1)
+        em.flush();
+        em.clear();
+        // --- 영속성 컨텍스트는 빈상태 ---
+
+        //when
+        // 만약 화면에 뿌릴 때, 기존의 DB값이 아닌 바꿔서 뿌려주고 싶고, DB에 반영은 하기 싫을 때
+        // 값이 변경되면 이를 더티체킹하고 트랜잭션 커밋시점에 자동으로 Update Query가 나가는데, DB에 반영하기 싫을 때
+        em.flush();
+        Member findMember = memberRepository.findReadOnlyByUsername("userA");
+        // findMember.setUsername("member2");
+        // 변경이된다는 것을 알아서 스냅샷으로 갖고 있지 않는다.
+    }
+
+    @Test
+    void lock() {
+        // given
+        Member member1 = Member.builder()
+                .username("userA")
+                .age(13)
+                .build();
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+        // --- 영속성 컨텍스트는 빈상태 ---
+
+        //when
+        em.flush();
+        List<Member> userA = memberRepository.findLockByUsername("userA");
+    }
+
+    private void createMember(int x) {
+        for (int i = 1; i < x; i++) {
             Member member = Member.builder()
                     .username("user" + i)
                     .age(10 + i)
                     .build();
             memberRepository.save(member);
-        }
-
-        List<Member> result = memberRepository.findByUsername("user7");
-        for (Member member : result) {
-            System.out.println("member = " + member);
         }
     }
 }
