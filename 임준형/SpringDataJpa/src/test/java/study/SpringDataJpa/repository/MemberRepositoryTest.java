@@ -7,6 +7,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ import study.SpringDataJpa.repository.dto.MemberDto;
 @Rollback(value = false)
 class MemberRepositoryTest {
 
+    @PersistenceContext
+    EntityManager em;
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
 
@@ -264,5 +268,35 @@ class MemberRepositoryTest {
 
         Page<MemberDto> memberDtoPaging = page.map(member -> new MemberDto(member.getId(), member.getUsername(), "teamName"));
 
+    }
+
+    @Test
+    void bulkUpdate() {
+        for (int i = 1; i < 30; i++) {
+            Member member = Member.builder()
+                    .username("user" + i)
+                    .age(10 + i)
+                    .build();
+            memberRepository.save(member);
+        }
+
+        int resultCount = memberRepository.bulkAgePlus(20);
+        assertThat(resultCount).isEqualTo(20);
+    }
+
+    @Test
+    void findEntityGraph() {
+        for (int i = 1; i < 30; i++) {
+            Member member = Member.builder()
+                    .username("user" + i)
+                    .age(10 + i)
+                    .build();
+            memberRepository.save(member);
+        }
+
+        List<Member> result = memberRepository.findByUsername("user7");
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
     }
 }

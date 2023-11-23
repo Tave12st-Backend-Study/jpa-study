@@ -120,4 +120,17 @@ class MemberJpaRepositoryTest {
         System.out.println("totalCount = " + totalCount);
     }
 
+    @Test
+    void bulkUpdate() {
+        for (int i = 1; i < 30; i++) {
+            Member member = Member.builder()
+                    .username("user" + i)
+                    .age(10 + i)
+                    .build();
+            memberJpaRepository.save(member);
+        }
+
+        int resultCount = memberJpaRepository.bulkAgePlus(20);
+        assertThat(resultCount).isEqualTo(20);
+    }
 }
