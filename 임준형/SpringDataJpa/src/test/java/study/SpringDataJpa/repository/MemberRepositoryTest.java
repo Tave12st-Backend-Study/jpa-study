@@ -290,7 +290,7 @@ class MemberRepositoryTest {
                 .username("userA")
                 .age(13)
                 .build();
-        memberRepository.save(member1)
+        memberRepository.save(member1);
         em.flush();
         em.clear();
         // --- 영속성 컨텍스트는 빈상태 ---
@@ -329,5 +329,10 @@ class MemberRepositoryTest {
                     .build();
             memberRepository.save(member);
         }
+    }
+
+    @Test
+    void callCustom() {
+        List<Member> result = memberRepository.findMemberCustom();
     }
 }
