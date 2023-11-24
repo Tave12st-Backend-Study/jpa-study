@@ -75,6 +75,30 @@ public class QuerydslBasicTest {
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
+    //and - 1) 체이닝 방법
+    @Test
+    public void search(){
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1")
+                        .and(member.age.eq(10)))
+                .fetchOne();
 
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
 
+    //and는 ,로 바꿔서 사용할 수 있다. 두가지 방법
+    //and - 2) 콤마로 작성하는 방법
+    @Test
+    public void searchAndParam(){
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(
+                        member.username.eq("member1")
+                        , member.age.eq(10)
+                )
+                .fetchOne();
+
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
 }
