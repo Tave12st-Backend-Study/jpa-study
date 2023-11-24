@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
+import static study.querydsl.entity.QMember.*;
 
 @SpringBootTest
 @Transactional
@@ -54,7 +55,8 @@ public class QuerydslBasicTest {
 
     @Test
     public void startQuerydsl(){
-        QMember m = new QMember("m");
+        QMember m = new QMember("m");//별칭 직접 적용(같은 테이블 조인하는 경우만 사용)
+        QMember m1 = member;//기본 인스턴스
         //variable은 식별용
 
         Member findMember = queryFactory.select(m)
@@ -62,6 +64,14 @@ public class QuerydslBasicTest {
                 .where(m.username.eq("member1")) //파라미터 바인딩
                 .fetchOne();
         /*querydsl 이점 : 1. 컴파일 시점에서 오류를 발견 2. 파라미터 바인딩을 자동으로 실행*/
+
+
+        //기본인스턴스는 static import 권장
+        Member findMember2 = queryFactory
+                .select(member)
+                .from(member)
+                .where(member.username.eq("member1")) //파라미터 바인딩
+                .fetchOne();
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
