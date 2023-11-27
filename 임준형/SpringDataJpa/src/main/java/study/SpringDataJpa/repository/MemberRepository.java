@@ -17,6 +17,7 @@ import org.springframework.data.repository.query.Param;
 import study.SpringDataJpa.entity.Member;
 import study.SpringDataJpa.repository.custom.MemberRepositoryCustom;
 import study.SpringDataJpa.repository.dto.MemberDto;
+import study.SpringDataJpa.repository.projections.MemberProjection;
 import study.SpringDataJpa.repository.projections.UserNameOnly;
 import study.SpringDataJpa.repository.projections.UserNameOnlyDto;
 
@@ -78,4 +79,17 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     List<UserNameOnlyDto> findProjectionsByUsername(@Param("username") String username);
 
+
+    /**
+     * 가장 최후의 수단
+     * JDBC template 혹은 mybatis로 사용할 것을 권장
+     */
+    @Query(value = "select * from member where username = ?", nativeQuery = true)
+    Member findByNativeQuery(String username);
+
+    @Query(value = "select m.member_id as id, m.username, t.name as teamName "
+            + "from member m left join team t",
+            countQuery = "select count(*) from member",
+            nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }

@@ -1,21 +1,18 @@
 package study.SpringDataJpa.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -24,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import study.SpringDataJpa.entity.Member;
 import study.SpringDataJpa.entity.Team;
 import study.SpringDataJpa.repository.dto.MemberDto;
+import study.SpringDataJpa.repository.projections.MemberProjection;
 import study.SpringDataJpa.repository.projections.UserNameOnly;
 import study.SpringDataJpa.repository.projections.UserNameOnlyDto;
 
@@ -367,6 +365,28 @@ class MemberRepositoryTest {
             System.out.println("userNameOnlyDto.getUsername() = " + userNameOnlyDto.getUsername());
         }
 
+    }
+
+    @Test
+    void nativeQuery() {
+        Member member1 = Member.builder()
+                .age(20)
+                .username("userB")
+                .team(null)
+                .build();
+
+        em.persist(member1);
+
+        // when
+        Member result = memberRepository.findByNativeQuery("userB");
+        System.out.println("result = " + result);
+
+        Page<MemberProjection> nativeResult = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = nativeResult.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection.getUsername() = " + memberProjection.getUsername());
+            System.out.println("memberProjection.getTeamName() = " + memberProjection.getTeamName());
+        }
     }
 
 }
