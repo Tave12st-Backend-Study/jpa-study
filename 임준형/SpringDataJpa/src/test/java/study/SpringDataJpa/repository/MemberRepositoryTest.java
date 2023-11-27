@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import study.SpringDataJpa.entity.Member;
 import study.SpringDataJpa.entity.Team;
 import study.SpringDataJpa.repository.dto.MemberDto;
+import study.SpringDataJpa.repository.projections.UserNameOnly;
+import study.SpringDataJpa.repository.projections.UserNameOnlyDto;
 
 @SpringBootTest
 @Transactional
@@ -335,4 +337,36 @@ class MemberRepositoryTest {
     void callCustom() {
         List<Member> result = memberRepository.findMemberCustom();
     }
+
+    @Test
+    void projections() {
+        Member member1 = Member.builder()
+                .age(20)
+                .username("userA")
+                .team(null)
+                .build();
+        Member member2 = Member.builder()
+                .age(20)
+                .username("userB")
+                .team(null)
+                .build();
+
+        em.persist(member1);
+        em.persist(member2);
+
+        em.flush();
+        em.clear();
+
+        List<UserNameOnly> result = memberRepository.findCustomByUsername("userA");
+        List<UserNameOnlyDto> result2 = memberRepository.findProjectionsByUsername("userA");
+
+//        for (UserNameOnly userNameOnly : result) {
+//            System.out.println("userNameOnly.getUsername() = " + userNameOnly.getUsername());
+//        }
+        for (UserNameOnlyDto userNameOnlyDto : result2) {
+            System.out.println("userNameOnlyDto.getUsername() = " + userNameOnlyDto.getUsername());
+        }
+
+    }
+
 }

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import study.SpringDataJpa.entity.Item;
 
 @SpringBootTest
-class ItemRepositoryTest {9
+class ItemRepositoryTest {
 
     @Autowired ItemRepository itemRepository;
 

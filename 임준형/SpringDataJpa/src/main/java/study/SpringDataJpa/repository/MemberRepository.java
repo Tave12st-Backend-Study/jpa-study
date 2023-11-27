@@ -17,6 +17,8 @@ import org.springframework.data.repository.query.Param;
 import study.SpringDataJpa.entity.Member;
 import study.SpringDataJpa.repository.custom.MemberRepositoryCustom;
 import study.SpringDataJpa.repository.dto.MemberDto;
+import study.SpringDataJpa.repository.projections.UserNameOnly;
+import study.SpringDataJpa.repository.projections.UserNameOnlyDto;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
@@ -70,4 +72,10 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String username);
+
+    // projections 로 조회 interface 를 활용
+    List<UserNameOnly> findCustomByUsername(@Param("username") String username);
+
+    List<UserNameOnlyDto> findProjectionsByUsername(@Param("username") String username);
+
 }
