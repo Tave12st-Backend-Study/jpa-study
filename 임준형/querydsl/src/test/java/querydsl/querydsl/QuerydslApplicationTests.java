@@ -8,18 +8,20 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import querydsl.querydsl.domain.Member;
 import querydsl.querydsl.domain.QTestEntity;
 import querydsl.querydsl.domain.TestEntity;
 
 @SpringBootTest
+@Transactional
 class QuerydslApplicationTests {
 
 	@Autowired
 	EntityManager em;
 
 	@Test
-	@Transactional
 	void contextLoads() {
 		TestEntity testEntity = new TestEntity();
 		em.persist(testEntity);
