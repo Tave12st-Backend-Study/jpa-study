@@ -36,5 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-
 application.yml
+
+# QueryDSL 메타 모델 클래스 무시
+**/src/main/**/generated/
