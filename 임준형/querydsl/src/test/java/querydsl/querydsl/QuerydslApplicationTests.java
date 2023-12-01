@@ -12,11 +12,12 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import querydsl.querydsl.domain.Member;
 import querydsl.querydsl.domain.QTestEntity;
+import querydsl.querydsl.domain.Team;
 import querydsl.querydsl.domain.TestEntity;
 
 @SpringBootTest
 @Transactional
-class QuerydslApplicationTests {
+public class QuerydslApplicationTests {
 
 	@Autowired
 	EntityManager em;
@@ -36,6 +37,20 @@ class QuerydslApplicationTests {
 
 		assertThat(result).isEqualTo(testEntity);
 		assertThat(result.getId()).isEqualTo(testEntity.getId());
+	}
+
+	public static Team generateTeam(String teamName) {
+		return Team.builder()
+				.name(teamName)
+				.build();
+	}
+
+	public static Member generateMember(String userName, int age, Team team) {
+		return Member.builder()
+				.username(userName)
+				.age(age)
+				.team(team)
+				.build();
 	}
 
 }

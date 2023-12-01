@@ -1,6 +1,9 @@
 package querydsl.querydsl.domain;
 
 
+import static querydsl.querydsl.QuerydslApplicationTests.generateMember;
+import static querydsl.querydsl.QuerydslApplicationTests.generateTeam;
+
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -47,17 +50,4 @@ class MemberTest {
         }
     }
 
-    private Team generateTeam(String teamName) {
-        return Team.builder()
-                .name(teamName)
-                .build();
-    }
-
-    private Member generateMember(String userName, int age, Team team) {
-        return Member.builder()
-                .username(userName)
-                .age(age)
-                .team(team)
-                .build();
-    }
 }
