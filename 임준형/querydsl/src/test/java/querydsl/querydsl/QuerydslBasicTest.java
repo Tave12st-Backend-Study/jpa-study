@@ -1,5 +1,6 @@
 package querydsl.querydsl;
 
+import static com.querydsl.jpa.JPAExpressions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static querydsl.querydsl.QuerydslApplicationTests.generateMember;
 import static querydsl.querydsl.QuerydslApplicationTests.generateTeam;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import querydsl.querydsl.domain.Member;
 import querydsl.querydsl.domain.QMember;
-import querydsl.querydsl.domain.QTeam;
 import querydsl.querydsl.domain.Team;
 
 @SpringBootTest
@@ -424,4 +424,91 @@ public class QuerydslBasicTest {
     }
 
     // ----------------------------------------- 조인 - fetch join 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 서브 쿼리 -----------------------------------------
+
+    /**
+     * 나이가 가장 많은 회원 조회
+     */
+    @Test
+    void subQuery() {
+
+        /**
+         * subQuery이기 떄문에 바깥에 앨리어스와 겹치면 안된다.
+         * QMember를 생성해야함.
+         */
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.eq(
+                        select(memberSub.age.max())
+                                .from(memberSub)
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(40);
+    }
+
+    @Test
+    void subQueryGoe() {
+
+        /**
+         * 평균 나이보다 많은 사람
+         */
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.goe(
+                        select(memberSub.age.avg())
+                                .from(memberSub)
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(40);
+    }
+
+    @Test
+    void subQueryIn() {
+
+        /**
+         * 평균 나이보다 많은 사람
+         * 효율적이지 않은 예제 In Query
+         */
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.in(
+                        select(memberSub.age)
+                                .from(memberSub)
+                                .where(memberSub.age.gt(10))
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(20, 30, 40);
+    }
+
+    @Test
+    void subQuerySelect() {
+
+        QMember memberSub = new QMember("memberSub");
+
+        queryFactory
+                .select(member.username,
+                        select(memberSub.age.avg())
+                                .from(memberSub)
+                )
+                .from(member)
+                .fetch();
+    }
+
+    // ----------------------------------------- 서브 쿼리 끝 -----------------------------------------
+
+
 }
