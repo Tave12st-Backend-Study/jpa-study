@@ -22,6 +22,7 @@ import querydsl.querydsl.domain.Member;
 import querydsl.querydsl.domain.QMember;
 import querydsl.querydsl.domain.Team;
 import querydsl.querydsl.dto.MemberDto;
+import querydsl.querydsl.dto.QMemberDto;
 import querydsl.querydsl.dto.UserDto;
 
 @SpringBootTest
@@ -99,17 +100,16 @@ public class QuerydslEssentialsTest {
 
     // ----------------------------------------- 프로젝션 결과 반환 - DTO 사용 -----------------------------------------
 
-
     @Test
     @DisplayName("너무 불편한 상황, 패키지를 직접 적어야함. 이를 queryDsl이 해결")
     void findDtoByJpql() {
-        List<MemberDto> resultList = em.createQuery("select new querydsl.querydsl.dto.MemberDto(m.username, m.age) "
-                        + "from Member m", MemberDto.class)
-                .getResultList();
+//        List<MemberDto> resultList = em.createQuery("select new querydsl.querydsl.dto.MemberDto(m.username, m.age) "
+//                        + "from Member m", MemberDto.class)
+//                .getResultList();
 
-        for (MemberDto memberDto : resultList) {
-            System.out.println("memberDto = " + memberDto);
-        }
+//        for (MemberDto memberDto : resultList) {
+//            System.out.println("memberDto = " + memberDto);
+//        }
     }
 
     @Test
@@ -184,6 +184,23 @@ public class QuerydslEssentialsTest {
 
         for (UserDto userDto : result) {
             System.out.println("userDto = " + userDto);
+        }
+    }
+
+    // ----------------------------------------- 프로젝션 결과 반환 - DTO 사용 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 프로젝션 결과 반환 - @QueryProjection -----------------------------------------
+
+    @Test
+    void findDtoByQueryProjection() {
+        List<MemberDto> result = queryFactory
+                .select(new QMemberDto(member.username, member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
         }
     }
 }
