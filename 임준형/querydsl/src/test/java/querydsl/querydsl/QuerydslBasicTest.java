@@ -7,6 +7,7 @@ import static querydsl.querydsl.domain.QMember.member;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +103,34 @@ public class QuerydslBasicTest {
                 .fetchOne();
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
+    @Test
+    void resultFetch() {
+        List<Member> fetch = queryFactory
+                .selectFrom(member)
+                .fetch();
+
+        Member fetchOne = queryFactory
+                .selectFrom(member)
+                .fetchOne();
+
+        /**
+         * fetchFirst == limit(1).fetchOne
+         */
+        Member fetchFirst = queryFactory
+                .selectFrom(member)
+                .fetchFirst();
+
+        /**
+         * 강의에서 나오는 fetchResult는 실제로 사용하지 않음
+         * 아래와 같이 count query를 별도로 날리는게 좋음
+         * 기존의 fetchCount 또한 아래로 대체
+         */
+
+        Long total = queryFactory
+                .select(member.count())
+                .from(member)
+                .fetchOne();
     }
 }
