@@ -8,6 +8,7 @@ import static querydsl.querydsl.domain.QMember.member;
 import static querydsl.querydsl.domain.QTeam.team;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -147,14 +148,10 @@ public class QuerydslBasicTest {
 
     // ----------------------------------------- 검색 결과 끝 -----------------------------------------
 
-
     // ----------------------------------------- 정렬 -----------------------------------------
 
     /**
-     * 회원 정렬 순서
-     * 1. 회원 나이 내림차순 (desc)
-     * 2. 회원 이름 올림차순 (asc)
-     * 단 2에서 회원 이름이 없으면 마지막에 출력(nulls last)
+     * 회원 정렬 순서 1. 회원 나이 내림차순 (desc) 2. 회원 이름 올림차순 (asc) 단 2에서 회원 이름이 없으면 마지막에 출력(nulls last)
      */
 
     @Test
@@ -259,7 +256,6 @@ public class QuerydslBasicTest {
 
     // ----------------------------------------- 집합 끝 -----------------------------------------
 
-
     // ----------------------------------------- 조인 - 기본 조인 -----------------------------------------
 
     /**
@@ -328,6 +324,7 @@ public class QuerydslBasicTest {
     // ----------------------------------------- 조인 - 기본 조인 끝 -----------------------------------------
 
     // ----------------------------------------- 조인 - on 절 -----------------------------------------
+
     /**
      * 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
      */
@@ -380,7 +377,6 @@ public class QuerydslBasicTest {
 
     // ----------------------------------------- 조인 - on 절 끝 -----------------------------------------
 
-
     // ----------------------------------------- 조인 - fetch join -----------------------------------------
 
     @PersistenceUnit
@@ -424,7 +420,6 @@ public class QuerydslBasicTest {
     }
 
     // ----------------------------------------- 조인 - fetch join 끝 -----------------------------------------
-
 
     // ----------------------------------------- 서브 쿼리 -----------------------------------------
 
@@ -511,4 +506,37 @@ public class QuerydslBasicTest {
     // ----------------------------------------- 서브 쿼리 끝 -----------------------------------------
 
 
+    // ----------------------------------------- Case  -----------------------------------------
+    @Test
+    void caseQuery() {
+        List<String> result = queryFactory
+                .select(member.age
+                        .when(10).then("열살")
+                        .when(20).then("스무살")
+                        .otherwise("기타"))
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    void complexCase() {
+        List<String> result = queryFactory
+                .select(new CaseBuilder()
+                        .when(member.age.between(0, 20)).then("0~20살")
+                        .when(member.age.between(21, 30)).then("21~30살")
+                        .otherwise("기타")
+                )
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    // ----------------------------------------- Case 끝 -----------------------------------------
 }
