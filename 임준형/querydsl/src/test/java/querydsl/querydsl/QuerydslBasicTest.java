@@ -9,6 +9,8 @@ import static querydsl.querydsl.domain.QTeam.team;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -325,7 +327,7 @@ public class QuerydslBasicTest {
 
     // ----------------------------------------- 조인 - 기본 조인 끝 -----------------------------------------
 
-
+    // ----------------------------------------- 조인 - on 절 -----------------------------------------
     /**
      * 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
      */
@@ -375,4 +377,51 @@ public class QuerydslBasicTest {
          * 내가 원하는 조건이 on에 들어감
          */
     }
+
+    // ----------------------------------------- 조인 - on 절 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 조인 - fetch join -----------------------------------------
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
+
+    @Test
+    void noFetchJoin() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        /**
+         * 이미 로딩이 됬는지 가르쳐주는 메서드
+         * 지연 로딩이기 때문에 당연히 Team이 로딩이 되면 안됨
+         */
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 미적용").isFalse();
+    }
+
+    @Test
+    void useFetchJoin() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .join(member.team, team).fetchJoin()
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        /**
+         * 이미 로딩이 됬는지 가르쳐주는 메서드
+         * 지연 로딩이기 때문에 당연히 Team이 로딩이 되면 안됨
+         */
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치 조인 적용").isTrue();
+    }
+
+    // ----------------------------------------- 조인 - fetch join 끝 -----------------------------------------
 }
