@@ -8,11 +8,14 @@ import static querydsl.querydsl.domain.QMember.member;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -218,7 +221,6 @@ public class QuerydslEssentialsTest {
 
         List<Member> result = searchMember1(usernameParam, ageParam);
         Assertions.assertThat(result.size()).isEqualTo(1);
-
     }
 
     /**
@@ -252,4 +254,58 @@ public class QuerydslEssentialsTest {
     }
 
     // ----------------------------------------- 동적 쿼리 - BooleanBuilder 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 동적 쿼리 - ⭐️Where 다중 파라미터 사용⭐️ -----------------------------------------
+
+    @Test
+    @DisplayName("가장 직관적인 방법")
+    void dynamicQuery_WhereParam() {
+        String usernameParam = "member1";
+        Integer ageParam = 10;
+
+        List<Member> result = searchMember2(usernameParam, ageParam);
+        Assertions.assertThat(result.size()).isEqualTo(1);
+    }
+
+    /**
+     * 여기서 queryDsl의 충격적인 엄청난 기능은, where 조건 문 속 메서드의 반환이 null이면 자동으로 무시가 된다.
+     */
+    private List<Member> searchMember2(String usernameCond, Integer ageCond) {
+        return queryFactory
+                .selectFrom(member)
+//                .where(usernameEq(usernameCond), ageEq(ageCond))
+                .where(allEq(usernameCond, ageCond))
+                .fetch();
+    }
+
+    /**
+     * 아래와 같이 조합을 원할 경우, 조합을 원하는 원소 메서드들의 반환 값을
+     * Predicate가 아닌 BooleanExpression 으로 변경해야한다.
+     * 기본 적으로 Where 문 매개변수 속 메서드의 반환 타입은 Predicate 이지만,
+     * 아래에서 조합하기 위해 BooleanExpression로 수정, 조합 가능 및 쿼리 정상 동작
+     * 단독으로 또는 조합해서 재사용 가능!
+     *
+     * ex)
+     * 광고 상태 isValid And 날짜가 IN 이여야함 = isServicable() 조합 및 재사용 가능
+     */
+    private Predicate allEq(String usernameCond, Integer ageCond) {
+        return usernameEq(usernameCond).and(ageEq(ageCond));
+    }
+
+    private BooleanExpression usernameEq(String usernameCond) {
+        if (usernameCond != null) {
+            return member.username.eq(usernameCond);
+        }
+        return null;
+    }
+
+    private BooleanExpression ageEq(Integer ageCond) {
+        if (ageCond != null) {
+            return member.age.eq(ageCond);
+        }
+        return null;
+    }
+
+    // ----------------------------------------- 동적 쿼리 - ⭐️Where 다중 파라미터 사용 끝 ⭐️-----------------------------------------
 }
