@@ -9,6 +9,7 @@ import static querydsl.querydsl.domain.QTeam.team;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -507,6 +508,12 @@ public class QuerydslBasicTest {
 
 
     // ----------------------------------------- Case  -----------------------------------------
+
+    /**
+     * 일단 실무에서 사용을 거의 안함. DB는 조회하는 용도로만 사용. 양보해서 숫자 더하는 것 까지 가능함
+     * 아래와 같이 직접 바꾸는 것은 권장하지 않음. 애플리케이션에서 해결하는 것이 좋음
+     */
+
     @Test
     void caseQuery() {
         List<String> result = queryFactory
@@ -539,4 +546,41 @@ public class QuerydslBasicTest {
     }
 
     // ----------------------------------------- Case 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 상수 문자 더하기 -----------------------------------------
+
+    @Test
+    void constant() {
+        List<Tuple> result = queryFactory
+                .select(member.username, Expressions.constant("A"))
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+    }
+
+    @Test
+    void concat() {
+
+        /**
+         * 문자가 아닌 다른 타입들을 stringValue() 를 사용하여 문자로 변환할 수 있다.
+         * 나중에 ENUM을 처리할 때 유용할 것이다.
+         */
+
+        // username_age
+        List<String> result = queryFactory
+                .select(member.username.concat("_").concat(member.age.stringValue()))
+                .from(member)
+                .where(member.username.eq("member1"))
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    // ----------------------------------------- 상수 문자 더하기 끝 -----------------------------------------
 }
