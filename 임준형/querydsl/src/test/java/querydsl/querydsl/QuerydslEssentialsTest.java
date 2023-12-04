@@ -5,6 +5,7 @@ import static querydsl.querydsl.QuerydslApplicationTests.generateMember;
 import static querydsl.querydsl.QuerydslApplicationTests.generateTeam;
 import static querydsl.querydsl.domain.QMember.member;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
@@ -12,6 +13,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -203,4 +205,51 @@ public class QuerydslEssentialsTest {
             System.out.println("memberDto = " + memberDto);
         }
     }
+
+    // ----------------------------------------- 프로젝션 결과 반환 - @QueryProjection 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 동적 쿼리 - BooleanBuilder -----------------------------------------
+
+    @Test
+    void dynamicQuery_BooleanBuilder() {
+        String usernameParam = "member1";
+        Integer ageParam = 10;
+
+        List<Member> result = searchMember1(usernameParam, ageParam);
+        Assertions.assertThat(result.size()).isEqualTo(1);
+
+    }
+
+    /**
+     * Parameter 가 null이냐, null이 아니냐에 따라 쿼리가 동적으로 바뀌어야한다.
+     * usernameCond가 Null일 경우 ageCond로만 검색해야하고,
+     * ageCond가 Null일 경우 usernameCond로만 검색해야하며
+     * 둘 다 null일 경우 where 조건 문이 나가지 않는 것이다.
+     */
+
+    private List<Member> searchMember1(String usernameCond, Integer ageCond) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        /**
+         * 아래와 같이 필수값(초기값) 설정 또한 가능
+         */
+        BooleanBuilder builder2 = new BooleanBuilder(member.username.eq(usernameCond));
+
+        if (usernameCond != null) {
+            builder.and(member.username.eq(usernameCond));
+        }
+
+        if (ageCond != null) {
+            builder.and(member.age.eq(ageCond));
+        }
+
+        return queryFactory
+                .selectFrom(member)
+                .where(builder)
+                .fetch();
+    }
+
+    // ----------------------------------------- 동적 쿼리 - BooleanBuilder 끝 -----------------------------------------
 }
