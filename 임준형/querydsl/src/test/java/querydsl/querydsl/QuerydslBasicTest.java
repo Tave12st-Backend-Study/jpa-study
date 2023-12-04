@@ -324,4 +324,55 @@ public class QuerydslBasicTest {
     }
 
     // ----------------------------------------- 조인 - 기본 조인 끝 -----------------------------------------
+
+
+    /**
+     * 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
+     */
+    @Test
+    void join_on_filtering() {
+        /**
+         * leftJoin 일 때만 on으로 조인 조건을 줄일 수 있다.
+         * 일반 join 일 때는 where로 할 것
+         */
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(member.team, team)
+                .on(team.name.eq("teamA"))
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+    }
+
+    @Test
+    void join_on_no_relation() {
+        /**
+         * 연관관계까 없는 엔티티를 외부조인
+         * 회원의 이름과 팀의 이름과 같은 회원을 조회
+         */
+        em.persist(generateMember("teamA", 7, null));
+        em.persist(generateMember("teamB", 13, null));
+        em.persist(generateMember("teamC", 31, null));
+
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                // 세타조인이므로 단순히 나열임
+                .from(member)
+                .leftJoin(team)
+                .on(member.username.eq(team.name))
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        /**
+         * 아까 위에서 leftjoin 할 때 member.team 을 leftJoin 에 파라미터로 넣고 안넣고의 차이가
+         * member.team.id = team.id 와 같은 것이다.
+         *
+         * 일반 조인: leftJoin(member.team, team)
+         * on 조인: from(member).leftJoin(team).on(xxx)
+         * 내가 원하는 조건이 on에 들어감
+         */
+    }
 }
