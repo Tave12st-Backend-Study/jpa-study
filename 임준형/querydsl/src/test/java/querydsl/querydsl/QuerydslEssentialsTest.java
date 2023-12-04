@@ -6,6 +6,9 @@ import static querydsl.querydsl.QuerydslApplicationTests.generateTeam;
 import static querydsl.querydsl.domain.QMember.member;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -16,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import querydsl.querydsl.domain.Member;
+import querydsl.querydsl.domain.QMember;
 import querydsl.querydsl.domain.Team;
+import querydsl.querydsl.dto.MemberDto;
+import querydsl.querydsl.dto.UserDto;
 
 @SpringBootTest
 @Transactional
@@ -91,5 +97,93 @@ public class QuerydslEssentialsTest {
     // ----------------------------------------- 프로젝션 결과 반환 - 기본 끝 -----------------------------------------
 
 
+    // ----------------------------------------- 프로젝션 결과 반환 - DTO 사용 -----------------------------------------
 
+
+    @Test
+    @DisplayName("너무 불편한 상황, 패키지를 직접 적어야함. 이를 queryDsl이 해결")
+    void findDtoByJpql() {
+        List<MemberDto> resultList = em.createQuery("select new querydsl.querydsl.dto.MemberDto(m.username, m.age) "
+                        + "from Member m", MemberDto.class)
+                .getResultList();
+
+        for (MemberDto memberDto : resultList) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    @DisplayName("역시나 setter는 사용하면 안됨, DTO가 기본샌성자가 필수이기 때문에 더더욱 별로")
+    void findDtoBySetter() {
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.bean(MemberDto.class, member.username, member.age)
+                )
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    @DisplayName("getter, setter가 없어도 되는 fileds 접근법")
+    void findDtoByField() {
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.fields(MemberDto.class, member.username, member.age)
+                )
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    @DisplayName("getter, setter, 기본 생성자가 없어도 됨, 생성자는 객체 필드 타입만 맞다면 ")
+    void findDtoByConstructor() {
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.constructor(MemberDto.class, member.username, member.age)
+                )
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
+        }
+    }
+
+    @Test
+    @DisplayName("나이가 가장 많은 나이로 모두 출력, 앨리어스를 사용, 서브쿼리 사용")
+    void findUserDto() {
+
+        /**
+         * MemberDto 와 UserDto 의 필드가 username, name으로 같지 않기 떄문에
+         * userDto = UserDto(name=null, age=10) 이렇게 결과가 나오게 된다.
+         *
+         * 그렇기 떄문에 별칭으로 이름을 맞춰주면 이를 해결할 수 있다.
+         * userDto = UserDto(name=member1, age=10)
+         */
+
+        QMember memberSub = new QMember("memberSub");
+        List<UserDto> result = queryFactory
+                .select(
+                        Projections.fields(UserDto.class,
+                                member.username.as("name"),
+                        // 가장 많은 나이로 갖고 왔으므로 앨리어스를 필수로 두어야함.
+                        ExpressionUtils.as(JPAExpressions
+                                .select(memberSub.age.max())
+                                .from(memberSub), "age")
+                        ))
+                .from(member)
+                .fetch();
+
+        for (UserDto userDto : result) {
+            System.out.println("userDto = " + userDto);
+        }
+    }
 }
