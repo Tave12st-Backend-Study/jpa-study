@@ -73,6 +73,8 @@ public class QuerydslBasicTest {
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
 
+
+    // ----------------------------------------- 검색 조건 쿼리 -----------------------------------------
     @Test
     void search_equal() {
         Member findMember = queryFactory
@@ -108,6 +110,10 @@ public class QuerydslBasicTest {
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
 
+    // ----------------------------------------- 검색 조건 쿼리 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 검색 결과 -----------------------------------------
     @Test
     void resultFetch() {
         List<Member> fetch = queryFactory
@@ -136,6 +142,11 @@ public class QuerydslBasicTest {
                 .from(member)
                 .fetchOne();
     }
+
+    // ----------------------------------------- 검색 결과 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 정렬 -----------------------------------------
 
     /**
      * 회원 정렬 순서
@@ -167,6 +178,10 @@ public class QuerydslBasicTest {
         assertThat(memberNull.getUsername()).isNull();
     }
 
+    // ----------------------------------------- 정렬 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 페이징 -----------------------------------------
     @Test
     void paging() {
         List<Member> result = queryFactory
@@ -188,7 +203,10 @@ public class QuerydslBasicTest {
         System.out.println("count = " + count);
         assertThat(result.size()).isEqualTo(2);
     }
+    // ----------------------------------------- 페이징 끝 -----------------------------------------
 
+
+    // ----------------------------------------- 집합 -----------------------------------------
     @Test
     void aggregation() {
         /**
@@ -236,4 +254,74 @@ public class QuerydslBasicTest {
         assertThat(teamA.get(team.name)).isEqualTo("teamA");
         assertThat(teamB.get(team.name)).isEqualTo("teamB");
     }
+
+    // ----------------------------------------- 집합 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 조인 - 기본 조인 -----------------------------------------
+
+    /**
+     * team A에 소속된 모든 회원
+     */
+
+    @Test
+    void join() {
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .join(member.team, team)
+                .where(team.name.eq("teamB"))
+                .fetch();
+
+        for (Member currentMember : result) {
+            System.out.println("-----" + currentMember.getUsername());
+        }
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("member3", "member4");
+    }
+
+    @Test
+    void left_join() {
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .leftJoin(member.team, team)
+                .where(team.name.eq("teamB"))
+                .fetch();
+
+        for (Member currentMember : result) {
+            System.out.println("-----" + currentMember);
+        }
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("member3", "member4");
+    }
+
+    @Test
+    void theta_join() {
+        /**
+         * 억지성 예제, 회원의 이름이 팀의 이름과 같은 회원을 조회
+         */
+        em.persist(generateMember("teamA", 7, null));
+        em.persist(generateMember("teamB", 13, null));
+        em.persist(generateMember("teamC", 31, null));
+
+        List<Member> result = queryFactory
+                .select(member)
+                // 세타조인이므로 단순히 나열임
+                .from(member, team)
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        for (Member currentMember : result) {
+            System.out.println("currentMember = " + currentMember);
+        }
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("teamA", "teamB");
+    }
+
+    // ----------------------------------------- 조인 - 기본 조인 끝 -----------------------------------------
 }
