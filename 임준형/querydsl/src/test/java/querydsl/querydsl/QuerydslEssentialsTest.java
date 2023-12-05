@@ -22,6 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import querydsl.querydsl.domain.Member;
 import querydsl.querydsl.domain.QMember;
@@ -308,4 +309,63 @@ public class QuerydslEssentialsTest {
     }
 
     // ----------------------------------------- 동적 쿼리 - ⭐️Where 다중 파라미터 사용 끝 ⭐️-----------------------------------------
+
+
+    // ----------------------------------------- 수정, 삭제 벌크 연산 -----------------------------------------
+
+    @Test
+    @Commit
+    void bulkUpdate() {
+
+        /**
+         * 영향을 받은 카운트가 return
+         */
+        long count = queryFactory
+                .update(member)
+                .set(member.username, ("비회원"))
+                .where(member.age.lt(28))
+                .execute();
+
+        /**
+         * 당연하게도, 영속성 컨텍스트 잔여 쿼리 flush 및 clear
+         */
+        em.flush();
+        em.clear();
+    }
+
+    @Test
+    void bulkAdd() {
+        /**
+         * 모든 회원의 나이를 더하는 쿼리
+         * 마이너스가 없어서 빼려면 -1을 더해야한다.
+         */
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+    }
+
+    @Test
+    void bulkMultiple() {
+        /**
+         * 모든 회원의 나이를 2배 곱하는 쿼리
+         */
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.multiply(2))
+                .execute();
+    }
+
+    @Test
+    void bulkDelete() {
+        /**
+         * 10살 보다 많은 나이의 회원을 삭제하는 쿼리
+         */
+        long count = queryFactory
+                .delete(member)
+                .where(member.age.gt(10))
+                .execute();
+    }
+
+    // ----------------------------------------- 수정, 삭제 벌크 연산 끝 -----------------------------------------
 }
