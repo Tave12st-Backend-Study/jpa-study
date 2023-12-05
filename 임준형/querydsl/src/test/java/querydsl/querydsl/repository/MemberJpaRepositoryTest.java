@@ -85,7 +85,7 @@ class MemberJpaRepositoryTest {
 
     // ----------------------------------------- 동적 쿼리와 성능 최적화 조회 - BUilder 사용 -----------------------------------------
     @Test
-    void searchTest() {
+    void searchByBuilderTest() {
         before();
         MemberSearchCondition condition = MemberSearchCondition.builder()
                 .ageGoe(33)
@@ -103,4 +103,26 @@ class MemberJpaRepositoryTest {
     }
 
     // ----------------------------------------- 동적 쿼리와 성능 최적화 조회 - BUilder 사용 끝 -----------------------------------------
+
+
+    // ----------------------------------------- 동적 쿼리와 성능 최적화 조회 - ⭐️Where 다중 파라미터 사용 ⭐️-----------------------------------------
+    @Test
+    void searchByWhereParamTest() {
+        before();
+        MemberSearchCondition condition = MemberSearchCondition.builder()
+                .ageGoe(33)
+                .ageLoe(40)
+                .teamName("teamB")
+                .build();
+
+        /**
+         * 동적 쿼리는 최소값이라도 있는게 좋다. 빈 값 XX
+         */
+
+        List<MemberTeamDto> memberTeamDtos = memberJpaRepository.search(condition);
+
+        assertThat(memberTeamDtos).extracting("username").containsExactly("member4");
+    }
+
+    // ----------------------------------------- 동적 쿼리와 성능 최적화 조회 - ⭐️Where 다중 파라미터 사용 끝 ⭐️-----------------------------------------
 }

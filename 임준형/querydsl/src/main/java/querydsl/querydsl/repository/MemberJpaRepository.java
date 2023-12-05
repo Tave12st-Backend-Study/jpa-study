@@ -4,6 +4,8 @@ import static querydsl.querydsl.domain.QMember.member;
 import static querydsl.querydsl.domain.QTeam.team;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -87,6 +89,76 @@ public class MemberJpaRepository {
                 .from(member)
                 .leftJoin(member.team, team)
                 .where(builder)
+                .fetch();
+    }
+
+    public List<MemberTeamDto> search(MemberSearchCondition condition) {
+        return jpaQueryFactory
+                .select(new QMemberTeamDto(
+                        member.id.as("memberId"),
+                        member.username,
+                        member.age,
+                        team.id.as("teamId"),
+                        team.name.as("teamName")
+                ))
+                .from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageBetween(condition.getAgeLoe(), condition.getAgeGoe())
+                        )
+                .fetch();
+    }
+
+    private BooleanExpression ageBetween(int ageLoe, int ageGoe) {
+        /**
+         * null Check 해야함.!!
+         */
+        return userAgeGoe(ageGoe).and(userAgeLoe(ageLoe));
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        if (StringUtils.hasText(username)) {
+            return member.username.eq(username);
+        }
+        return null;
+    }
+
+    private BooleanExpression teamNameEq(String teamName) {
+        if (StringUtils.hasText(teamName)) {
+            return team.name.eq(teamName);
+        }
+        return null;
+    }
+
+    private BooleanExpression userAgeGoe(Integer ageGoe) {
+        if (ageGoe != null) {
+            return member.age.goe(ageGoe);
+        }
+        return null;
+    }
+
+    private BooleanExpression userAgeLoe(Integer ageLoe) {
+        if (ageLoe != null) {
+            return member.age.loe(ageLoe);
+        }
+        return null;
+    }
+
+    /**
+     * 재사용 가능
+     */
+    public List<Member> searchMember(MemberSearchCondition condition) {
+        return jpaQueryFactory
+                .selectFrom(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        userAgeGoe(condition.getAgeGoe()),
+                        userAgeLoe(condition.getAgeLoe())
+                )
                 .fetch();
     }
 }
