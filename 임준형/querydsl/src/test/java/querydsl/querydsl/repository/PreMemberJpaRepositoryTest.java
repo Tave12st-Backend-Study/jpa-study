@@ -4,10 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static querydsl.querydsl.QuerydslApplicationTests.generateMember;
 import static querydsl.querydsl.QuerydslApplicationTests.generateTeam;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +17,13 @@ import querydsl.querydsl.dto.MemberTeamDto;
 
 @SpringBootTest
 @Transactional
-class MemberJpaRepositoryTest {
+class PreMemberJpaRepositoryTest {
 
     @Autowired
     EntityManager em;
 
-    @Autowired MemberJpaRepository memberJpaRepository;
+    @Autowired
+    PreMemberJpaRepository preMemberJpaRepository;
 
     public void before() {
         Team teamA = generateTeam("teamA");
@@ -49,15 +48,15 @@ class MemberJpaRepositoryTest {
     @Test
     void basicTest() {
         Member member = generateMember("member1", 10, null);
-        memberJpaRepository.save(member);
+        preMemberJpaRepository.save(member);
 
-        Member findMember = memberJpaRepository.findById(member.getId()).get();
+        Member findMember = preMemberJpaRepository.findById(member.getId()).get();
         assertThat(member).isEqualTo(findMember);
 
-        List<Member> result = memberJpaRepository.findAll();
+        List<Member> result = preMemberJpaRepository.findAll();
         assertThat(result).containsExactly(member);
 
-        List<Member> result2 = memberJpaRepository.findByUsername("member1");
+        List<Member> result2 = preMemberJpaRepository.findByUsername("member1");
         assertThat(result2).containsExactly(member);
     }
 
@@ -68,15 +67,15 @@ class MemberJpaRepositoryTest {
     @Test
     void basicTest_QueryDsl() {
         Member member = generateMember("member1", 10, null);
-        memberJpaRepository.save(member);
+        preMemberJpaRepository.save(member);
 
-        Member findMember = memberJpaRepository.findById(member.getId()).get();
+        Member findMember = preMemberJpaRepository.findById(member.getId()).get();
         assertThat(member).isEqualTo(findMember);
 
-        List<Member> result = memberJpaRepository.findAll_QueryDsl();
+        List<Member> result = preMemberJpaRepository.findAll_QueryDsl();
         assertThat(result).containsExactly(member);
 
-        List<Member> result2 = memberJpaRepository.findByUsername_QueryDsl("member1");
+        List<Member> result2 = preMemberJpaRepository.findByUsername_QueryDsl("member1");
         assertThat(result2).containsExactly(member);
     }
 
@@ -97,7 +96,7 @@ class MemberJpaRepositoryTest {
          * 동적 쿼리는 최소값이라도 있는게 좋다. 빈 값 XX
          */
 
-        List<MemberTeamDto> memberTeamDtos = memberJpaRepository.searchByBuilder(condition);
+        List<MemberTeamDto> memberTeamDtos = preMemberJpaRepository.searchByBuilder(condition);
 
         assertThat(memberTeamDtos).extracting("username").containsExactly("member4");
     }
@@ -119,7 +118,7 @@ class MemberJpaRepositoryTest {
          * 동적 쿼리는 최소값이라도 있는게 좋다. 빈 값 XX
          */
 
-        List<MemberTeamDto> memberTeamDtos = memberJpaRepository.search(condition);
+        List<MemberTeamDto> memberTeamDtos = preMemberJpaRepository.search(condition);
 
         assertThat(memberTeamDtos).extracting("username").containsExactly("member4");
     }

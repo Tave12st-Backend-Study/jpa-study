@@ -4,7 +4,6 @@ import static querydsl.querydsl.domain.QMember.member;
 import static querydsl.querydsl.domain.QTeam.team;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -20,7 +19,7 @@ import querydsl.querydsl.dto.QMemberTeamDto;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberJpaRepository {
+public class PreMemberJpaRepository {
 
     private final EntityManager em;
     private final JPAQueryFactory jpaQueryFactory;
