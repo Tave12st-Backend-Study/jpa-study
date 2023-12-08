@@ -478,4 +478,31 @@ public class QuerydslBasicTest {
                 .fetch();
 
     }
+
+
+    @Test
+    public void simpleProjection(){
+        //객체 타입 ex. Member인 경우도 프로젝션 대상이 하나인 경우다.
+        List<String> fetch = queryFactory
+                .select(member.username)
+                .from(member)
+                .fetch();
+
+    }
+
+    @Test
+    public void tupleProjection(){
+        //반환타입이 튜플..
+        List<Tuple> fetch = queryFactory
+                .select(member.username, member.age)
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : fetch) {
+            String username = tuple.get(member.username);
+            Integer age = tuple.get(member.age);
+        }
+    }
+
+
 }
