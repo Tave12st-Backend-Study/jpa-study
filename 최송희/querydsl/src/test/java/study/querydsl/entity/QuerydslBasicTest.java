@@ -4,7 +4,10 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +172,7 @@ public class QuerydslBasicTest {
         List<Member> result = queryFactory
                 .selectFrom(member)
                 .orderBy(member.username.desc())
-                .offset(1) //몇번째?
+                .offset(1) //몇번째?를 조회할건지(0부터 시작)
                 .limit(2)
                 .fetch();
         assertThat(result.size()).isEqualTo(2);
@@ -210,7 +213,138 @@ public class QuerydslBasicTest {
         Tuple teamB = result.get(1);
 
         assertThat(teamA.get(team.name)).isEqualTo("teamA");
-        assertThat(teamB.get(team.name)).isEqualTo("teamB");
+        assertThat(teamA.get(member.age.avg())).isEqualTo(15);
 
+        assertThat(teamB.get(team.name)).isEqualTo("teamB");
+        assertThat(teamB.get(member.age.avg())).isEqualTo(35);
+    }
+
+    /*
+    * 팀A에 소속된 모든 회원을 찾아라
+    * */
+    @Test
+    public void join() throws Exception{
+        //given
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .join(member.team, team)
+                .where(team.name.eq("teamA"))
+                .fetch();
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("member1", "member2");
+
+        //left join
+        List<Member> leftJoinResult = queryFactory
+                .selectFrom(member)
+                .leftJoin(member.team, team)
+                .where(team.name.eq("teamA"))
+                .fetch();
+    }
+
+    /*
+    * 세타조인
+    * 회원의 이름과 팀 이름과 같은 회원 조회(연관관계 없는 테이블을 조인하는 경우)
+    * */
+    @Test
+    public void theta_join() throws Exception{
+        //given
+        em.persist(new Member("teamA"));
+        em.persist(new Member("teamB"));
+        em.persist(new Member("teamC"));
+
+        //when
+        List<Member> result = queryFactory
+                .select(member)
+                .from(member, team)
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        //then
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("teamA", "teamB");
+    }
+
+    /*
+    * 예) 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
+    * JPQL : select m, t from Member m left join m.team t on t.name = "teamA"
+    * */
+    @Test
+    public void join_on_filtering() throws Exception{
+        //given
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(member.team, team).on(team.name.eq("teamA"))
+                .fetch();
+        //위는 외부조인으로, leftjoin이므로 teamA인 회원과 teamA가 아닌 회원까지 모두 조회된다.
+        //ex. teamA인 회원정보와 teamB인 회원은 team정보가 null로 표현
+
+        List<Tuple> result2 = queryFactory
+                .select(member, team)
+                .from(member)
+                .join(member.team, team).on(team.name.eq("teamA"))
+                .fetch();
+        //위는 내부조인으로, teamA인 회원 정보만 조회된다.
+        // on대신 where로 써도 똑같다.
+    }
+
+    /*
+     * 연관관계가 없는 엔티티를 외부조인
+     * 회원의 이름이 팀 이름과 같은 대상 조회
+     * */
+    @Test
+    public void join_on_no_relation() throws Exception{
+        //given
+        em.persist(new Member("teamA"));
+        em.persist(new Member("teamB"));
+        em.persist(new Member("teamC"));
+
+        //when
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(team).on(member.username.eq(team.name))
+                .fetch();
+        // 보통 조인할 때   leftjoin(member.team, team)이렇게 한다. 그러면 id값을 기준으로 필터링해준다.
+        // 하지만 여기서는 엔티티 하나만 적고 leftJoin(team)을 썻다. on절에 맞지 않는 정보는 null로 나오고 on절에 맞는 정보는 모두 나온다.
+
+        //then
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("teamA", "teamB");
+    }
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
+    //페치조인-연관된 엔티티를 SQL 한번에 조회하는 기능(성능 최적화)
+    @Test
+    public void fetchJoinNo() throws Exception{
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        //LAZY로 페치전략을 사용해서 TEAM은 조회되지 않는다.
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치조인 미적용").isFalse();
+        //team이 로딩이 되어서는 안된다.
+    }
+
+    @Test
+    public void fetchJoinUse() throws Exception{
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .join(member.team, team).fetchJoin() //페치조인
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("페치조인 미적용").isTrue();
+        //team이 로딩된다.
     }
 }
