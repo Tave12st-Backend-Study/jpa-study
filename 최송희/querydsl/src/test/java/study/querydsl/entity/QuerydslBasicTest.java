@@ -2,6 +2,8 @@ package study.querydsl.entity;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.UserDto;
 
 import java.util.List;
 
@@ -504,5 +508,79 @@ public class QuerydslBasicTest {
         }
     }
 
+    //jpql에서 제공해주는 new operation
+    @Test
+    public void findDtoByJPQL(){
+        List<MemberDto> resultList = em.createQuery("select new study.querydsl.dto.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+                .getResultList();
+    }
 
+    //JPQL말고 Querydsl로 조회해보면?
+    @Test
+    public void findDtoBySetter(){
+        //빈 등록 -> setter 사용
+        List<MemberDto> fetch = queryFactory
+                .select(Projections
+                        .bean(MemberDto.class,
+                                member.username, member.age))
+                .from(member)
+                .fetch();
+
+    }
+
+    @Test
+    public void findDtoByField(){
+        //필드에 바로 값을 주입
+        List<MemberDto> fetch = queryFactory
+                .select(Projections
+                        .fields(MemberDto.class,
+                                member.username, member.age))
+                .from(member)
+                .fetch();
+
+    }
+
+
+    @Test
+    public void findDtoByConstructor(){
+        //생성자 주입
+        List<MemberDto> fetch = queryFactory
+                .select(Projections
+                        .constructor(MemberDto.class,
+                                member.username, member.age))
+                .from(member)
+                .fetch();
+
+    }
+
+    @Test
+    public void findUserDto(){
+        //만약 Dto라고 해도 필드명이 다를 수 있다.
+        //ex. username -> name이라고 DTO에서 정의한다면? 매칭이 안된다
+        //따라서 .as(바꾼 필드명) 이렇게 변경해주면 좋다
+
+        QMember memberSub = new QMember("memberSub");
+
+        List<UserDto> fetch = queryFactory
+                .select(Projections
+                        .fields(UserDto.class,
+                                member.username.as("name"),
+                                ExpressionUtils.as(JPAExpressions
+                                        .select(memberSub.age.max())
+                                        .from(memberSub), "age"))
+                )
+                .from(member)
+                .fetch();
+
+        //서브쿼리는 무조건 ExpressionUtils.as를 써야한다.
+
+        
+        //생성자를 사용하는 경우
+        List<UserDto> fetch1 = queryFactory
+                .select(Projections.constructor(UserDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+    }
 }
