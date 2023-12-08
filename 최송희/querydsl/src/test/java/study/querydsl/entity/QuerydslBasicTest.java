@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
 
 import java.util.List;
@@ -574,7 +575,7 @@ public class QuerydslBasicTest {
 
         //서브쿼리는 무조건 ExpressionUtils.as를 써야한다.
 
-        
+
         //생성자를 사용하는 경우
         List<UserDto> fetch1 = queryFactory
                 .select(Projections.constructor(UserDto.class,
@@ -582,5 +583,28 @@ public class QuerydslBasicTest {
                         member.age))
                 .from(member)
                 .fetch();
+    }
+
+
+    //@QueryProjection 사용
+    @Test
+    public void findDtoByQueryProjection(){
+        queryFactory
+                .select(new QMemberDto(member.username, member.age))
+                .from(member)
+                .fetch();
+
+        // Projections.constructor과 무슨 차이냐?
+        //constructor : 실행하는 순간이 되어서야 런타임 에러로 알게 된다.
+
+        /* ex.
+        *  queryFactory
+                .select(Projections.constructor(UserDto.class,
+                        member.username,
+                        member.age,
+                        member.id))
+                .from(member)
+                .fetch();
+        * */
     }
 }
